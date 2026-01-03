@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Password List</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#1754cf",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#111621",
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#1a202c", 
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>.no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+        body {
+          min-height: max(884px, 100dvh);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-white antialiased h-screen flex flex-col overflow-hidden">
+<header class="flex-none px-4 pt-4 pb-2 bg-background-light dark:bg-background-dark border-b border-transparent z-10">
+<div class="flex items-center justify-between h-14">
+<h1 class="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">My Realm</h1>
+<button class="flex items-center justify-center size-10 rounded-full bg-primary/10 text-primary hover:bg-primary/20 transition-colors">
+<span class="material-symbols-outlined text-2xl">add</span>
+</button>
+</div>
+</header>
+<main class="flex-1 overflow-y-auto no-scrollbar pb-6">
+<div class="px-4 py-2 sticky top-0 bg-background-light dark:bg-background-dark z-10 backdrop-blur-md bg-opacity-90 dark:bg-opacity-90">
+<div class="relative group">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-slate-400">search</span>
+</div>
+<input class="block w-full pl-10 pr-3 py-3 border-none rounded-xl leading-5 bg-white dark:bg-[#1f2633] text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary sm:text-sm shadow-sm transition-all" placeholder="Search realm..." type="text"/>
+</div>
+</div>
+<div class="mt-6 px-4">
+<h2 class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3 ml-1">Favorites</h2>
+<div class="flex flex-col gap-3">
+<div class="group flex items-center gap-4 p-3 bg-white dark:bg-[#1f2633] rounded-xl shadow-sm border border-slate-100 dark:border-slate-800 hover:border-primary/50 transition-all cursor-pointer">
+<div class="relative flex-shrink-0 size-12 rounded-lg bg-black flex items-center justify-center overflow-hidden">
+<img class="object-cover w-full h-full" data-alt="Red Netflix N logo on black background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDK7Jb2lYbqo-2SJ0uxb8ZRB4JIIKY8Ch0RJE0_D11_NME2a_uo5V2SDxMmxQtBjaItgSh3cUfNw9k5gB_lGmC-FtwLKjBkdgKRnj2vLPayCgI4qej0MXbooO06zrvk_ljqVt-5U3PkDKb4eIsrapunaDMSUFzfdHGgTbKrZDbHDmkCeRQaoGYqTQ1lxcdXUaXM8wanH7-tnSpoybVmbXXCXYw1tOGNCf2d1j5FIgSgUx027FieC5JyF-MF4crQnGW1z2IFVQ1lUBk"/>
+</div>
+<div class="flex-1 min-w-0">
+<p class="text-base font-semibold text-slate-900 dark:text-white truncate">Netflix</p>
+<p class="text-sm text-slate-500 dark:text-slate-400 truncate">johndoe@gmail.com</p>
+</div>
+<button aria-label="Copy Password" class="flex items-center justify-center size-10 rounded-full text-slate-400 hover:text-primary hover:bg-primary/10 transition-colors">
+<span class="material-symbols-outlined text-[20px]">content_copy</span>
+</button>
+</div>
+<div class="group flex items-center gap-4 p-3 bg-white dark:bg-[#1f2633] rounded-xl shadow-sm border border-slate-100 dark:border-slate-800 hover:border-primary/50 transition-all cursor-pointer">
+<div class="relative flex-shrink-0 size-12 rounded-lg bg-white flex items-center justify-center overflow-hidden border border-slate-200 dark:border-slate-700">
+<img class="object-cover w-full h-full" data-alt="Multi colored Google G logo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDoH01X-O83LNXzqHlRYUuwlUqQMVDaWZmU3aob9c4GPbTXYzWQc2e2vRy_B22aErjlVQKB0En_c7z0NMHdwtoSNHdaBo3_32x15QY3K08OJfP4C07N_m2UaNdLrWwMTxZBQslQEzjxpYaK0o3TtXfLXEHnWCkzindomGqmjlWf6vYtQqthZo4DIqU2m9TZqDnbhZWvZ6FVGaWgxDSE5IMDyQaS0cjviXe9Cqn63aYx-8ZbXU_n8rK8i5FqJUQ5bqQvVBUPmQH5J-g"/>
+</div>
+<div class="flex-1 min-w-0">
+<p class="text-base font-semibold text-slate-900 dark:text-white truncate">Google</p>
+<p class="text-sm text-slate-500 dark:text-slate-400 truncate">john.doe@google.com</p>
+</div>
+<button aria-label="Copy Password" class="flex items-center justify-center size-10 rounded-full text-slate-400 hover:text-primary hover:bg-primary/10 transition-colors">
+<span class="material-symbols-outlined text-[20px]">content_copy</span>
+</button>
+</div>
+</div>
+</div>
+<div class="mt-8 px-4">
+<h2 class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3 ml-1">Recently Added</h2>
+<div class="flex flex-col gap-3">
+<div class="group flex items-center gap-4 p-3 bg-white dark:bg-[#1f2633] rounded-xl shadow-sm border border-slate-100 dark:border-slate-800 hover:border-primary/50 transition-all cursor-pointer">
+<div class="relative flex-shrink-0 size-12 rounded-lg bg-white flex items-center justify-center overflow-hidden border border-slate-200 dark:border-slate-700">
+<img class="object-cover w-full h-full" data-alt="Amazon logo letter a with smile" src="https://lh3.googleusercontent.com/aida-public/AB6AXuArOoTwAhPMnfF77iLUukiR2R2W4EX_trYaVmsb9WsL9JlzBuIlT-p0VpuFDxvlO02olN5RcTGaaXfxUT4D_AuqO33pDCxEDOrtEiK47UOwVFlsJskj5RbqfOBIrlNjUirFnnMlfFOwE2nQeJ_lwKdj2QG1OE9GuXGJVVeaNXLetZD2m63jlSBdBdpUmR5p8MlCHyd2NeZfNWiM9d_0QvPGSXcOOycCe7mMyjSSsDC8PgXFikCNP9HHNAPphHVGQPkfA6B1PFkmIAU"/>
+</div>
+<div class="flex-1 min-w-0">
+<p class="text-base font-semibold text-slate-900 dark:text-white truncate">Amazon</p>
+<p class="text-sm text-slate-500 dark:text-slate-400 truncate">amazon_user_123</p>
+</div>
+<button aria-label="Copy Password" class="flex items-center justify-center size-10 rounded-full text-slate-400 hover:text-primary hover:bg-primary/10 transition-colors">
+<span class="material-symbols-outlined text-[20px]">content_copy</span>
+</button>
+</div>
+<div class="group flex items-center gap-4 p-3 bg-white dark:bg-[#1f2633] rounded-xl shadow-sm border border-slate-100 dark:border-slate-800 hover:border-primary/50 transition-all cursor-pointer">
+<div class="relative flex-shrink-0 size-12 rounded-lg bg-[#1DB954] flex items-center justify-center overflow-hidden">
+<img class="object-cover w-full h-full" data-alt="Spotify green circle logo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAt70C1AhpdNBo3tRN_U9EFIe0oXGKyddl6MbgewDBeWLDcZlrXkKCNfjWhGik9WDlBE_D1fA7GOpyYf6fYSEM2jN9miZSuuLmSMf-g2FBKyUIyE9Bnrf0_spZF3XoDec8Ma6VL3R1FAdq-ObNL4-jqPigMh1t6Q_uLgvrtdhCcI8yo88-ApOtcsR5TZAJBj4LKggni6KVAmsapmMY0FOOoMcxEwRTBE1PnsCQRAs9GAsybXzzDrTb1fQ9N_XipvJfqNTAgqdf6ltA"/>
+</div>
+<div class="flex-1 min-w-0">
+<p class="text-base font-semibold text-slate-900 dark:text-white truncate">Spotify</p>
+<p class="text-sm text-slate-500 dark:text-slate-400 truncate">music.lover.99</p>
+</div>
+<button aria-label="Copy Password" class="flex items-center justify-center size-10 rounded-full text-slate-400 hover:text-primary hover:bg-primary/10 transition-colors">
+<span class="material-symbols-outlined text-[20px]">content_copy</span>
+</button>
+</div>
+<div class="group flex items-center gap-4 p-3 bg-white dark:bg-[#1f2633] rounded-xl shadow-sm border border-slate-100 dark:border-slate-800 hover:border-primary/50 transition-all cursor-pointer">
+<div class="relative flex-shrink-0 size-12 rounded-lg bg-black flex items-center justify-center overflow-hidden border border-slate-200 dark:border-slate-700">
+<img class="object-cover w-full h-full" data-alt="X logo white on black" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAzE9M98cnHKbNizJERMx1xz_R-Y8F2CU4v3JrTFiWlWcdku7DrTBohPFmOTdwTYl3Jl8J0khe4xMOXcMNcCG8REa_rNZX7tCEsc2ISZexXfR67ohIVlEb_WpRDBDuLTns32ozxjREiqVrjsCtCD3g403XEYHcqb9T7Rd_4k4jOvAmF69_fKgh5EtEFxJyv00kgpqFcgCGAGt-CGjYnyh-qbW4FoaKZYerpcxx4W8hgQqEk9RSwHFWTFK7jH55Y_OfeAWt3k0K7yps"/>
+</div>
+<div class="flex-1 min-w-0">
+<p class="text-base font-semibold text-slate-900 dark:text-white truncate">X (Twitter)</p>
+<p class="text-sm text-slate-500 dark:text-slate-400 truncate">@dev_guru</p>
+</div>
+<button aria-label="Copy Password" class="flex items-center justify-center size-10 rounded-full text-slate-400 hover:text-primary hover:bg-primary/10 transition-colors">
+<span class="material-symbols-outlined text-[20px]">content_copy</span>
+</button>
+</div>
+<div class="group flex items-center gap-4 p-3 bg-white dark:bg-[#1f2633] rounded-xl shadow-sm border border-slate-100 dark:border-slate-800 hover:border-primary/50 transition-all cursor-pointer">
+<div class="relative flex-shrink-0 size-12 rounded-lg bg-white flex items-center justify-center overflow-hidden border border-slate-200 dark:border-slate-700">
+<img class="object-cover w-full h-full" data-alt="Github octocat silhouette logo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD9-NetPKQOu1Fd95z_ZHC48Bmq0EQaCmFQ1d63ZB3x6OyeBFZBaQK_kWvT3-j1lkw5ABTrwwQWXzmzZhHhRj3qTkPbzH4z0TDwq_i44JZOvebXqyJxflGl-6A1HX7juXwFKSBXp67GmorkHNo6CqtemPAwTXWXdf1fv8iG3vkdzQ9mr-h1dKClWBLkuvW4SdayIOeq3jZF4zhLRbmLlAgm2rwis4_M1dQLdQ4-nTvKQrY9_lrSJOGXkxO6lNvGfMhvtnOiueJ8RgQ"/>
+</div>
+<div class="flex-1 min-w-0">
+<p class="text-base font-semibold text-slate-900 dark:text-white truncate">GitHub</p>
+<p class="text-sm text-slate-500 dark:text-slate-400 truncate">coder_life_v2</p>
+</div>
+<button aria-label="Copy Password" class="flex items-center justify-center size-10 rounded-full text-slate-400 hover:text-primary hover:bg-primary/10 transition-colors">
+<span class="material-symbols-outlined text-[20px]">content_copy</span>
+</button>
+</div>
+</div>
+</div>
+<div class="h-6"></div>
+</main>
+</body></html>
