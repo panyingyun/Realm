@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Master Password Login</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#1754cf",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#111621",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display">
+<div class="relative flex h-full min-h-screen w-full flex-col items-center justify-center overflow-x-hidden p-4 sm:p-6">
+<div class="w-full max-w-[400px] flex flex-col items-center">
+<div class="mb-8 flex flex-col items-center justify-center">
+<div class="mb-6 flex h-24 w-24 items-center justify-center rounded-3xl bg-primary/10 dark:bg-primary/20 shadow-lg shadow-primary/5">
+<span class="material-symbols-outlined text-[48px] text-primary">lock</span>
+</div>
+<h1 class="text-[#111318] dark:text-white tracking-tight text-[28px] font-bold leading-tight text-center">
+                    Welcome Back
+                </h1>
+<p class="text-[#637588] dark:text-[#9da6b8] text-base font-normal leading-normal mt-3 text-center px-4">
+                    Enter your Master Password to unlock your treasure.
+                </p>
+</div>
+<div class="w-full space-y-5">
+<div class="relative w-full">
+<label class="sr-only" for="master-password">Master Password</label>
+<div class="relative flex items-center">
+<input autofocus="" class="w-full h-14 rounded-lg border border-[#dce0e5] dark:border-[#3c4453] bg-white dark:bg-[#1c1f26] text-[#111318] dark:text-white px-4 pr-12 text-base placeholder:text-[#9da6b8] focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none transition-all shadow-sm" id="master-password" placeholder="Master Password" type="password" value=""/>
+<button class="absolute right-0 top-0 h-full px-4 text-[#9da6b8] hover:text-primary transition-colors flex items-center justify-center outline-none focus:text-primary" type="button">
+<span class="material-symbols-outlined" style="font-size: 24px;">visibility</span>
+</button>
+</div>
+</div>
+<button class="w-full h-12 bg-primary hover:bg-[#1349b5] text-white text-base font-bold leading-normal tracking-[0.015em] rounded-lg shadow-md shadow-primary/20 transition-all active:scale-[0.98] flex items-center justify-center">
+                    Unlock Treasure
+                </button>
+</div>
+<div class="h-6 w-full"></div>
+</div>
+</div>
+</body></html>
