@@ -19,17 +19,17 @@ Realm 密码本是一个基于 Go 语言开发的密码管理工具，使用 SQL
 
 ```
 Realm/
-├── cmder/          # 命令行版本（Realm CLI）
+├── realm-cmder/          # 命令行版本（Realm CLI）
 │   ├── main.go     # 程序入口
 │   ├── helper/     # 核心功能模块
 │   ├── dao/        # 数据访问层
 │   ├── docs/       # 命令行版本文档和截图
 │   └── README.md   # 命令行版本详细文档
-├── gui/            # 图形界面版本（开发中）
+├── realm-gui/            # 图形界面版本（开发中）
 ├── docs/           # 项目文档和截图
-│   ├── Realm_login/    # 登录功能演示
-│   ├── Realm_Add/      # 添加密码功能演示
-│   └── Realm_Query/    # 查询密码功能演示
+│   ├── realm_login/    # 登录功能演示
+│   ├── realm_add/      # 添加密码功能演示
+│   └── realm_query/    # 查询密码功能演示
 ├── LICENSE         # GPL-3.0 许可证
 └── README.md       # 本文件
 ```
@@ -49,7 +49,7 @@ Realm/
 
 1. **进入命令行版本目录**:
 ```bash
-cd cmder
+cd realm-cmder
 ```
 
 2. **安装依赖**:
@@ -71,7 +71,7 @@ go build -o Realm .
 make run
 ```
 
-详细的命令说明和使用指南请参考 [cmder/README.md](cmder/README.md)。
+详细的命令说明和使用指南请参考 [realm-cmder/README.md](realm-cmder/README.md)。
 
 #### 主要功能
 
@@ -87,9 +87,9 @@ make run
 
 项目提供了详细的功能演示文档，位于 `docs/` 目录：
 
-- **登录功能**: 查看 [Realm_login/](docs/Realm_login/) 了解登录流程
-- **添加密码**: 查看 [Realm_Add/](docs/Realm_Add/) 了解如何添加密码
-- **查询密码**: 查看 [Realm_Query/](docs/Realm_Query/) 了解如何查询密码
+- **登录功能**: 查看 [realm_login/](docs/realm_login/screen.png) 了解登录流程
+- **添加密码**: 查看 [realm_add/](docs/realm_add/screen.png) 了解如何添加密码
+- **查询密码**: 查看 [realm_query/](docs/realm_query/screen.png) 了解如何查询密码
 
 ### 图形界面版本（GUI）
 
@@ -155,7 +155,7 @@ CREATE TABLE `realm` (
 
 ## 📖 使用文档
 
-- **命令行版本详细文档**: [cmder/README.md](cmder/README.md)
+- **命令行版本详细文档**: [realm-cmder/README.md](realm-cmder/README.md)
 - **功能演示**: 查看 [docs/](docs/) 目录了解各功能的使用方法
 
 ## 🗺️ 开发路线图
