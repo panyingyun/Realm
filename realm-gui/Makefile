@@ -18,12 +18,16 @@ env:
 	@echo "=========install goreleaser ==========="
 	GOPROXY=https://goproxy.cn/,direct go install github.com/goreleaser/goreleaser/v2@latest
 	@echo "=========install wails ==========="
+	//for ubuntu24.04
+	#sudo apt install libwebkit2gtk-4.1-dev  libgtk-3-dev -y
+	//for ubuntu22.04
+	#sudo apt install libwebkit2gtk-4.0-dev  libgtk-3-dev -y
 	GOPROXY=https://goproxy.cn/,direct go install github.com/wailsapp/wails/v2/cmd/wails@latest
 
 dev:
 	go mod tidy
 	gofumpt -l -w .
-	wails dev 
+	wails dev -tags webkit2_41
 		
 clean:
 	go clean -i .
