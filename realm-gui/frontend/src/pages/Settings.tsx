@@ -70,8 +70,8 @@ export const SettingsPage: React.FC = () => {
                 onClick={() => navigate('/main')}
                 className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer"
               >
-                <span className="material-symbols-outlined">grid_view</span>
-                <span className="text-sm font-medium">Dashboard</span>
+                <span className="material-symbols-outlined">arrow_back</span>
+                <span className="text-sm font-medium">Back</span>
               </a>
               <a className="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary/10 text-primary dark:bg-primary/20 transition-colors cursor-pointer">
                 <span className="material-symbols-outlined fill-icon">settings</span>
