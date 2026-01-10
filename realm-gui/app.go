@@ -126,30 +126,30 @@ func (a *App) GeneratePassword() (string, error) {
 		numbers   = "0123456789"
 		symbols   = "!@#$%^&*"
 	)
-	
+
 	allChars := lowercase + uppercase + numbers + symbols
 	length := 16
-	
+
 	// Seed random number generator
 	r := rand.New(rand.NewSource(time.Now().UnixNano()))
-	
+
 	// Ensure at least one character from each category
 	password := make([]byte, length)
 	password[0] = lowercase[r.Intn(len(lowercase))]
 	password[1] = uppercase[r.Intn(len(uppercase))]
 	password[2] = numbers[r.Intn(len(numbers))]
 	password[3] = symbols[r.Intn(len(symbols))]
-	
+
 	// Fill the rest randomly
 	for i := 4; i < length; i++ {
 		password[i] = allChars[r.Intn(len(allChars))]
 	}
-	
+
 	// Shuffle the password to avoid predictable patterns
 	for i := len(password) - 1; i > 0; i-- {
 		j := r.Intn(i + 1)
 		password[i], password[j] = password[j], password[i]
 	}
-	
+
 	return string(password), nil
 }
