@@ -9,6 +9,8 @@ env:
 	GOPROXY=https://goproxy.cn/,direct go install -v gorm.io/gen/tools/gentool@latest
 	@echo "=========install gofmt ==========="
 	GOPROXY=https://goproxy.cn/,direct go install mvdan.cc/gofumpt@latest
+	# install sqlite3 for ubuntu
+	sudo apt install sqlite3
 
 build:
 	go mod tidy
@@ -26,3 +28,7 @@ run:
 	gofumpt -l -w .
 	CGO_ENABLED=0 go build  -ldflags "$(LDFLAGS)" -v .
 	./Realm
+
+sqlite:	
+	sqlite3 realm.db
+	sqlite3 realm.db < realm.sql

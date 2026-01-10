@@ -58,13 +58,12 @@ func NewApp() *App {
 // so we can call the runtime methods
 func (a *App) startup(ctx context.Context) {
 	a.ctx = ctx
-	fmt.Println("type \"help\" for more info")
 	dir, err := os.Getwd()
 	fmt.Println("pwd dir = ", dir)
 	if err != nil {
 		log.Fatal(err)
 	}
-	// fmt.Println("dir = ", dir)
+	fmt.Println("start up dir = ", dir)
 	a.db, err = helper.OpenDB(path.Join(dir, DBName))
 	if err != nil {
 		log.Fatal(err)

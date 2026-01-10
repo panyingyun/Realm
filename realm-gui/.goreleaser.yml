@@ -4,14 +4,14 @@
 version: 2
 
 # 项目名称
-project_name: gf
+project_name: realm
 
 # 发布配置
 release:
   # GitHub发布配置
   github:
     owner: panyingyun  # 修改为你的GitHub用户名
-    name: gf     # 修改为你的仓库名
+    name: realm     # 修改为你的仓库名
   
   # 发布模式：替换或跳过已存在的发布
   mode: replace
@@ -37,7 +37,7 @@ builds:
     main: .
     
     # 二进制文件名称
-    binary: gf
+    binary: realm
     
     # 构建命令
     goos:
