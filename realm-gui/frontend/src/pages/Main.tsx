@@ -49,58 +49,19 @@ export const MainPage: React.FC = () => {
   const loadPasswords = async (category: string) => {
     try {
       const data = await GetPasswordsByCategory(category);
-      const pws = JSON.parse(data) as Password[];
-      setPasswords(pws);
+      // Convert Wails Password class to frontend Password interface
+      const convertedPasswords: Password[] = data.map(pw => ({
+        id: pw.id,
+        name: pw.name,
+        domain: pw.domain,
+        username: pw.username,
+        password: pw.password,
+        category: pw.category,
+      }));
+      setPasswords(convertedPasswords);
     } catch (error) {
       console.error('Failed to load passwords:', error);
-      // Mock data for development
-      if (category === 'Financial') {
-        setPasswords([
-          {
-            id: '1',
-            name: 'Global Bank',
-            domain: 'bank.online.com',
-            username: 'user_finance_88',
-            password: '••••••••••',
-            category: 'Financial',
-          },
-        ]);
-      } else if (category === 'Social') {
-        setPasswords([
-          {
-            id: '2',
-            name: 'MediaStream',
-            domain: 'mediastream.io',
-            username: 'social_user@media.com',
-            password: '••••••••••',
-            category: 'Social',
-          },
-        ]);
-      } else if (category === 'Private') {
-        setPasswords([
-          {
-            id: '3',
-            name: 'Private Vault',
-            domain: 'Last edited: 2 days ago',
-            username: 'Confidential notes and recovery seeds...',
-            password: '••••••••••',
-            category: 'Private',
-          },
-        ]);
-      } else if (category === 'Work') {
-        setPasswords([
-          {
-            id: '4',
-            name: 'DevHub Repo',
-            domain: 'code.internal.dev',
-            username: 'alpha_coder_v2',
-            password: '••••••••••',
-            category: 'Work',
-          },
-        ]);
-      } else {
-        setPasswords([]);
-      }
+      setPasswords([]);
     }
   };
 
@@ -313,7 +274,7 @@ export const MainPage: React.FC = () => {
                       </span>
                       <div className="flex items-center justify-between group/field">
                         <span className="text-sm font-mono tracking-widest text-slate-500 dark:text-slate-400">
-                          {isVisible ? 'password123' : '• • • • • • • • • •'}
+                          {isVisible ? password.password : '• • • • • • • • • •'}
                         </span>
                         <div className="flex items-center gap-1 opacity-0 group-hover/field:opacity-100 transition-all">
                           <button
@@ -330,7 +291,7 @@ export const MainPage: React.FC = () => {
                             <span className="material-symbols-outlined text-sm">{isVisible ? 'visibility_off' : 'visibility'}</span>
                           </button>
                           <button
-                            onClick={() => copyToClipboard('password123')}
+                            onClick={() => copyToClipboard(password.password)}
                             className="p-1 rounded transition-all"
                             style={{ color: colorValue }}
                             onMouseEnter={(e) => {

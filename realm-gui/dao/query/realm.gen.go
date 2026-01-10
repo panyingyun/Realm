@@ -28,6 +28,7 @@ func newRealm(db *gorm.DB, opts ...gen.DOOption) realm {
 	tableName := _realm.realmDo.TableName()
 	_realm.ALL = field.NewAsterisk(tableName)
 	_realm.ID = field.NewInt64(tableName, "id")
+	_realm.Name = field.NewString(tableName, "name")
 	_realm.Domain = field.NewString(tableName, "domain")
 	_realm.Category = field.NewString(tableName, "category")
 	_realm.Username = field.NewString(tableName, "username")
@@ -46,6 +47,7 @@ type realm struct {
 
 	ALL       field.Asterisk
 	ID        field.Int64
+	Name      field.String
 	Domain    field.String
 	Category  field.String
 	Username  field.String
@@ -70,6 +72,7 @@ func (r realm) As(alias string) *realm {
 func (r *realm) updateTableName(table string) *realm {
 	r.ALL = field.NewAsterisk(table)
 	r.ID = field.NewInt64(table, "id")
+	r.Name = field.NewString(table, "name")
 	r.Domain = field.NewString(table, "domain")
 	r.Category = field.NewString(table, "category")
 	r.Username = field.NewString(table, "username")
@@ -101,8 +104,9 @@ func (r *realm) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (r *realm) fillFieldMap() {
-	r.fieldMap = make(map[string]field.Expr, 8)
+	r.fieldMap = make(map[string]field.Expr, 9)
 	r.fieldMap["id"] = r.ID
+	r.fieldMap["name"] = r.Name
 	r.fieldMap["domain"] = r.Domain
 	r.fieldMap["category"] = r.Category
 	r.fieldMap["username"] = r.Username

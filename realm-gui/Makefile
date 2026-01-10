@@ -42,3 +42,7 @@ build:
 	go mod tidy
 	gofumpt -l -w .
 	wails build -tags webkit2_41
+
+sqlite:	
+	sqlite3 realm.db
+	sqlite3 realm.db < realm.sql

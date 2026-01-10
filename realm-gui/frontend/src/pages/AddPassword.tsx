@@ -56,7 +56,7 @@ export const AddPasswordModal: React.FC<AddPasswordModalProps> = ({ onClose }) =
         category: passwordType,
       };
 
-      const success = await AddPassword(JSON.stringify(newPassword));
+      const success = await AddPassword(newPassword);
       if (success) {
         onClose();
         navigate('/main');

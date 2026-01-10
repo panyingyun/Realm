@@ -51,6 +51,12 @@ func (rd *RealmDao) QueryDomain(ctx context.Context, db *gorm.DB, domain string)
 	return u.WithContext(ctx).Where(u.Domain.Eq(domain)).First()
 }
 
+// Query passwords by category
+func (rd *RealmDao) QueryPasswordsByCategory(ctx context.Context, db *gorm.DB, category string, mainDomain string) ([]*model.Realm, error) {
+	u := query.Use(db).Realm
+	return u.WithContext(ctx).Where(u.Category.Eq(category)).Where(u.Domain.Neq(mainDomain)).Find()
+}
+
 // Update a domain's passwd
 func (rd *RealmDao) UpdateDomainPasswd(ctx context.Context, db *gorm.DB, realm *model.Realm) error {
 	u := query.Use(db).Realm

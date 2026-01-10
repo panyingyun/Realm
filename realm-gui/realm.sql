@@ -1,6 +1,7 @@
 
 CREATE TABLE `realm` (
    `id` INTEGER  PRIMARY KEY NOT NULL,
+   `name` varchar(255) NOT NULL,
    `domain` varchar(255) NOT NULL,
    `category` varchar(255) NOT NULL,
    `username` varchar(255) NOT NULL,

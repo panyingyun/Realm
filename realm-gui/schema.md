@@ -4,6 +4,7 @@ use realmdb;
 // mysql
 CREATE TABLE `realm` (
    `id` bigint(20) NOT NULL PRIMARY KEY  AUTO_INCREMENT,
+   `name` varchar(255) NOT NULL,
    `domain` varchar(255) NOT NULL,
    `category` varchar(255) NOT NULL,
    `username` varchar(255) NOT NULL,
@@ -27,6 +28,7 @@ CREATE TABLE `setting` (
 // sqlite3
 CREATE TABLE `realm` (
    `id` INTEGER  PRIMARY KEY NOT NULL,
+   `name` varchar(255) NOT NULL,
    `domain` varchar(255) NOT NULL,
    `category` varchar(255) NOT NULL,
    `username` varchar(255) NOT NULL,

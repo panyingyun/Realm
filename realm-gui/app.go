@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"log"
@@ -79,7 +78,7 @@ func (a *App) Login(username string, mainPwd string) (bool, error) {
 	fmt.Println("username = ", helper.MainDomain)
 	fmt.Println("mainPwd = ", pwdd)
 	if len(pwddOri) == 0 {
-		helper.AddPassword(a.db, mainPwd, helper.MainDomain, helper.MainUser, mainPwd, helper.MainCategory)
+		helper.AddPassword(a.db, mainPwd, helper.MainName, helper.MainDomain, helper.MainUser, mainPwd, helper.MainCategory)
 		a.mainPwd = mainPwd
 		return false, errors.New("login success. Your first set your main passwd.")
 	}
@@ -103,32 +102,41 @@ func (a *App) GetPasswordCategories() ([]Category, error) {
 	return categories, nil
 }
 
-// GetPasswordsByCategory returns passwords for a specific category (empty implementation)
-func (a *App) GetPasswordsByCategory(category string) (string, error) {
-	// Empty implementation - return empty array
-	passwords := []Password{}
-	data, err := json.Marshal(passwords)
-	if err != nil {
-		return "", err
+// GetPasswordsByCategory returns passwords for a specific category
+func (a *App) GetPasswordsByCategory(category string) ([]Password, error) {
+	if helper.IsStringBlank(a.mainPwd) {
+		return []Password{}, errors.New("main password is not set, please login first")
 	}
-	fmt.Println("category = ", category)
 
+	data, err := helper.QueryPasswordsByCategory(a.db, a.mainPwd, category)
+	if err != nil {
+		return []Password{}, err
+	}
+
+	passwords := []Password{}
+	for _, password := range data {
+		passwords = append(passwords, Password{
+			ID:       fmt.Sprintf("%d", password.ID),
+			Name:     password.Name,
+			Domain:   password.Domain,
+			Username: password.Username,
+			Password: password.Password,
+			Category: password.Category,
+		})
+	}
+
+	fmt.Println("category = ", category)
 	fmt.Println("passwords = ", passwords)
-	return string(data), nil
+	return passwords, nil
 }
 
-// AddPassword adds a new password entry (empty implementation)
-func (a *App) AddPassword(passwordJSON string) (bool, error) {
-	var password Password
-	err := json.Unmarshal([]byte(passwordJSON), &password)
-	if err != nil {
-		return false, err
-	}
-	fmt.Println("password = ", password)
+// AddPassword adds a new password entry
+func (a *App) AddPassword(pwd Password) (bool, error) {
+	fmt.Println("password = ", pwd)
 	if helper.IsStringBlank(a.mainPwd) {
 		return false, errors.New("main password is not set, please login first")
 	}
-	id := helper.AddPassword(a.db, a.mainPwd, password.Domain, password.Username, password.Password, password.Category)
+	id := helper.AddPassword(a.db, a.mainPwd, pwd.Name, pwd.Domain, pwd.Username, pwd.Password, pwd.Category)
 	if id < 0 {
 		return false, errors.New("failed to add password")
 	}

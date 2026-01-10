@@ -15,6 +15,7 @@ const TableNameRealm = "realm"
 // Realm mapped from table <realm>
 type Realm struct {
 	ID        int64          `gorm:"column:id;primaryKey;autoIncrement:true" json:"id"`
+	Name      string         `gorm:"column:name;not null" json:"name"`
 	Domain    string         `gorm:"column:domain;not null" json:"domain"`
 	Category  string         `gorm:"column:category;not null" json:"category"`
 	Username  string         `gorm:"column:username;not null" json:"username"`

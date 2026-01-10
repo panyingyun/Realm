@@ -16,6 +16,7 @@ import (
 )
 
 const (
+	MainName     string = "main.name"
 	MainDomain   string = "main.domain"
 	MainUser     string = "main.user"
 	MainCategory string = "main.category"
@@ -55,7 +56,7 @@ func ListAll(realmdb *gorm.DB, mainPwd string) string {
 	return ret
 }
 
-func AddPassword(realmdb *gorm.DB, mainPwd string, domain string, user string, password string, category string) int64 {
+func AddPassword(realmdb *gorm.DB, mainPwd string, name string, domain string, user string, password string, category string) int64 {
 	if IsStringBlank(domain) || IsStringBlank(password) || IsStringBlank(mainPwd) {
 		return -1
 	}
@@ -67,6 +68,7 @@ func AddPassword(realmdb *gorm.DB, mainPwd string, domain string, user string, p
 	}
 	ctx := context.Background()
 	var realm model.Realm
+	realm.Name = name
 	realm.Domain = domain
 	realm.Username = user
 	realm.Pwdd = pwdd
@@ -109,4 +111,42 @@ func QuerySettings(realmdb *gorm.DB) (string, string) {
 func UpdateSettings(realmdb *gorm.DB, language string, theme string) error {
 	ctx := context.Background()
 	return dao.QSetting.UpdateSettings(ctx, realmdb, language, theme)
+}
+
+// PasswordResult represents a decrypted password entry
+type PasswordResult struct {
+	ID       int64
+	Name     string
+	Domain   string
+	Username string
+	Password string
+	Category string
+}
+
+func QueryPasswordsByCategory(realmdb *gorm.DB, mainPwd string, category string) ([]PasswordResult, error) {
+	ctx := context.Background()
+	realms, err := dao.QRealm.QueryPasswordsByCategory(ctx, realmdb, category, MainDomain)
+	if err != nil {
+		return nil, err
+	}
+
+	var results []PasswordResult
+	for _, realm := range realms {
+		// Decrypt password using main password
+		decryptedPwd, err := GetAESDecrypted(mainPwd, realm.Pwdd)
+		if err != nil {
+			fmt.Printf("QueryPasswordsByCategory decrypt error for domain %s: %v\n", realm.Domain, err)
+			decryptedPwd = "" // Continue with empty password if decryption fails
+		}
+
+		results = append(results, PasswordResult{
+			ID:       realm.ID,
+			Name:     realm.Name,
+			Domain:   realm.Domain,
+			Username: realm.Username,
+			Password: decryptedPwd,
+			Category: realm.Category,
+		})
+	}
+	return results, nil
 }
