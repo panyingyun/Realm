@@ -225,6 +225,11 @@ func Generate(length, numDigits, numSymbols int, noUpper, allowRepeat bool) (str
 
 // MustGenerate is the package shortcut for Generator.MustGenerate.
 func MustGenerate(length, numDigits, numSymbols int, noUpper, allowRepeat bool) string {
+	fmt.Println("MustGenerate length = ", length)
+	fmt.Println("MustGenerate numDigits = ", numDigits)
+	fmt.Println("MustGenerate numSymbols = ", numSymbols)
+	fmt.Println("MustGenerate noUpper = ", noUpper)
+	fmt.Println("MustGenerate allowRepeat = ", allowRepeat)
 	res, err := Generate(length, numDigits, numSymbols, noUpper, allowRepeat)
 	if err != nil {
 		panic(err)

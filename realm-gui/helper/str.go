@@ -2,6 +2,6 @@ package helper
 
 import "strings"
 
-func isStringBlank(s string) bool {
+func IsStringBlank(s string) bool {
 	return len(strings.TrimSpace(s)) == 0
 }

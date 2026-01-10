@@ -16,7 +16,7 @@ import (
 
 	"gorm.io/plugin/dbresolver"
 
-	"Realm/dao/model"
+	"realm/dao/model"
 )
 
 func newRealm(db *gorm.DB, opts ...gen.DOOption) realm {

@@ -132,7 +132,7 @@ func (rh *RealmHandler) Eval(line string) string {
 }
 
 func (rh *RealmHandler) login(mainPwd string) string {
-	if isStringBlank(mainPwd) {
+	if IsStringBlank(mainPwd) {
 		return "main passwd can not be blank."
 	}
 	pwddOri := QueryDomain(rh.db, MainDomain)
@@ -153,12 +153,12 @@ func (rh *RealmHandler) login(mainPwd string) string {
 }
 
 func (rh *RealmHandler) add(domain string, user string, pwd string) string {
-	if isStringBlank(rh.mainPwd) {
+	if IsStringBlank(rh.mainPwd) {
 		return "please login first."
 	}
 	pwdd := QueryDomain(rh.db, domain)
 	pwddNew, _ := GetAESEncrypted(rh.mainPwd, pwd)
-	if isStringBlank(pwdd) {
+	if IsStringBlank(pwdd) {
 		// create
 		AddDomain(rh.db, domain, user, pwddNew)
 		return fmt.Sprintf("add %s success.\n", domain)
@@ -171,7 +171,7 @@ func (rh *RealmHandler) add(domain string, user string, pwd string) string {
 
 func (rh *RealmHandler) query(domain string) string {
 	pwdd := QueryDomain(rh.db, domain)
-	if isStringBlank(pwdd) {
+	if IsStringBlank(pwdd) {
 		return fmt.Sprintf("Can not find %s's passwd.\n", domain)
 	}
 	pwd, _ := GetAESDecrypted(rh.mainPwd, pwdd)
@@ -179,7 +179,7 @@ func (rh *RealmHandler) query(domain string) string {
 }
 
 func (rh *RealmHandler) counter() string {
-	if isStringBlank(rh.mainPwd) {
+	if IsStringBlank(rh.mainPwd) {
 		return "please login first."
 	}
 	cnt := Counter(rh.db)
@@ -187,14 +187,14 @@ func (rh *RealmHandler) counter() string {
 }
 
 func (rh *RealmHandler) list() string {
-	if isStringBlank(rh.mainPwd) {
+	if IsStringBlank(rh.mainPwd) {
 		return "please login first."
 	}
 	return ListAll(rh.db, rh.mainPwd)
 }
 
 func (rh *RealmHandler) save() string {
-	if isStringBlank(rh.mainPwd) {
+	if IsStringBlank(rh.mainPwd) {
 		return "please login first."
 	}
 	pwdstr := ListAll(rh.db, rh.mainPwd)
@@ -210,7 +210,7 @@ func (rh *RealmHandler) quit() string {
 }
 
 func (rh *RealmHandler) genpwd() string {
-	if isStringBlank(rh.mainPwd) {
+	if IsStringBlank(rh.mainPwd) {
 		return "please login first."
 	}
 	return MustGenerate(13, 6, 1, false, false)

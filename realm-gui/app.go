@@ -3,13 +3,24 @@ package main
 import (
 	"context"
 	"encoding/json"
-	"math/rand"
-	"time"
+	"errors"
+	"fmt"
+
+	"gorm.io/gorm"
+
+	"realm/helper"
+)
+
+const (
+	DBName     string = "realm.db"
+	MainDomain string = "main.passwd"
 )
 
 // App struct
 type App struct {
-	ctx context.Context
+	ctx     context.Context
+	db      *gorm.DB
+	mainPwd string
 }
 
 // Category represents a password category
@@ -48,9 +59,25 @@ func (a *App) startup(ctx context.Context) {
 }
 
 // Login validates user credentials (empty implementation)
-func (a *App) Login(username string, password string) (bool, error) {
-	// Empty implementation - always return true for now
-	return true, nil
+func (a *App) Login(username string, mainPwd string) (bool, error) {
+	if helper.IsStringBlank(mainPwd) {
+		return false, errors.New("main passwd can not be blank.")
+	}
+	pwddOri := helper.QueryDomain(a.db, MainDomain)
+	pwdd, _ := helper.GetAESEncrypted(mainPwd, mainPwd)
+	fmt.Println("username = ", MainDomain)
+	fmt.Println("mainPwd = ", pwdd)
+	if len(pwddOri) == 0 {
+		helper.AddDomain(a.db, MainDomain, "", pwdd)
+		a.mainPwd = mainPwd
+		return false, errors.New("login success. Your first set your main passwd.")
+	}
+	if pwdd == pwddOri {
+		a.mainPwd = mainPwd
+		return true, nil
+	} else {
+		return false, errors.New("login fail. Your main passwd is not right.")
+	}
 }
 
 // GetPasswordCategories returns list of password categories (empty implementation)
@@ -118,38 +145,6 @@ func (a *App) UpdateSettings(settingsJSON string) (bool, error) {
 
 // GeneratePassword generates a strong random password (simulated implementation)
 func (a *App) GeneratePassword() (string, error) {
-	// Simulated password generation
-	// Generate a strong password with letters, numbers, and special characters
-	const (
-		lowercase = "abcdefghijklmnopqrstuvwxyz"
-		uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-		numbers   = "0123456789"
-		symbols   = "!@#$%^&*"
-	)
-
-	allChars := lowercase + uppercase + numbers + symbols
-	length := 16
-
-	// Seed random number generator
-	r := rand.New(rand.NewSource(time.Now().UnixNano()))
-
-	// Ensure at least one character from each category
-	password := make([]byte, length)
-	password[0] = lowercase[r.Intn(len(lowercase))]
-	password[1] = uppercase[r.Intn(len(uppercase))]
-	password[2] = numbers[r.Intn(len(numbers))]
-	password[3] = symbols[r.Intn(len(symbols))]
-
-	// Fill the rest randomly
-	for i := 4; i < length; i++ {
-		password[i] = allChars[r.Intn(len(allChars))]
-	}
-
-	// Shuffle the password to avoid predictable patterns
-	for i := len(password) - 1; i > 0; i-- {
-		j := r.Intn(i + 1)
-		password[i], password[j] = password[j], password[i]
-	}
-
+	password := helper.MustGenerate(13, 6, 1, false, false)
 	return string(password), nil
 }

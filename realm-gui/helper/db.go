@@ -4,10 +4,9 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"realm/dao"
+	"realm/dao/model"
 	"strings"
-
-	"Realm/dao"
-	"Realm/dao/model"
 
 	"github.com/glebarez/sqlite"
 
@@ -50,7 +49,7 @@ func ListAll(realmdb *gorm.DB, mainPwd string) string {
 }
 
 func AddDomain(realmdb *gorm.DB, domain string, user string, pwdd string) int64 {
-	if isStringBlank(domain) || isStringBlank(pwdd) {
+	if IsStringBlank(domain) || IsStringBlank(pwdd) {
 		return -1
 	}
 	ctx := context.Background()
