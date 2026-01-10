@@ -26,6 +26,6 @@ export function Login(arg1, arg2) {
   return window['go']['main']['App']['Login'](arg1, arg2);
 }
 
-export function UpdateSettings(arg1) {
-  return window['go']['main']['App']['UpdateSettings'](arg1);
+export function UpdateSettings(arg1, arg2) {
+  return window['go']['main']['App']['UpdateSettings'](arg1, arg2);
 }

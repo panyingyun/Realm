@@ -83,19 +83,17 @@ func UpdateDomainPasswd(realmdb *gorm.DB, domain string, user string, pwdd strin
 	return dao.QRealm.UpdateDomainPasswd(ctx, realmdb, &realm)
 }
 
-func QuerySettings(realmdb *gorm.DB) string {
+func QuerySettings(realmdb *gorm.DB) (string, string) {
 	ctx := context.Background()
 	settings, err := dao.QSetting.QuerySettings(ctx, realmdb)
 	if err != nil {
-		return ""
+		fmt.Println("QuerySettings error: ", err)
+		return "en", "light"
 	}
-	return settings.Language
+	return settings.Language, settings.Theme
 }
 
 func UpdateSettings(realmdb *gorm.DB, language string, theme string) error {
 	ctx := context.Background()
-	var setting model.Setting
-	setting.Language = language
-	setting.Theme = theme
-	return dao.QSetting.UpdateSettings(ctx, realmdb, &setting)
+	return dao.QSetting.UpdateSettings(ctx, realmdb, language, theme)
 }

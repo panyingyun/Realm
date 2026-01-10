@@ -85,14 +85,14 @@ func (sd *SettingDao) QuerySettings(ctx context.Context, db *gorm.DB) (*model.Se
 }
 
 // Update a settings to database
-func (sd *SettingDao) UpdateSettings(ctx context.Context, db *gorm.DB, setting *model.Setting) error {
+func (sd *SettingDao) UpdateSettings(ctx context.Context, db *gorm.DB, language string, theme string) error {
 	u := query.Use(db).Setting
 	// 更新设置
 	_, err := u.WithContext(ctx).
 		Where(u.ID.Eq(1)).
 		Updates(map[string]interface{}{
-			"language": setting.Language,
-			"theme":    setting.Theme,
+			"language": language,
+			"theme":    theme,
 		})
 	return err
 }

@@ -134,27 +134,19 @@ func (a *App) AddPassword(passwordJSON string) (bool, error) {
 	return true, nil
 }
 
-// GetSettings returns current application settings (empty implementation)
-func (a *App) GetSettings() (string, error) {
-	settings := Settings{
-		Language: "en",
-		Theme:    "light",
-	}
-	data, err := json.Marshal(settings)
-	if err != nil {
-		return "", err
-	}
-	return string(data), nil
+// GetSettings returns current application settings
+// Returns: language, theme, error
+func (a *App) GetSettings() (string, string, error) {
+	language, theme := helper.QuerySettings(a.db)
+	return language, theme, nil
 }
 
-// UpdateSettings updates application settings (empty implementation)
-func (a *App) UpdateSettings(settingsJSON string) (bool, error) {
-	var settings Settings
-	err := json.Unmarshal([]byte(settingsJSON), &settings)
+// UpdateSettings updates application settings
+func (a *App) UpdateSettings(language string, theme string) (bool, error) {
+	err := helper.UpdateSettings(a.db, language, theme)
 	if err != nil {
 		return false, err
 	}
-	// Empty implementation - always return true
 	return true, nil
 }
 

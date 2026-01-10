@@ -15,8 +15,8 @@ export const SettingsPage: React.FC = () => {
 
   const loadSettings = async () => {
     try {
-      const data = await GetSettings();
-      const s = JSON.parse(data) as SettingsType;
+      const [language, theme] = await GetSettings();
+      const s: SettingsType = { language, theme };
       setLocalSettings(s);
       setSettings(s);
     } catch (error) {
@@ -40,7 +40,7 @@ export const SettingsPage: React.FC = () => {
 
   const saveSettings = async (newSettings: SettingsType) => {
     try {
-      await UpdateSettings(JSON.stringify(newSettings));
+      await UpdateSettings(newSettings.language, newSettings.theme);
     } catch (error) {
       console.error('Failed to save settings:', error);
     }
