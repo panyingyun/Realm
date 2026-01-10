@@ -1,0 +1,175 @@
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Add New Password Modal - PassVault</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#6764f2",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#111022",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">
+        .glass-backdrop {
+            backdrop-filter: blur(12px);
+            background-color: rgba(14, 13, 27, 0.4);
+        }
+        .active-scale:active {
+            transform: scale(0.98);
+        }
+        .type-option input:checked + div {
+            @apply border-primary bg-primary/5 ring-1 ring-primary/20;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display">
+<div class="relative flex h-screen w-full flex-col overflow-hidden">
+<div class="layout-container flex h-full grow flex-col">
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-[#e7e7f3] dark:border-white/10 px-10 py-3 bg-white dark:bg-[#1a1930]">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-4 text-primary">
+<div class="size-6">
+<svg fill="currentColor" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M24 4H6V17.3333V30.6667H24V44H42V30.6667V17.3333H24V4Z" fill-rule="evenodd"></path>
+</svg>
+</div>
+<h2 class="text-[#0e0d1b] dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]">PassVault</h2>
+</div>
+<div class="flex items-center gap-9">
+<a class="text-[#0e0d1b] dark:text-white/80 text-sm font-medium leading-normal" href="#">Passwords</a>
+<a class="text-[#0e0d1b] dark:text-white/80 text-sm font-medium leading-normal" href="#">Vaults</a>
+<a class="text-primary text-sm font-bold leading-normal border-b-2 border-primary" href="#">Security</a>
+</div>
+</div>
+<div class="flex flex-1 justify-end gap-8">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-primary/20" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDMpOCDQRBlXxEsQ_AABAYs3xnsCIAsD31A34FjNpobEX3xL0kQr0BRMBNmw2XKcLQKckP6IwEcrgARfMKHCXAwpzgWbwOof7O1t3CzTTixJ2OnJkFUWzKtrs2f9BEF77uMFUIOzkE_chkDuYCuc_Al7C0nos4sJF8bO5MQyHJqwkz5r6VLRgLfAIFzOYbMZCdcM1WQytZwSQhb0EhGreBWg_ycnojiJHjVoOrZVmqO431vdIDWgZ00xNEvmxpWvdBsJCmfhnHkzAI");'></div>
+</div>
+</header>
+<main class="flex-1 p-10 bg-background-light dark:bg-background-dark">
+<div class="max-w-[1200px] mx-auto">
+<div class="flex justify-between items-center mb-8">
+<h1 class="text-3xl font-bold text-[#0e0d1b] dark:text-white">Your Vault</h1>
+<button class="bg-primary text-white px-6 py-2.5 rounded-lg font-semibold">Add Password</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 opacity-50">
+<div class="p-4 bg-white dark:bg-[#1a1930] rounded-xl border border-[#e7e7f3] dark:border-white/10 h-32"></div>
+<div class="p-4 bg-white dark:bg-[#1a1930] rounded-xl border border-[#e7e7f3] dark:border-white/10 h-32"></div>
+<div class="p-4 bg-white dark:bg-[#1a1930] rounded-xl border border-[#e7e7f3] dark:border-white/10 h-32"></div>
+</div>
+</div>
+</main>
+</div>
+</div>
+<div class="fixed inset-0 z-50 flex items-center justify-center glass-backdrop px-4">
+<div class="w-full max-w-[480px] bg-white dark:bg-[#1a1930] rounded-[24px] border border-[#E2E8F0] dark:border-white/10 shadow-2xl overflow-hidden max-h-[90vh] overflow-y-auto">
+<div class="px-8 pt-8 pb-4 flex justify-between items-start sticky top-0 bg-white dark:bg-[#1a1930] z-10">
+<div>
+<h2 class="text-[#0e0d1b] dark:text-white text-2xl font-bold leading-tight">Add New Password</h2>
+<p class="text-[#64748B] dark:text-white/60 text-sm mt-1">Enter details to secure a new account credential.</p>
+</div>
+<button class="text-[#64748B] hover:text-[#0e0d1b] dark:hover:text-white transition-colors">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<div class="px-8 py-4 space-y-5">
+<div class="flex flex-col gap-3">
+<label class="text-[#64748B] dark:text-white/60 text-[12px] font-medium uppercase tracking-wider">Password Type</label>
+<div class="grid grid-cols-4 gap-3">
+<label class="type-option cursor-pointer group">
+<input checked="" class="hidden" name="password_type" type="radio"/>
+<div class="flex flex-col items-center gap-2 p-3 rounded-xl border border-[#E2E8F0] dark:border-white/10 transition-all hover:border-primary/50">
+<span class="material-symbols-outlined text-[#DAA520] dark:text-[#EAB308]">account_balance</span>
+<span class="text-[12px] font-medium text-[#64748B] dark:text-white/70">Financial</span>
+</div>
+</label>
+<label class="type-option cursor-pointer group">
+<input class="hidden" name="password_type" type="radio"/>
+<div class="flex flex-col items-center gap-2 p-3 rounded-xl border border-[#E2E8F0] dark:border-white/10 transition-all hover:border-primary/50">
+<span class="material-symbols-outlined text-[#3B82F6]">share</span>
+<span class="text-[12px] font-medium text-[#64748B] dark:text-white/70">Social</span>
+</div>
+</label>
+<label class="type-option cursor-pointer group">
+<input class="hidden" name="password_type" type="radio"/>
+<div class="flex flex-col items-center gap-2 p-3 rounded-xl border border-[#E2E8F0] dark:border-white/10 transition-all hover:border-primary/50">
+<span class="material-symbols-outlined text-[#A78BFA]">description</span>
+<span class="text-[12px] font-medium text-[#64748B] dark:text-white/70">Private</span>
+</div>
+</label>
+<label class="type-option cursor-pointer group">
+<input class="hidden" name="password_type" type="radio"/>
+<div class="flex flex-col items-center gap-2 p-3 rounded-xl border border-[#E2E8F0] dark:border-white/10 transition-all hover:border-primary/50">
+<span class="material-symbols-outlined text-[#4F46E5]">terminal</span>
+<span class="text-[12px] font-medium text-[#64748B] dark:text-white/70">Work</span>
+</div>
+</label>
+</div>
+</div>
+<div class="flex flex-col gap-2">
+<label class="text-[#64748B] dark:text-white/60 text-[12px] font-medium uppercase tracking-wider">Website Name</label>
+<div class="relative group">
+<input class="w-full h-12 bg-background-light dark:bg-background-dark border border-[#E2E8F0] dark:border-white/10 rounded-xl px-4 text-[#0e0d1b] dark:text-white placeholder-[#94A3B8] focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none" placeholder="e.g. Netflix, GitHub" type="text"/>
+<span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-[#94A3B8]">badge</span>
+</div>
+</div>
+<div class="flex flex-col gap-2">
+<label class="text-[#64748B] dark:text-white/60 text-[12px] font-medium uppercase tracking-wider">Website Link <span class="normal-case opacity-70">(Optional)</span></label>
+<div class="relative group">
+<input class="w-full h-12 bg-background-light dark:bg-background-dark border border-[#E2E8F0] dark:border-white/10 rounded-xl px-4 text-[#0e0d1b] dark:text-white placeholder-[#94A3B8] focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none" placeholder="https://example.com" type="url"/>
+<span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-[#94A3B8]">public</span>
+</div>
+</div>
+<div class="flex flex-col gap-2">
+<label class="text-[#64748B] dark:text-white/60 text-[12px] font-medium uppercase tracking-wider">Username or Email</label>
+<div class="relative group">
+<input class="w-full h-12 bg-background-light dark:bg-background-dark border border-[#E2E8F0] dark:border-white/10 rounded-xl px-4 text-[#0e0d1b] dark:text-white placeholder-[#94A3B8] focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none" placeholder="yourname@email.com" type="email"/>
+<span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-[#94A3B8]">person</span>
+</div>
+</div>
+<div class="flex flex-col gap-2">
+<div class="flex justify-between items-center">
+<label class="text-[#64748B] dark:text-white/60 text-[12px] font-medium uppercase tracking-wider">Password</label>
+<button class="text-primary text-[11px] font-bold hover:underline tracking-tight">GENERATE STRONG</button>
+</div>
+<div class="relative group">
+<input class="w-full h-12 bg-background-light dark:bg-background-dark border border-[#E2E8F0] dark:border-white/10 rounded-xl px-4 text-[#0e0d1b] dark:text-white placeholder-[#94A3B8] focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none" placeholder="••••••••••••" type="password"/>
+<div class="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-2">
+<button class="text-[#94A3B8] hover:text-primary transition-colors">
+<span class="material-symbols-outlined">visibility</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<div class="px-8 pb-8 pt-4 flex flex-col gap-3">
+<button class="w-full h-14 bg-primary text-white font-bold rounded-xl active-scale shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">lock</span>
+                    Add Password
+                </button>
+<button class="w-full h-10 text-[#64748B] dark:text-white/60 font-medium hover:text-[#0e0d1b] dark:hover:text-white transition-colors">
+                    Cancel
+                </button>
+</div>
+</div>
+</div>
+
+</body></html>

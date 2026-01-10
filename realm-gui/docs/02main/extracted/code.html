@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Realm Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "primary": "#6366F1",
+                "background-slate": "#F8FAFC",
+                "financial": "#FBBF24",
+                "private": "#A855F7",
+                "tech": "#6366F1",
+                "social": "#EF4444"
+              },
+              fontFamily: {
+                "display": ["Inter", "sans-serif"]
+              },
+              borderRadius: {
+                "DEFAULT": "0.5rem",
+                "lg": "1rem",
+                "xl": "1.5rem",
+                "2xl": "1.5rem",
+                "3xl": "24px",
+                "full": "9999px"
+              },
+            },
+          },
+        }
+    </script>
+<style type="text/tailwindcss">
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .sidebar-item-active {
+            @apply bg-primary text-white shadow-lg shadow-primary/20;
+        }
+        .sidebar-item-inactive {
+            @apply text-slate-500 hover:bg-slate-50 transition-colors;
+        }
+    </style>
+</head>
+<body class="bg-background-slate font-display text-slate-900 min-h-screen">
+<div class="flex h-screen overflow-hidden">
+<aside class="w-64 border-r border-slate-200 bg-white flex flex-col justify-between p-6">
+<div class="flex flex-col gap-8">
+<div class="flex items-center gap-3 px-2">
+<div class="bg-primary p-2 rounded-lg text-white">
+<span class="material-symbols-outlined block">shield_lock</span>
+</div>
+<div>
+<h1 class="text-lg font-bold leading-none">Realm</h1>
+<p class="text-primary text-xs font-medium">Passwd Manager</p>
+</div>
+</div>
+<nav class="flex flex-col gap-1.5">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl sidebar-item-active" href="#">
+<span class="material-symbols-outlined text-[20px]">grid_view</span>
+<span class="text-sm font-semibold">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl sidebar-item-inactive" href="#">
+<span class="material-symbols-outlined text-[20px]">account_balance</span>
+<span class="text-sm font-medium">Financial</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl sidebar-item-inactive" href="#">
+<span class="material-symbols-outlined text-[20px]">share</span>
+<span class="text-sm font-medium">Social</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl sidebar-item-inactive" href="#">
+<span class="material-symbols-outlined text-[20px]">description</span>
+<span class="text-sm font-medium">Private</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl sidebar-item-inactive" href="#">
+<span class="material-symbols-outlined text-[20px]">work</span>
+<span class="text-sm font-medium">Work</span>
+</a>
+<div class="my-4 border-t border-slate-100"></div>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl sidebar-item-inactive" href="#">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+<span class="text-sm font-medium">Settings</span>
+</a>
+</nav>
+</div>
+<div class="bg-primary/5 p-4 rounded-xl border border-primary/10">
+<div class="flex items-center justify-between mb-2">
+<span class="text-xs font-semibold text-primary">Realm Health</span>
+<span class="text-xs font-bold text-primary">92%</span>
+</div>
+<div class="w-full bg-slate-200 rounded-full h-1.5">
+<div class="bg-primary h-1.5 rounded-full" style="width: 92%"></div>
+</div>
+</div>
+</aside>
+<main class="flex-1 flex flex-col overflow-hidden">
+<header class="flex items-center justify-between px-8 py-4 border-b border-slate-200 bg-white/80 backdrop-blur-md sticky top-0 z-10">
+<div class="flex items-center gap-6 flex-1">
+<h2 class="text-xl font-bold tracking-tight text-slate-800">Realm Overview</h2>
+<div class="max-w-md w-full">
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-3 text-slate-400 text-[20px]">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all text-sm" placeholder="Search Realm passwords, notes or accounts..." type="text"/>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<button class="bg-primary hover:bg-indigo-600 text-white px-5 py-2 rounded-xl font-bold text-sm flex items-center gap-2 transition-all shadow-lg shadow-indigo-200">
+<span class="material-symbols-outlined text-[20px]">add</span>
+<span>Add New</span>
+</button>
+<button class="p-2 rounded-xl bg-white border border-slate-200 hover:bg-slate-50 transition-colors text-slate-600">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+</button>
+<button class="p-2 rounded-xl bg-white border border-slate-200 hover:bg-slate-50 transition-colors text-slate-600">
+<span class="material-symbols-outlined text-[20px]">account_circle</span>
+</button>
+</div>
+</header>
+<div class="flex-1 overflow-y-auto p-8 space-y-6">
+<div class="flex border-b border-slate-200 gap-8">
+<a class="border-b-2 border-primary text-primary pb-3 font-semibold text-sm" href="#">Financial</a>
+<a class="text-slate-500 pb-3 font-medium text-sm hover:text-primary transition-colors border-b-2 border-transparent" href="#">Social</a>
+<a class="text-slate-500 pb-3 font-medium text-sm hover:text-primary transition-colors border-b-2 border-transparent" href="#">Private</a>
+<a class="text-slate-500 pb-3 font-medium text-sm hover:text-primary transition-colors border-b-2 border-transparent" href="#">Work</a>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+<div class="group bg-white rounded-3xl p-6 border border-slate-100 hover:border-financial/30 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between min-h-[240px]">
+<div class="flex items-start justify-between mb-4">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-2xl bg-financial flex items-center justify-center text-white shadow-md">
+<span class="material-symbols-outlined text-[28px]">account_balance</span>
+</div>
+<div>
+<h3 class="font-bold text-lg group-hover:text-financial transition-colors">Global Bank</h3>
+<p class="text-xs text-slate-500">bank.online.com</p>
+</div>
+</div>
+<div class="flex flex-col items-end gap-1.5">
+<span class="text-[9px] font-bold text-slate-400 uppercase tracking-tighter">Priority</span>
+<span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-red-100 text-red-600">High</span>
+</div>
+</div>
+<div class="space-y-3 mb-6">
+<div class="flex flex-col">
+<span class="text-[10px] uppercase tracking-wider font-bold text-slate-400 mb-1">Username</span>
+<div class="flex items-center justify-between group/field">
+<span class="text-sm font-medium">user_finance_88</span>
+<button class="opacity-0 group-hover/field:opacity-100 p-1 hover:bg-financial/10 rounded text-financial transition-all">
+<span class="material-symbols-outlined text-sm">content_copy</span>
+</button>
+</div>
+</div>
+<div class="flex flex-col">
+<span class="text-[10px] uppercase tracking-wider font-bold text-slate-400 mb-1">Password</span>
+<div class="flex items-center justify-between group/field">
+<span class="text-sm font-mono tracking-widest text-slate-500">• • • • • • • • • •</span>
+<div class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-all">
+<button class="p-1 hover:bg-financial/10 rounded text-financial transition-all">
+<span class="material-symbols-outlined text-sm">visibility</span>
+</button>
+<button class="p-1 hover:bg-financial/10 rounded text-financial transition-all">
+<span class="material-symbols-outlined text-sm">content_copy</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="flex-1 bg-slate-50 hover:bg-financial/10 hover:text-financial text-sm font-bold py-2 rounded-xl transition-colors">View Account</button>
+<button class="px-3 bg-slate-50 hover:bg-financial/10 hover:text-financial rounded-xl transition-colors">
+<span class="material-symbols-outlined text-[18px]">open_in_new</span>
+</button>
+</div>
+</div>
+<div class="group bg-white rounded-3xl p-6 border border-slate-100 hover:border-social/30 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between min-h-[240px]">
+<div class="flex items-start justify-between mb-4">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-2xl bg-social flex items-center justify-center text-white shadow-md">
+<span class="material-symbols-outlined text-[28px]">play_circle</span>
+</div>
+<div>
+<h3 class="font-bold text-lg group-hover:text-social transition-colors">MediaStream</h3>
+<p class="text-xs text-slate-500">mediastream.io</p>
+</div>
+</div>
+<div class="flex flex-col items-end gap-1.5">
+<span class="text-[9px] font-bold text-slate-400 uppercase tracking-tighter">Priority</span>
+<span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-amber-100 text-amber-600">Medium</span>
+</div>
+</div>
+<div class="space-y-3 mb-6">
+<div class="flex flex-col">
+<span class="text-[10px] uppercase tracking-wider font-bold text-slate-400 mb-1">Email</span>
+<div class="flex items-center justify-between group/field">
+<span class="text-sm font-medium">social_user@media.com</span>
+<button class="opacity-0 group-hover/field:opacity-100 p-1 hover:bg-social/10 rounded text-social transition-all">
+<span class="material-symbols-outlined text-sm">content_copy</span>
+</button>
+</div>
+</div>
+<div class="flex flex-col">
+<span class="text-[10px] uppercase tracking-wider font-bold text-slate-400 mb-1">Password</span>
+<div class="flex items-center justify-between group/field">
+<span class="text-sm font-mono tracking-widest text-slate-500">• • • • • • • • • •</span>
+<div class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-all">
+<button class="p-1 hover:bg-social/10 rounded text-social transition-all">
+<span class="material-symbols-outlined text-sm">visibility</span>
+</button>
+<button class="p-1 hover:bg-social/10 rounded text-social transition-all">
+<span class="material-symbols-outlined text-sm">content_copy</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="flex-1 bg-slate-50 hover:bg-social/10 hover:text-social text-sm font-bold py-2 rounded-xl transition-colors">View Profile</button>
+<button class="px-3 bg-slate-50 hover:bg-social/10 hover:text-social rounded-xl transition-colors">
+<span class="material-symbols-outlined text-[18px]">open_in_new</span>
+</button>
+</div>
+</div>
+<div class="group bg-white rounded-3xl p-6 border border-slate-100 hover:border-private/30 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between min-h-[240px]">
+<div class="flex items-start justify-between mb-4">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-2xl bg-private flex items-center justify-center text-white shadow-md">
+<span class="material-symbols-outlined text-[28px]">description</span>
+</div>
+<div>
+<h3 class="font-bold text-lg group-hover:text-private transition-colors">Private Vault</h3>
+<p class="text-xs text-slate-500">Last edited: 2 days ago</p>
+</div>
+</div>
+<div class="flex flex-col items-end gap-1.5">
+<span class="text-[9px] font-bold text-slate-400 uppercase tracking-tighter">Priority</span>
+<span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-amber-100 text-amber-600">Medium</span>
+</div>
+</div>
+<div class="space-y-3 mb-6">
+<div class="flex flex-col">
+<span class="text-[10px] uppercase tracking-wider font-bold text-slate-400 mb-1">Content Preview</span>
+<div class="flex items-center justify-between group/field">
+<span class="text-sm font-medium line-clamp-1 italic">Confidential notes and recovery seeds...</span>
+</div>
+</div>
+<div class="flex flex-col">
+<span class="text-[10px] uppercase tracking-wider font-bold text-slate-400 mb-1">Master Key</span>
+<div class="flex items-center justify-between group/field">
+<span class="text-sm font-mono tracking-widest text-slate-500">• • • • • • • • • •</span>
+<div class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-all">
+<button class="p-1 hover:bg-private/10 rounded text-private transition-all">
+<span class="material-symbols-outlined text-sm">visibility</span>
+</button>
+<button class="p-1 hover:bg-private/10 rounded text-private transition-all">
+<span class="material-symbols-outlined text-sm">content_copy</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="flex-1 bg-slate-50 hover:bg-private/10 hover:text-private text-sm font-bold py-2 rounded-xl transition-colors">Read Note</button>
+<button class="px-3 bg-slate-50 hover:bg-private/10 hover:text-private rounded-xl transition-colors">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+</div>
+</div>
+<div class="group bg-white rounded-3xl p-6 border border-slate-100 hover:border-tech/30 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between min-h-[240px]">
+<div class="flex items-start justify-between mb-4">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-2xl bg-tech flex items-center justify-center text-white shadow-md">
+<span class="material-symbols-outlined text-[28px]">terminal</span>
+</div>
+<div>
+<h3 class="font-bold text-lg group-hover:text-tech transition-colors">DevHub Repo</h3>
+<p class="text-xs text-slate-500">code.internal.dev</p>
+</div>
+</div>
+<div class="flex flex-col items-end gap-1.5">
+<span class="text-[9px] font-bold text-slate-400 uppercase tracking-tighter">Priority</span>
+<span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-blue-100 text-blue-600">Low</span>
+</div>
+</div>
+<div class="space-y-3 mb-6">
+<div class="flex flex-col">
+<span class="text-[10px] uppercase tracking-wider font-bold text-slate-400 mb-1">Developer ID</span>
+<div class="flex items-center justify-between group/field">
+<span class="text-sm font-medium">alpha_coder_v2</span>
+<button class="opacity-0 group-hover/field:opacity-100 p-1 hover:bg-tech/10 rounded text-tech transition-all">
+<span class="material-symbols-outlined text-sm">content_copy</span>
+</button>
+</div>
+</div>
+<div class="flex flex-col">
+<span class="text-[10px] uppercase tracking-wider font-bold text-slate-400 mb-1">Access Token</span>
+<div class="flex items-center justify-between group/field">
+<span class="text-sm font-mono tracking-widest text-slate-500">• • • • • • • • • •</span>
+<div class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-all">
+<button class="p-1 hover:bg-tech/10 rounded text-tech transition-all">
+<span class="material-symbols-outlined text-sm">visibility</span>
+</button>
+<button class="p-1 hover:bg-tech/10 rounded text-tech transition-all">
+<span class="material-symbols-outlined text-sm">content_copy</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="flex-1 bg-slate-50 hover:bg-tech/10 hover:text-tech text-sm font-bold py-2 rounded-xl transition-colors">Open Console</button>
+<button class="px-3 bg-slate-50 hover:bg-tech/10 hover:text-tech rounded-xl transition-colors">
+<span class="material-symbols-outlined text-[18px]">terminal</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+
+</body></html>
