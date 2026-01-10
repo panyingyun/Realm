@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Password } from '../types';
-import { AddPassword } from '../../wailsjs/go/main/App';
+import { AddPassword, GeneratePassword } from '../../wailsjs/go/main/App';
 
 interface AddPasswordModalProps {
   onClose: () => void;
@@ -15,15 +15,27 @@ export const AddPasswordModal: React.FC<AddPasswordModalProps> = ({ onClose }) =
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false);
   const navigate = useNavigate();
 
-  const generatePassword = () => {
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*';
-    let generated = '';
-    for (let i = 0; i < 16; i++) {
-      generated += chars.charAt(Math.floor(Math.random() * chars.length));
+  const generatePassword = async () => {
+    setIsGenerating(true);
+    try {
+      // Call backend GeneratePassword interface
+      const generated = await GeneratePassword();
+      setPassword(generated);
+    } catch (error) {
+      console.error('Failed to generate password:', error);
+      // Fallback to local generation if backend fails
+      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*';
+      let generated = '';
+      for (let i = 0; i < 16; i++) {
+        generated += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      setPassword(generated);
+    } finally {
+      setIsGenerating(false);
     }
-    setPassword(generated);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -159,9 +171,10 @@ export const AddPasswordModal: React.FC<AddPasswordModalProps> = ({ onClose }) =
                 <button
                   type="button"
                   onClick={generatePassword}
-                  className="text-primary text-[11px] font-bold hover:underline tracking-tight"
+                  disabled={isGenerating}
+                  className="text-primary text-[11px] font-bold hover:underline tracking-tight disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  GENERATE STRONG
+                  {isGenerating ? 'Generating...' : 'GENERATE STRONG'}
                 </button>
               </div>
               <div className="relative group">
