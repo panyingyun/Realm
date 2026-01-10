@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect, useRef } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useApp } from '../contexts/AppContext';
 import { Category, Password } from '../types';
 import { GetPasswordCategories, GetPasswordsByCategory } from '../../wailsjs/go/main/App';
@@ -12,6 +12,8 @@ export const MainPage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [visiblePasswords, setVisiblePasswords] = useState<Set<string>>(new Set());
   const navigate = useNavigate();
+  const location = useLocation();
+  const prevLocationRef = useRef<string>('');
   const { setAuthenticated } = useApp();
   const { t } = useI18n();
 
@@ -22,6 +24,19 @@ export const MainPage: React.FC = () => {
   useEffect(() => {
     loadPasswords(activeCategory);
   }, [activeCategory]);
+
+  // Refresh passwords when returning from add password page
+  useEffect(() => {
+    // Check if we're returning from /add to /main
+    const prevPath = prevLocationRef.current;
+    prevLocationRef.current = location.pathname;
+    
+    if (location.pathname === '/main' && prevPath === '/add') {
+      // Refresh passwords for the current active category
+      loadPasswords(activeCategory);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.pathname]);
 
   const loadCategories = async () => {
     try {

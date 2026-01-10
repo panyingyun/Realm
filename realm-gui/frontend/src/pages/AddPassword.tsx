@@ -78,10 +78,7 @@ export const AddPasswordModal: React.FC<AddPasswordModalProps> = ({ onClose }) =
 
       const success = await AddPassword(newPassword);
       if (success) {
-        onClose();
         navigate('/main');
-        // Reload the page to refresh the password list
-        window.location.reload();
       }
     } catch (error) {
       console.error('Failed to add password:', error);
