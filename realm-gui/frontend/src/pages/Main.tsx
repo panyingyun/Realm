@@ -208,7 +208,6 @@ export const MainPage: React.FC = () => {
       <main className="flex-1 flex flex-col overflow-hidden">
         <header className="flex items-center justify-between px-8 py-4 border-b border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md sticky top-0 z-10">
           <div className="flex items-center gap-6 flex-1">
-            <h2 className="text-xl font-bold tracking-tight text-slate-800 dark:text-white">Realm Overview</h2>
             <div className="max-w-md w-full">
               <div className="relative flex items-center">
                 <span className="material-symbols-outlined absolute left-3 text-slate-400 text-[20px]">search</span>
