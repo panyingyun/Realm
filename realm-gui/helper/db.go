@@ -4,9 +4,10 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"strings"
+
 	"realm/dao"
 	"realm/dao/model"
-	"strings"
 
 	"github.com/glebarez/sqlite"
 
@@ -71,7 +72,7 @@ func QueryDomain(realmdb *gorm.DB, domain string) string {
 }
 
 func UpdateDomainPasswd(realmdb *gorm.DB, domain string, user string, pwdd string) error {
-	if isStringBlank(domain) || isStringBlank(pwdd) {
+	if IsStringBlank(domain) || IsStringBlank(pwdd) {
 		return errors.New("domain or pwdd cannot be blank")
 	}
 	ctx := context.Background()

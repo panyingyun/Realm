@@ -6,6 +6,10 @@ export function AddPassword(arg1) {
   return window['go']['main']['App']['AddPassword'](arg1);
 }
 
+export function GeneratePassword() {
+  return window['go']['main']['App']['GeneratePassword']();
+}
+
 export function GetPasswordCategories() {
   return window['go']['main']['App']['GetPasswordCategories']();
 }

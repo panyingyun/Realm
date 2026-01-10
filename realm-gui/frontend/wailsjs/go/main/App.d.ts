@@ -3,6 +3,8 @@
 
 export function AddPassword(arg1:string):Promise<boolean>;
 
+export function GeneratePassword():Promise<string>;
+
 export function GetPasswordCategories():Promise<string>;
 
 export function GetPasswordsByCategory(arg1:string):Promise<string>;
