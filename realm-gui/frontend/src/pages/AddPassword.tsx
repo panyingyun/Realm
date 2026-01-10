@@ -17,6 +17,7 @@ export const AddPasswordModal: React.FC<AddPasswordModalProps> = ({ onClose }) =
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
   const [usernameError, setUsernameError] = useState('');
+  const [websiteLinkError, setWebsiteLinkError] = useState('');
   const navigate = useNavigate();
 
   const generatePassword = async () => {
@@ -44,10 +45,17 @@ export const AddPasswordModal: React.FC<AddPasswordModalProps> = ({ onClose }) =
 
     // Clear previous errors
     setUsernameError('');
+    setWebsiteLinkError('');
 
     // Validate username field
     if (!username.trim()) {
       setUsernameError('你输入的用户名为空');
+      return;
+    }
+
+    // Validate website link field
+    if (!websiteLink.trim()) {
+      setWebsiteLinkError('你输入的webside为空');
       return;
     }
 
@@ -151,14 +159,27 @@ export const AddPasswordModal: React.FC<AddPasswordModalProps> = ({ onClose }) =
               </label>
               <div className="relative group">
                 <input
-                  type="url"
+                  type="text"
                   value={websiteLink}
-                  onChange={(e) => setWebsiteLink(e.target.value)}
-                  className="w-full h-12 bg-background-light dark:bg-slate-800 border border-[#E2E8F0] dark:border-slate-700 rounded-xl px-4 text-[#0e0d1b] dark:text-white placeholder-[#94A3B8] focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none"
+                  onChange={(e) => {
+                    setWebsiteLink(e.target.value);
+                    // Clear error when user starts typing
+                    if (websiteLinkError) {
+                      setWebsiteLinkError('');
+                    }
+                  }}
+                  className={`w-full h-12 bg-background-light dark:bg-slate-800 border rounded-xl px-4 text-[#0e0d1b] dark:text-white placeholder-[#94A3B8] focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none ${
+                    websiteLinkError
+                      ? 'border-red-500 dark:border-red-500 focus:border-red-500 focus:ring-red-500/20'
+                      : 'border-[#E2E8F0] dark:border-slate-700'
+                  }`}
                   placeholder="https://example.com"
                 />
                 <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-[#94A3B8]">public</span>
               </div>
+              {websiteLinkError && (
+                <p className="text-red-500 text-sm mt-1 px-1">{websiteLinkError}</p>
+              )}
             </div>
             <div className="flex flex-col gap-2">
               <label className="text-[#64748B] dark:text-slate-400 text-[12px] font-medium uppercase tracking-wider">Username or Email</label>
