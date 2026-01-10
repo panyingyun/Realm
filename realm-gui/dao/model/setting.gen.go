@@ -10,21 +10,19 @@ import (
 	"gorm.io/gorm"
 )
 
-const TableNameRealm = "realm"
+const TableNameSetting = "setting"
 
-// Realm mapped from table <realm>
-type Realm struct {
+// Setting mapped from table <setting>
+type Setting struct {
 	ID        int64          `gorm:"column:id;primaryKey;autoIncrement:true" json:"id"`
-	Domain    string         `gorm:"column:domain;not null" json:"domain"`
-	Category  string         `gorm:"column:category;not null" json:"category"`
-	Username  string         `gorm:"column:username;not null" json:"username"`
-	Pwdd      string         `gorm:"column:pwdd;not null" json:"pwdd"`
+	Language  string         `gorm:"column:language;not null" json:"language"`
+	Theme     string         `gorm:"column:theme;not null" json:"theme"`
 	CreatedAt time.Time      `gorm:"column:created_at" json:"created_at"`
 	UpdatedAt time.Time      `gorm:"column:updated_at" json:"updated_at"`
 	DeletedAt gorm.DeletedAt `gorm:"column:deleted_at" json:"deleted_at"`
 }
 
-// TableName Realm's table name
-func (*Realm) TableName() string {
-	return TableNameRealm
+// TableName Setting's table name
+func (*Setting) TableName() string {
+	return TableNameSetting
 }

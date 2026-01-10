@@ -15,14 +15,19 @@ all: env  clean lint build
 env:
 	@echo "=========install gofmt ==========="
 	GOPROXY=https://goproxy.cn/,direct go install mvdan.cc/gofumpt@latest
+	@echo "=========install gentool ==========="
+	GOPROXY=https://goproxy.cn/,direct go install -v gorm.io/gen/tools/gentool@latest
 	@echo "=========install goreleaser ==========="
 	GOPROXY=https://goproxy.cn/,direct go install github.com/goreleaser/goreleaser/v2@latest
 	@echo "=========install wails ==========="
-	//for ubuntu24.04
-	#sudo apt install libwebkit2gtk-4.1-dev  libgtk-3-dev -y
-	//for ubuntu22.04
-	#sudo apt install libwebkit2gtk-4.0-dev  libgtk-3-dev -y
+	# //for ubuntu24.04
+	# sudo apt install libwebkit2gtk-4.1-dev  libgtk-3-dev -y
+	# //for ubuntu22.04
+	# sudo apt install libwebkit2gtk-4.0-dev  libgtk-3-dev -y
 	GOPROXY=https://goproxy.cn/,direct go install github.com/wailsapp/wails/v2/cmd/wails@latest
+
+gensql:
+	gentool -dsn "root:Cjj123@tcp(192.168.1.120:6306)/realmdb?charset=utf8mb4&parseTime=True&loc=Local" -outPath "/home/yypan/panyingyun/Realm/realm-gui/dao/query"
 
 dev:
 	go mod tidy

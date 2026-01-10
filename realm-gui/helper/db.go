@@ -43,7 +43,7 @@ func ListAll(realmdb *gorm.DB, mainPwd string) string {
 	ret := ""
 	for _, item := range items {
 		pwd, _ := GetAESDecrypted(mainPwd, item.Pwdd)
-		results = append(results, fmt.Sprintf("%s %s %s", item.Domain, item.User, pwd))
+		results = append(results, fmt.Sprintf("%s %s %s", item.Domain, item.Username, pwd))
 	}
 	ret = strings.Join(results, "\n")
 	return ret
@@ -56,7 +56,7 @@ func AddDomain(realmdb *gorm.DB, domain string, user string, pwdd string) int64 
 	ctx := context.Background()
 	var realm model.Realm
 	realm.Domain = domain
-	realm.User = user
+	realm.Username = user
 	realm.Pwdd = pwdd
 	id, _ := dao.QRealm.AddDomain(ctx, realmdb, &realm)
 	return id
@@ -78,7 +78,24 @@ func UpdateDomainPasswd(realmdb *gorm.DB, domain string, user string, pwdd strin
 	ctx := context.Background()
 	var realm model.Realm
 	realm.Domain = domain
-	realm.User = user
+	realm.Username = user
 	realm.Pwdd = pwdd
 	return dao.QRealm.UpdateDomainPasswd(ctx, realmdb, &realm)
+}
+
+func QuerySettings(realmdb *gorm.DB) string {
+	ctx := context.Background()
+	settings, err := dao.QSetting.QuerySettings(ctx, realmdb)
+	if err != nil {
+		return ""
+	}
+	return settings.Language
+}
+
+func UpdateSettings(realmdb *gorm.DB, language string, theme string) error {
+	ctx := context.Background()
+	var setting model.Setting
+	setting.Language = language
+	setting.Theme = theme
+	return dao.QSetting.UpdateSettings(ctx, realmdb, &setting)
 }

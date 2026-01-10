@@ -6,20 +6,41 @@ CREATE TABLE `realm` (
    `id` bigint(20) NOT NULL PRIMARY KEY  AUTO_INCREMENT,
    `domain` varchar(255) NOT NULL,
    `category` varchar(255) NOT NULL,
-   `user` varchar(255) NOT NULL,
+   `username` varchar(255) NOT NULL,
    `pwdd` varchar(255) NOT NULL,
    `created_at` datetime DEFAULT NULL,
    `updated_at` datetime DEFAULT NULL,
    `deleted_at` datetime DEFAULT NULL
 );
 
+// setting
+CREATE TABLE `setting` (
+   `id` bigint(20) NOT NULL PRIMARY KEY  AUTO_INCREMENT,
+   `language` varchar(255) NOT NULL,
+   `theme` varchar(255) NOT NULL,
+   `created_at` datetime DEFAULT NULL,
+   `updated_at` datetime DEFAULT NULL,
+   `deleted_at` datetime DEFAULT NULL
+);
+
+
 // sqlite3
 CREATE TABLE `realm` (
    `id` INTEGER  PRIMARY KEY NOT NULL,
    `domain` varchar(255) NOT NULL,
    `category` varchar(255) NOT NULL,
-   `user` varchar(255) NOT NULL,
+   `username` varchar(255) NOT NULL,
    `pwdd` varchar(255) NOT NULL,
+   `created_at` datetime DEFAULT NULL,
+   `updated_at` datetime DEFAULT NULL,
+   `deleted_at` datetime DEFAULT NULL
+);
+
+// setting
+CREATE TABLE `setting` (
+   `id` INTEGER  PRIMARY KEY NOT NULL,
+   `language` varchar(255) NOT NULL,
+   `theme` varchar(255) NOT NULL,
    `created_at` datetime DEFAULT NULL,
    `updated_at` datetime DEFAULT NULL,
    `deleted_at` datetime DEFAULT NULL

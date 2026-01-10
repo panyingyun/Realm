@@ -29,7 +29,8 @@ func newRealm(db *gorm.DB, opts ...gen.DOOption) realm {
 	_realm.ALL = field.NewAsterisk(tableName)
 	_realm.ID = field.NewInt64(tableName, "id")
 	_realm.Domain = field.NewString(tableName, "domain")
-	_realm.User = field.NewString(tableName, "user")
+	_realm.Category = field.NewString(tableName, "category")
+	_realm.Username = field.NewString(tableName, "username")
 	_realm.Pwdd = field.NewString(tableName, "pwdd")
 	_realm.CreatedAt = field.NewTime(tableName, "created_at")
 	_realm.UpdatedAt = field.NewTime(tableName, "updated_at")
@@ -46,7 +47,8 @@ type realm struct {
 	ALL       field.Asterisk
 	ID        field.Int64
 	Domain    field.String
-	User      field.String
+	Category  field.String
+	Username  field.String
 	Pwdd      field.String
 	CreatedAt field.Time
 	UpdatedAt field.Time
@@ -69,7 +71,8 @@ func (r *realm) updateTableName(table string) *realm {
 	r.ALL = field.NewAsterisk(table)
 	r.ID = field.NewInt64(table, "id")
 	r.Domain = field.NewString(table, "domain")
-	r.User = field.NewString(table, "user")
+	r.Category = field.NewString(table, "category")
+	r.Username = field.NewString(table, "username")
 	r.Pwdd = field.NewString(table, "pwdd")
 	r.CreatedAt = field.NewTime(table, "created_at")
 	r.UpdatedAt = field.NewTime(table, "updated_at")
@@ -86,6 +89,8 @@ func (r realm) TableName() string { return r.realmDo.TableName() }
 
 func (r realm) Alias() string { return r.realmDo.Alias() }
 
+func (r realm) Columns(cols ...field.Expr) gen.Columns { return r.realmDo.Columns(cols...) }
+
 func (r *realm) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 	_f, ok := r.fieldMap[fieldName]
 	if !ok || _f == nil {
@@ -96,10 +101,11 @@ func (r *realm) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (r *realm) fillFieldMap() {
-	r.fieldMap = make(map[string]field.Expr, 7)
+	r.fieldMap = make(map[string]field.Expr, 8)
 	r.fieldMap["id"] = r.ID
 	r.fieldMap["domain"] = r.Domain
-	r.fieldMap["user"] = r.User
+	r.fieldMap["category"] = r.Category
+	r.fieldMap["username"] = r.Username
 	r.fieldMap["pwdd"] = r.Pwdd
 	r.fieldMap["created_at"] = r.CreatedAt
 	r.fieldMap["updated_at"] = r.UpdatedAt
@@ -160,10 +166,6 @@ func (r realmDo) Select(conds ...field.Expr) *realmDo {
 
 func (r realmDo) Where(conds ...gen.Condition) *realmDo {
 	return r.withDO(r.DO.Where(conds...))
-}
-
-func (r realmDo) Exists(subquery interface{ UnderlyingDB() *gorm.DB }) *realmDo {
-	return r.Where(field.CompareSubQuery(field.ExistsOp, nil, subquery.UnderlyingDB()))
 }
 
 func (r realmDo) Order(conds ...field.Expr) *realmDo {

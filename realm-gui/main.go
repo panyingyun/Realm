@@ -2,6 +2,7 @@ package main
 
 import (
 	"embed"
+	"os"
 
 	"github.com/wailsapp/wails/v2"
 	"github.com/wailsapp/wails/v2/pkg/options"
@@ -11,7 +12,15 @@ import (
 //go:embed all:frontend/dist
 var assets embed.FS
 
+//go:embed tpl/realm.db
+var sqlite3Tpl string
+
 func main() {
+	// create realm.db file
+	if _, err := os.Stat("realm.db"); os.IsNotExist(err) {
+		os.WriteFile("realm.db", []byte(sqlite3Tpl), 0o644)
+	}
+
 	// Create an instance of the app structure
 	app := NewApp()
 
