@@ -54,7 +54,6 @@ export const AddPasswordModal: React.FC<AddPasswordModalProps> = ({ onClose }) =
         username: username,
         password: password,
         category: passwordType,
-        priority: 'Medium',
       };
 
       const success = await AddPassword(JSON.stringify(newPassword));
@@ -198,7 +197,7 @@ export const AddPasswordModal: React.FC<AddPasswordModalProps> = ({ onClose }) =
               </div>
             </div>
           </div>
-          <div className="px-8 pb-8 pt-4 flex flex-col gap-3">
+          <div className="px-8 pb-8 pt-4">
             <button
               type="submit"
               disabled={isSubmitting || !websiteName.trim() || !username.trim() || !password.trim()}
@@ -206,13 +205,6 @@ export const AddPasswordModal: React.FC<AddPasswordModalProps> = ({ onClose }) =
             >
               <span className="material-symbols-outlined">lock</span>
               {isSubmitting ? 'Adding...' : 'Add Password'}
-            </button>
-            <button
-              type="button"
-              onClick={onClose}
-              className="w-full h-10 text-[#64748B] dark:text-slate-400 font-medium hover:text-[#0e0d1b] dark:hover:text-white transition-colors"
-            >
-              Cancel
             </button>
           </div>
         </form>

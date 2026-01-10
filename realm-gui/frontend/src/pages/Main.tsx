@@ -7,7 +7,7 @@ import { GetPasswordCategories, GetPasswordsByCategory } from '../../wailsjs/go/
 export const MainPage: React.FC = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [passwords, setPasswords] = useState<Password[]>([]);
-  const [activeCategory, setActiveCategory] = useState('Dashboard');
+  const [activeCategory, setActiveCategory] = useState('Financial');
   const [searchQuery, setSearchQuery] = useState('');
   const [visiblePasswords, setVisiblePasswords] = useState<Set<string>>(new Set());
   const navigate = useNavigate();
@@ -25,12 +25,13 @@ export const MainPage: React.FC = () => {
     try {
       const data = await GetPasswordCategories();
       const cats = JSON.parse(data) as Category[];
-      setCategories(cats);
+      // Filter out Dashboard category
+      const filteredCats = cats.filter(cat => cat.name !== 'Dashboard');
+      setCategories(filteredCats);
     } catch (error) {
       console.error('Failed to load categories:', error);
       // Mock data for development
       setCategories([
-        { name: 'Dashboard', icon: 'grid_view', color: 'primary' },
         { name: 'Financial', icon: 'account_balance', color: 'financial' },
         { name: 'Social', icon: 'share', color: 'social' },
         { name: 'Private', icon: 'description', color: 'private' },
@@ -57,7 +58,6 @@ export const MainPage: React.FC = () => {
             username: 'user_finance_88',
             password: '••••••••••',
             category: 'Financial',
-            priority: 'High',
           },
         ]);
       } else if (category === 'Social') {
@@ -69,7 +69,6 @@ export const MainPage: React.FC = () => {
             username: 'social_user@media.com',
             password: '••••••••••',
             category: 'Social',
-            priority: 'Medium',
           },
         ]);
       } else if (category === 'Private') {
@@ -81,7 +80,6 @@ export const MainPage: React.FC = () => {
             username: 'Confidential notes and recovery seeds...',
             password: '••••••••••',
             category: 'Private',
-            priority: 'Medium',
           },
         ]);
       } else if (category === 'Work') {
@@ -93,7 +91,6 @@ export const MainPage: React.FC = () => {
             username: 'alpha_coder_v2',
             password: '••••••••••',
             category: 'Work',
-            priority: 'Low',
           },
         ]);
       } else {
@@ -289,20 +286,6 @@ export const MainPage: React.FC = () => {
                         <h3 className="font-bold text-lg transition-colors dark:text-white">{password.name}</h3>
                         <p className="text-xs text-slate-500 dark:text-slate-400">{password.url}</p>
                       </div>
-                    </div>
-                    <div className="flex flex-col items-end gap-1.5">
-                      <span className="text-[9px] font-bold text-slate-400 uppercase tracking-tighter">Priority</span>
-                      <span
-                        className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
-                          password.priority === 'High'
-                            ? 'bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400'
-                            : password.priority === 'Medium'
-                            ? 'bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400'
-                            : 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400'
-                        }`}
-                      >
-                        {password.priority}
-                      </span>
                     </div>
                   </div>
                   <div className="space-y-3 mb-6">

@@ -11,7 +11,6 @@ export interface Password {
   username: string;
   password: string;
   category: string;
-  priority: string;
 }
 
 export interface Settings {

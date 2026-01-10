@@ -41,7 +41,6 @@ type Password struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
 	Category string `json:"category"`
-	Priority string `json:"priority"`
 }
 
 // Settings represents application settings
@@ -97,7 +96,6 @@ func (a *App) Login(username string, mainPwd string) (bool, error) {
 // GetPasswordCategories returns list of password categories (empty implementation)
 func (a *App) GetPasswordCategories() (string, error) {
 	categories := []Category{
-		{Name: "Dashboard", Icon: "grid_view", Color: "primary"},
 		{Name: "Financial", Icon: "account_balance", Color: "financial"},
 		{Name: "Social", Icon: "share", Color: "social"},
 		{Name: "Private", Icon: "description", Color: "private"},
@@ -119,6 +117,9 @@ func (a *App) GetPasswordsByCategory(category string) (string, error) {
 	if err != nil {
 		return "", err
 	}
+	fmt.Println("category = ", category)
+
+	fmt.Println("passwords = ", passwords)
 	return string(data), nil
 }
 
@@ -129,6 +130,7 @@ func (a *App) AddPassword(passwordJSON string) (bool, error) {
 	if err != nil {
 		return false, err
 	}
+	fmt.Println("password = ", password)
 	// Empty implementation - always return true
 	return true, nil
 }
