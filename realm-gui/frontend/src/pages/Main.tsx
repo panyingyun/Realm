@@ -23,10 +23,15 @@ export const MainPage: React.FC = () => {
 
   const loadCategories = async () => {
     try {
-      const data = await GetPasswordCategories();
-      const cats = JSON.parse(data) as Category[];
+      const cats = await GetPasswordCategories();
+      // Convert backend format (Name, Icon, Color) to frontend format (name, icon, color)
+      const convertedCats: Category[] = cats.map(cat => ({
+        name: cat.Name,
+        icon: cat.Icon,
+        color: cat.Color,
+      }));
       // Filter out Dashboard category
-      const filteredCats = cats.filter(cat => cat.name !== 'Dashboard');
+      const filteredCats = convertedCats.filter(cat => cat.name !== 'Dashboard');
       setCategories(filteredCats);
     } catch (error) {
       console.error('Failed to load categories:', error);

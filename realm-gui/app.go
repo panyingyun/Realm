@@ -92,7 +92,7 @@ func (a *App) Login(username string, mainPwd string) (bool, error) {
 }
 
 // GetPasswordCategories returns list of password categories (empty implementation)
-func (a *App) GetPasswordCategories() (string, error) {
+func (a *App) GetPasswordCategories() ([]Category, error) {
 	categories := []Category{
 		{Name: "Financial", Icon: "account_balance", Color: "financial"},
 		{Name: "Social", Icon: "share", Color: "social"},
@@ -100,11 +100,7 @@ func (a *App) GetPasswordCategories() (string, error) {
 		{Name: "Work", Icon: "work", Color: "tech"},
 		{Name: "Settings", Icon: "settings", Color: "primary"},
 	}
-	data, err := json.Marshal(categories)
-	if err != nil {
-		return "", err
-	}
-	return string(data), nil
+	return categories, nil
 }
 
 // GetPasswordsByCategory returns passwords for a specific category (empty implementation)

@@ -5,7 +5,13 @@ export function AddPassword(arg1:string):Promise<boolean>;
 
 export function GeneratePassword():Promise<string>;
 
-export function GetPasswordCategories():Promise<string>;
+export interface Category {
+  Name: string;
+  Icon: string;
+  Color: string;
+}
+
+export function GetPasswordCategories():Promise<Category[]>;
 
 export function GetPasswordsByCategory(arg1:string):Promise<string>;
 
