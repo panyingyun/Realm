@@ -54,7 +54,7 @@ export const MainPage: React.FC = () => {
           {
             id: '1',
             name: 'Global Bank',
-            url: 'bank.online.com',
+            domain: 'bank.online.com',
             username: 'user_finance_88',
             password: '••••••••••',
             category: 'Financial',
@@ -65,7 +65,7 @@ export const MainPage: React.FC = () => {
           {
             id: '2',
             name: 'MediaStream',
-            url: 'mediastream.io',
+            domain: 'mediastream.io',
             username: 'social_user@media.com',
             password: '••••••••••',
             category: 'Social',
@@ -76,7 +76,7 @@ export const MainPage: React.FC = () => {
           {
             id: '3',
             name: 'Private Vault',
-            url: 'Last edited: 2 days ago',
+            domain: 'Last edited: 2 days ago',
             username: 'Confidential notes and recovery seeds...',
             password: '••••••••••',
             category: 'Private',
@@ -87,7 +87,7 @@ export const MainPage: React.FC = () => {
           {
             id: '4',
             name: 'DevHub Repo',
-            url: 'code.internal.dev',
+            domain: 'code.internal.dev',
             username: 'alpha_coder_v2',
             password: '••••••••••',
             category: 'Work',
@@ -145,7 +145,7 @@ export const MainPage: React.FC = () => {
     const query = searchQuery.toLowerCase();
     return (
       pw.name.toLowerCase().includes(query) ||
-      pw.url.toLowerCase().includes(query) ||
+      pw.domain.toLowerCase().includes(query) ||
       pw.username.toLowerCase().includes(query)
     );
   });
@@ -283,7 +283,7 @@ export const MainPage: React.FC = () => {
                       </div>
                       <div>
                         <h3 className="font-bold text-lg transition-colors dark:text-white">{password.name}</h3>
-                        <p className="text-xs text-slate-500 dark:text-slate-400">{password.url}</p>
+                        <p className="text-xs text-slate-500 dark:text-slate-400">{password.domain}</p>
                       </div>
                     </div>
                   </div>

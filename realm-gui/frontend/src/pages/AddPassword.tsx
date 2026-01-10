@@ -50,7 +50,7 @@ export const AddPasswordModal: React.FC<AddPasswordModalProps> = ({ onClose }) =
       const newPassword: Password = {
         id: Date.now().toString(),
         name: websiteName,
-        url: websiteLink,
+        domain: websiteLink,
         username: username,
         password: password,
         category: passwordType,

@@ -37,7 +37,7 @@ type Category struct {
 type Password struct {
 	ID       string `json:"id"`
 	Name     string `json:"name"`
-	Url      string `json:"url"`
+	Domain   string `json:"domain"`
 	Username string `json:"username"`
 	Password string `json:"password"`
 	Category string `json:"category"`

@@ -7,7 +7,7 @@ export interface Category {
 export interface Password {
   id: string;
   name: string;
-  url: string;
+  domain: string;
   username: string;
   password: string;
   category: string;
