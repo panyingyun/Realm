@@ -24,11 +24,11 @@ export const MainPage: React.FC = () => {
   const loadCategories = async () => {
     try {
       const cats = await GetPasswordCategories();
-      // Convert backend format (Name, Icon, Color) to frontend format (name, icon, color)
+      // Convert Wails Category class to frontend Category interface
       const convertedCats: Category[] = cats.map(cat => ({
-        name: cat.Name,
-        icon: cat.Icon,
-        color: cat.Color,
+        name: cat.name,
+        icon: cat.icon,
+        color: cat.color,
       }));
       // Filter out Dashboard category
       const filteredCats = convertedCats.filter(cat => cat.name !== 'Dashboard');
