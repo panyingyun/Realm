@@ -11,8 +11,11 @@ interface AppContextType {
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  // Always start with unauthenticated state - force login on every app start
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  // Use sessionStorage to remember login state during app session
+  // sessionStorage is automatically cleared when the app is closed
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
+    return sessionStorage.getItem('isAuthenticated') === 'true';
+  });
 
   const [settings, setSettings] = useState<Settings>(() => {
     const saved = localStorage.getItem('settings');
@@ -26,7 +29,14 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     return { language: 'en', theme: 'light' };
   });
 
-  // Note: isAuthenticated is NOT saved to localStorage - user must login every time
+  // Save authentication state to sessionStorage (cleared on app close)
+  useEffect(() => {
+    if (isAuthenticated) {
+      sessionStorage.setItem('isAuthenticated', 'true');
+    } else {
+      sessionStorage.removeItem('isAuthenticated');
+    }
+  }, [isAuthenticated]);
 
   useEffect(() => {
     localStorage.setItem('settings', JSON.stringify(settings));
