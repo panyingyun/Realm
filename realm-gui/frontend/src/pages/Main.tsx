@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useApp } from '../contexts/AppContext';
 import { Category, Password } from '../types';
 import { GetPasswordCategories, GetPasswordsByCategory } from '../../wailsjs/go/main/App';
+import { useI18n } from '../i18n';
 
 export const MainPage: React.FC = () => {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -12,6 +13,7 @@ export const MainPage: React.FC = () => {
   const [visiblePasswords, setVisiblePasswords] = useState<Set<string>>(new Set());
   const navigate = useNavigate();
   const { setAuthenticated } = useApp();
+  const { t } = useI18n();
 
   useEffect(() => {
     loadCategories();
@@ -106,6 +108,17 @@ export const MainPage: React.FC = () => {
     return cat?.icon || 'lock';
   };
 
+  const getCategoryDisplayName = (categoryName: string) => {
+    const categoryMap: { [key: string]: string } = {
+      'Financial': t.categories.financial,
+      'Social': t.categories.social,
+      'Private': t.categories.private,
+      'Work': t.categories.work,
+      'Settings': t.categories.settings,
+    };
+    return categoryMap[categoryName] || categoryName;
+  };
+
   const filteredPasswords = passwords.filter((pw) => {
     if (!searchQuery) return true;
     const query = searchQuery.toLowerCase();
@@ -138,8 +151,8 @@ export const MainPage: React.FC = () => {
               <span className="material-symbols-outlined block">shield_lock</span>
             </div>
             <div>
-              <h1 className="text-lg font-bold leading-none dark:text-white">Realm</h1>
-              <p className="text-primary text-xs font-medium">Passwd Manager</p>
+              <h1 className="text-lg font-bold leading-none dark:text-white">{t.main.title}</h1>
+              <p className="text-primary text-xs font-medium">{t.main.subtitle}</p>
             </div>
           </div>
           <nav className="flex flex-col gap-1.5">
@@ -155,7 +168,7 @@ export const MainPage: React.FC = () => {
               >
                 <span className="material-symbols-outlined text-[20px]">{category.icon}</span>
                 <span className={`text-sm ${activeCategory === category.name ? 'font-semibold' : 'font-medium'}`}>
-                  {category.name}
+                  {getCategoryDisplayName(category.name)}
                 </span>
               </a>
             ))}
@@ -163,7 +176,7 @@ export const MainPage: React.FC = () => {
         </div>
         <div className="bg-primary/5 p-4 rounded-xl border border-primary/10">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-semibold text-primary">Realm Health</span>
+            <span className="text-xs font-semibold text-primary">{t.main.realmHealth}</span>
             <span className="text-xs font-bold text-primary">92%</span>
           </div>
           <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-1.5">
@@ -182,7 +195,7 @@ export const MainPage: React.FC = () => {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full pl-10 pr-4 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all text-sm dark:text-white"
-                  placeholder="Search Realm passwords, notes or accounts..."
+                  placeholder={t.main.searchPlaceholder}
                 />
               </div>
             </div>
@@ -193,7 +206,7 @@ export const MainPage: React.FC = () => {
               className="bg-primary hover:bg-indigo-600 text-white px-5 py-2 rounded-xl font-bold text-sm flex items-center gap-2 transition-all shadow-lg shadow-indigo-200"
             >
               <span className="material-symbols-outlined text-[20px]">add</span>
-              <span>Add New</span>
+              <span>{t.main.addNew}</span>
             </button>
             <button className="p-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors text-slate-600 dark:text-slate-300">
               <span className="material-symbols-outlined text-[20px]">notifications</span>
@@ -205,19 +218,25 @@ export const MainPage: React.FC = () => {
         </header>
         <div className="flex-1 overflow-y-auto p-8 space-y-6">
           <div className="flex border-b border-slate-200 dark:border-slate-700 gap-8">
-            {['Financial', 'Social', 'Private', 'Work'].map((cat) => (
-              <a
-                key={cat}
-                onClick={() => setActiveCategory(cat)}
-                className={`pb-3 font-medium text-sm transition-colors border-b-2 cursor-pointer ${
-                  activeCategory === cat
-                    ? 'border-primary text-primary font-semibold'
-                    : 'border-transparent text-slate-500 hover:text-primary'
-                }`}
-              >
-                {cat}
-              </a>
-            ))}
+            {['Financial', 'Social', 'Private', 'Work'].map((cat) => {
+              const categoryName = cat === 'Financial' ? t.categories.financial :
+                                   cat === 'Social' ? t.categories.social :
+                                   cat === 'Private' ? t.categories.private :
+                                   t.categories.work;
+              return (
+                <a
+                  key={cat}
+                  onClick={() => setActiveCategory(cat)}
+                  className={`pb-3 font-medium text-sm transition-colors border-b-2 cursor-pointer ${
+                    activeCategory === cat
+                      ? 'border-primary text-primary font-semibold'
+                      : 'border-transparent text-slate-500 hover:text-primary'
+                  }`}
+                >
+                  {categoryName}
+                </a>
+              );
+            })}
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
             {filteredPasswords.map((password) => {
@@ -256,7 +275,7 @@ export const MainPage: React.FC = () => {
                   <div className="space-y-3 mb-6">
                     <div className="flex flex-col">
                       <span className="text-[10px] uppercase tracking-wider font-bold text-slate-400 mb-1">
-                        {password.category === 'Private' ? 'Content Preview' : password.category === 'Social' ? 'Email' : 'Username'}
+                        {password.category === 'Private' ? t.passwordFields.contentPreview : password.category === 'Social' ? t.passwordFields.email : t.passwordFields.username}
                       </span>
                       <div className="flex items-center justify-between group/field">
                         <span className="text-sm font-medium dark:text-slate-300">{password.username}</span>
@@ -270,7 +289,7 @@ export const MainPage: React.FC = () => {
                     </div>
                     <div className="flex flex-col">
                       <span className="text-[10px] uppercase tracking-wider font-bold text-slate-400 mb-1">
-                        {password.category === 'Private' ? 'Master Key' : password.category === 'Work' ? 'Access Token' : 'Password'}
+                        {password.category === 'Private' ? t.passwordFields.masterKey : password.category === 'Work' ? t.passwordFields.accessToken : t.passwordFields.password}
                       </span>
                       <div className="flex items-center justify-between group/field">
                         <span className="text-sm font-mono tracking-widest text-slate-500 dark:text-slate-400">
@@ -319,7 +338,7 @@ export const MainPage: React.FC = () => {
                         e.currentTarget.style.color = '';
                       }}
                     >
-                      {password.category === 'Private' ? 'Read Note' : password.category === 'Social' ? 'View Profile' : password.category === 'Work' ? 'Open Console' : 'View Account'}
+                      {password.category === 'Private' ? t.main.readNote : password.category === 'Social' ? t.main.viewProfile : password.category === 'Work' ? t.main.openConsole : t.main.viewAccount}
                     </button>
                     <button
                       className="px-3 bg-slate-50 dark:bg-slate-700 rounded-xl transition-colors dark:text-slate-300"

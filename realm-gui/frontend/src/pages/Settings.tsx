@@ -3,11 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import { useApp } from '../contexts/AppContext';
 import { Settings as SettingsType } from '../types';
 import { GetSettings, UpdateSettings } from '../../wailsjs/go/main/App';
+import { useI18n } from '../i18n';
 
 export const SettingsPage: React.FC = () => {
   const { settings, updateSettings: setSettings, setAuthenticated } = useApp();
   const [localSettings, setLocalSettings] = useState<SettingsType>(settings);
   const navigate = useNavigate();
+  const { t } = useI18n();
 
   useEffect(() => {
     loadSettings();
@@ -61,8 +63,8 @@ export const SettingsPage: React.FC = () => {
                 <span className="material-symbols-outlined fill-icon">shield_lock</span>
               </div>
               <div className="flex flex-col">
-                <h1 className="text-slate-900 dark:text-white text-base font-bold leading-none">Realm</h1>
-                <p className="text-slate-500 dark:text-slate-400 text-xs font-normal">Passwd Manager</p>
+                <h1 className="text-slate-900 dark:text-white text-base font-bold leading-none">{t.main.title}</h1>
+                <p className="text-slate-500 dark:text-slate-400 text-xs font-normal">{t.main.subtitle}</p>
               </div>
             </div>
             <nav className="flex flex-col gap-2">
@@ -71,11 +73,11 @@ export const SettingsPage: React.FC = () => {
                 className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer"
               >
                 <span className="material-symbols-outlined">arrow_back</span>
-                <span className="text-sm font-medium">Back</span>
+                <span className="text-sm font-medium">{t.common.back}</span>
               </a>
               <a className="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary/10 text-primary dark:bg-primary/20 transition-colors cursor-pointer">
                 <span className="material-symbols-outlined fill-icon">settings</span>
-                <span className="text-sm font-semibold">Settings</span>
+                <span className="text-sm font-semibold">{t.settings.title}</span>
               </a>
             </nav>
           </div>
@@ -85,26 +87,26 @@ export const SettingsPage: React.FC = () => {
               className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors cursor-pointer"
             >
               <span className="material-symbols-outlined">logout</span>
-              <span className="text-sm font-medium">Sign Out</span>
+              <span className="text-sm font-medium">{t.settings.signOut}</span>
             </a>
           </div>
         </aside>
         <main className="flex-1 overflow-y-auto relative bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-primary/10 via-background-light to-background-light dark:from-primary/5 dark:via-background-dark dark:to-background-dark p-10">
           <div className="max-w-4xl mx-auto space-y-8">
             <div className="flex flex-col gap-2">
-              <h1 className="text-slate-900 dark:text-white text-[32px] font-bold tracking-tight">Settings</h1>
-              <p className="text-slate-500 dark:text-slate-400 text-base">Manage your account preferences and application appearance.</p>
+              <h1 className="text-slate-900 dark:text-white text-[32px] font-bold tracking-tight">{t.settings.title}</h1>
+              <p className="text-slate-500 dark:text-slate-400 text-base">{t.settings.subtitle}</p>
             </div>
             <div className="glass-panel rounded-2xl shadow-xl p-8 space-y-12">
               <section>
                 <h2 className="text-slate-900 dark:text-white text-xl font-bold mb-6 flex items-center gap-2">
                   <span className="material-symbols-outlined text-primary">language</span>
-                  Language Preference
+                  {t.settings.languagePreference}
                 </h2>
                 <div className="max-w-md">
                   <div className="flex h-12 items-center rounded-xl bg-slate-100 dark:bg-slate-800 p-1 border border-slate-200 dark:border-slate-700">
                     <label className="flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded-lg px-4 has-[:checked]:bg-white dark:has-[:checked]:bg-slate-700 has-[:checked]:shadow-sm has-[:checked]:text-primary text-slate-500 dark:text-slate-400 text-sm font-semibold transition-all">
-                      <span>Chinese (简体中文)</span>
+                      <span>{t.settings.chinese}</span>
                       <input
                         type="radio"
                         name="lang"
@@ -115,7 +117,7 @@ export const SettingsPage: React.FC = () => {
                       />
                     </label>
                     <label className="flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded-lg px-4 has-[:checked]:bg-white dark:has-[:checked]:bg-slate-700 has-[:checked]:shadow-sm has-[:checked]:text-primary text-slate-500 dark:text-slate-400 text-sm font-semibold transition-all">
-                      <span>English</span>
+                      <span>{t.settings.english}</span>
                       <input
                         type="radio"
                         name="lang"
@@ -131,7 +133,7 @@ export const SettingsPage: React.FC = () => {
               <section>
                 <h2 className="text-slate-900 dark:text-white text-xl font-bold mb-6 flex items-center gap-2">
                   <span className="material-symbols-outlined text-primary">palette</span>
-                  Theme Mode
+                  {t.settings.themeMode}
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="group relative cursor-pointer">
@@ -159,7 +161,7 @@ export const SettingsPage: React.FC = () => {
                         </div>
                       </div>
                       <div className="flex items-center justify-between">
-                        <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">Light Mode</span>
+                        <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">{t.settings.lightMode}</span>
                         <span className="material-symbols-outlined text-primary opacity-0 peer-checked:opacity-100 transition-opacity">check_circle</span>
                       </div>
                     </label>
@@ -189,7 +191,7 @@ export const SettingsPage: React.FC = () => {
                         </div>
                       </div>
                       <div className="flex items-center justify-between">
-                        <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">Dark Mode</span>
+                        <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">{t.settings.darkMode}</span>
                         <span className="material-symbols-outlined text-primary opacity-0 peer-checked:opacity-100 transition-opacity">check_circle</span>
                       </div>
                     </label>

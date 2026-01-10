@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Password } from '../types';
 import { AddPassword, GeneratePassword } from '../../wailsjs/go/main/App';
+import { useI18n } from '../i18n';
 
 interface AddPasswordModalProps {
   onClose: () => void;
@@ -19,6 +20,7 @@ export const AddPasswordModal: React.FC<AddPasswordModalProps> = ({ onClose }) =
   const [usernameError, setUsernameError] = useState('');
   const [websiteLinkError, setWebsiteLinkError] = useState('');
   const navigate = useNavigate();
+  const { t } = useI18n();
 
   const generatePassword = async () => {
     setIsGenerating(true);
@@ -49,13 +51,13 @@ export const AddPasswordModal: React.FC<AddPasswordModalProps> = ({ onClose }) =
 
     // Validate username field
     if (!username.trim()) {
-      setUsernameError('你输入的用户名为空');
+      setUsernameError(t.addPassword.usernameEmpty);
       return;
     }
 
     // Validate website link field
     if (!websiteLink.trim()) {
-      setWebsiteLinkError('你输入的webside为空');
+      setWebsiteLinkError(t.addPassword.websiteEmpty);
       return;
     }
 
@@ -100,8 +102,8 @@ export const AddPasswordModal: React.FC<AddPasswordModalProps> = ({ onClose }) =
       <div className="w-full max-w-[480px] bg-white dark:bg-slate-900 rounded-[24px] border border-[#E2E8F0] dark:border-slate-700 shadow-2xl overflow-hidden max-h-[90vh] overflow-y-auto">
         <div className="px-8 pt-8 pb-4 flex justify-between items-start sticky top-0 bg-white dark:bg-slate-900 z-10">
           <div>
-            <h2 className="text-[#0e0d1b] dark:text-white text-2xl font-bold leading-tight">Add New Password</h2>
-            <p className="text-[#64748B] dark:text-slate-400 text-sm mt-1">Enter details to secure a new account credential.</p>
+            <h2 className="text-[#0e0d1b] dark:text-white text-2xl font-bold leading-tight">{t.addPassword.title}</h2>
+            <p className="text-[#64748B] dark:text-slate-400 text-sm mt-1">{t.addPassword.subtitle}</p>
           </div>
           <button
             onClick={onClose}
@@ -113,7 +115,7 @@ export const AddPasswordModal: React.FC<AddPasswordModalProps> = ({ onClose }) =
         <form onSubmit={handleSubmit}>
           <div className="px-8 py-4 space-y-5">
             <div className="flex flex-col gap-3">
-              <label className="text-[#64748B] dark:text-slate-400 text-[12px] font-medium uppercase tracking-wider">Password Type</label>
+              <label className="text-[#64748B] dark:text-slate-400 text-[12px] font-medium uppercase tracking-wider">{t.addPassword.passwordType}</label>
               <div className="grid grid-cols-4 gap-3">
                 {passwordTypes.map((type) => (
                   <label key={type.value} className="type-option cursor-pointer group">
@@ -140,14 +142,14 @@ export const AddPasswordModal: React.FC<AddPasswordModalProps> = ({ onClose }) =
               </div>
             </div>
             <div className="flex flex-col gap-2">
-              <label className="text-[#64748B] dark:text-slate-400 text-[12px] font-medium uppercase tracking-wider">Website Name</label>
+              <label className="text-[#64748B] dark:text-slate-400 text-[12px] font-medium uppercase tracking-wider">{t.addPassword.websiteName}</label>
               <div className="relative group">
                 <input
                   type="text"
                   value={websiteName}
                   onChange={(e) => setWebsiteName(e.target.value)}
                   className="w-full h-12 bg-background-light dark:bg-slate-800 border border-[#E2E8F0] dark:border-slate-700 rounded-xl px-4 text-[#0e0d1b] dark:text-white placeholder-[#94A3B8] focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none"
-                  placeholder="e.g. Netflix, GitHub"
+                  placeholder={t.addPassword.websiteNamePlaceholder}
                   required
                 />
                 <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-[#94A3B8]">badge</span>
@@ -155,7 +157,7 @@ export const AddPasswordModal: React.FC<AddPasswordModalProps> = ({ onClose }) =
             </div>
             <div className="flex flex-col gap-2">
               <label className="text-[#64748B] dark:text-slate-400 text-[12px] font-medium uppercase tracking-wider">
-                Website Link <span className="normal-case opacity-70">(Optional)</span>
+                {t.addPassword.websiteLink} <span className="normal-case opacity-70">(Optional)</span>
               </label>
               <div className="relative group">
                 <input
@@ -173,7 +175,7 @@ export const AddPasswordModal: React.FC<AddPasswordModalProps> = ({ onClose }) =
                       ? 'border-red-500 dark:border-red-500 focus:border-red-500 focus:ring-red-500/20'
                       : 'border-[#E2E8F0] dark:border-slate-700'
                   }`}
-                  placeholder="https://example.com"
+                  placeholder={t.addPassword.websiteLinkPlaceholder}
                 />
                 <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-[#94A3B8]">public</span>
               </div>
@@ -182,7 +184,7 @@ export const AddPasswordModal: React.FC<AddPasswordModalProps> = ({ onClose }) =
               )}
             </div>
             <div className="flex flex-col gap-2">
-              <label className="text-[#64748B] dark:text-slate-400 text-[12px] font-medium uppercase tracking-wider">Username or Email</label>
+              <label className="text-[#64748B] dark:text-slate-400 text-[12px] font-medium uppercase tracking-wider">{t.addPassword.usernameOrEmail}</label>
               <div className="relative group">
                 <input
                   type="text"
@@ -199,7 +201,7 @@ export const AddPasswordModal: React.FC<AddPasswordModalProps> = ({ onClose }) =
                       ? 'border-red-500 dark:border-red-500 focus:border-red-500 focus:ring-red-500/20'
                       : 'border-[#E2E8F0] dark:border-slate-700'
                   }`}
-                  placeholder="Enter username or email"
+                  placeholder={t.addPassword.usernameOrEmailPlaceholder}
                   required
                 />
                 <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-[#94A3B8]">person</span>
@@ -210,14 +212,14 @@ export const AddPasswordModal: React.FC<AddPasswordModalProps> = ({ onClose }) =
             </div>
             <div className="flex flex-col gap-2">
               <div className="flex justify-between items-center">
-                <label className="text-[#64748B] dark:text-slate-400 text-[12px] font-medium uppercase tracking-wider">Password</label>
+                <label className="text-[#64748B] dark:text-slate-400 text-[12px] font-medium uppercase tracking-wider">{t.addPassword.password}</label>
                 <button
                   type="button"
                   onClick={generatePassword}
                   disabled={isGenerating}
                   className="text-primary text-[11px] font-bold hover:underline tracking-tight disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {isGenerating ? 'Generating...' : 'GENERATE STRONG'}
+                  {isGenerating ? t.addPassword.generating : t.addPassword.generateStrong}
                 </button>
               </div>
               <div className="relative group">
@@ -248,7 +250,7 @@ export const AddPasswordModal: React.FC<AddPasswordModalProps> = ({ onClose }) =
               className="w-full h-14 bg-primary text-white font-bold rounded-xl active-scale shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <span className="material-symbols-outlined">lock</span>
-              {isSubmitting ? 'Adding...' : 'Add Password'}
+              {isSubmitting ? t.addPassword.adding : t.addPassword.addPassword}
             </button>
           </div>
         </form>

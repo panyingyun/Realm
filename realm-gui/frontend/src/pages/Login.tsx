@@ -2,14 +2,15 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '../contexts/AppContext';
 import { Login } from '../../wailsjs/go/main/App';
+import { useI18n } from '../i18n';
 
 export const LoginPage: React.FC = () => {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [language, setLanguage] = useState('EN');
   const navigate = useNavigate();
   const { isAuthenticated, setAuthenticated, settings, updateSettings } = useApp();
+  const { t, lang } = useI18n();
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -43,9 +44,8 @@ export const LoginPage: React.FC = () => {
   };
 
   const toggleLanguage = () => {
-    const newLang = language === 'EN' ? 'CN' : 'EN';
-    setLanguage(newLang);
-    updateSettings({ ...settings, language: newLang === 'EN' ? 'en' : 'zh' });
+    const newLang = settings.language === 'en' ? 'zh' : 'en';
+    updateSettings({ ...settings, language: newLang });
   };
 
   return (
@@ -62,14 +62,14 @@ export const LoginPage: React.FC = () => {
                   <path d="M24 4C25.7818 14.2173 33.7827 22.2182 44 24C33.7827 25.7818 25.7818 33.7827 24 44C22.2182 33.7827 14.2173 25.7818 4 24C14.2173 22.2182 22.2182 14.2173 24 4Z" fill="currentColor"></path>
                 </svg>
               </div>
-              <h2 className="text-lg font-bold leading-tight tracking-tight">Realm</h2>
+              <h2 className="text-lg font-bold leading-tight tracking-tight">{t.login.title}</h2>
             </div>
             <div className="flex items-center gap-3">
               <div className="flex items-center bg-white/50 dark:bg-white/10 rounded-xl p-1 border border-white/20">
                 <button
                   onClick={toggleLanguage}
                   className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all ${
-                    language === 'EN' ? 'bg-white dark:bg-white/20 shadow-sm text-primary' : 'text-slate-400 hover:text-primary'
+                    lang === 'en' ? 'bg-white dark:bg-white/20 shadow-sm text-primary' : 'text-slate-400 hover:text-primary'
                   }`}
                 >
                   EN
@@ -78,10 +78,10 @@ export const LoginPage: React.FC = () => {
                 <button
                   onClick={toggleLanguage}
                   className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all ${
-                    language === 'CN' ? 'bg-white dark:bg-white/20 shadow-sm text-primary' : 'text-slate-400 hover:text-primary'
+                    lang === 'zh' ? 'bg-white dark:bg-white/20 shadow-sm text-primary' : 'text-slate-400 hover:text-primary'
                   }`}
                 >
-                  CN
+                  中文
                 </button>
               </div>
               <button
@@ -99,14 +99,14 @@ export const LoginPage: React.FC = () => {
                   <span className="material-symbols-outlined text-white text-4xl">lock</span>
                 </div>
                 <div className="text-center">
-                  <h1 className="text-slate-900 dark:text-white text-[32px] font-bold leading-tight">Realm</h1>
-                  <p className="text-slate-500 dark:text-slate-400 text-base font-normal mt-2">Enter your master password to unlock your data.</p>
+                  <h1 className="text-slate-900 dark:text-white text-[32px] font-bold leading-tight">{t.login.title}</h1>
+                  <p className="text-slate-500 dark:text-slate-400 text-base font-normal mt-2">{t.login.subtitle}</p>
                 </div>
               </div>
               <div className="flex flex-col gap-6">
                 <div className="flex flex-col gap-2">
                   <label className="flex flex-col w-full">
-                    <p className="text-slate-900 dark:text-white text-sm font-semibold leading-normal pb-2 px-1">Master Password</p>
+                    <p className="text-slate-900 dark:text-white text-sm font-semibold leading-normal pb-2 px-1">{t.login.masterPassword}</p>
                     <div className="flex w-full items-stretch rounded-xl group">
                       <input
                         type={showPassword ? 'text' : 'password'}
@@ -127,10 +127,10 @@ export const LoginPage: React.FC = () => {
                     </div>
                   </label>
                   <div className="flex justify-between px-1">
-                    <button className="text-xs text-slate-500 hover:text-primary transition-colors font-medium">Forgot password?</button>
+                    <button className="text-xs text-slate-500 hover:text-primary transition-colors font-medium">{t.login.forgotPassword}</button>
                     <div className="flex items-center gap-1 text-[10px] uppercase tracking-wider text-slate-400 font-bold">
                       <span className="material-symbols-outlined text-xs">verified_user</span>
-                      AES-256 Encrypted
+                      {t.login.encrypted}
                     </div>
                   </div>
                 </div>
@@ -140,13 +140,13 @@ export const LoginPage: React.FC = () => {
                   className="flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-xl h-14 px-5 bg-primary text-white gap-3 text-base font-bold leading-normal tracking-[0.015em] shadow-lg shadow-indigo-500/40 hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <span className="material-symbols-outlined">lock_open</span>
-                  <span>{isLoading ? 'Unlocking...' : 'Unlock Vault'}</span>
+                  <span>{isLoading ? t.login.unlocking : t.login.unlockVault}</span>
                 </button>
               </div>
               <div className="border-t border-slate-200 dark:border-white/10 pt-6 text-center">
                 <p className="text-sm text-slate-500 dark:text-slate-400">
-                  Not your vault?
-                  <a className="text-primary font-bold hover:underline ml-1" href="#">Switch Account</a>
+                  {t.login.notYourVault}
+                  <a className="text-primary font-bold hover:underline ml-1" href="#">{t.login.switchAccount}</a>
                 </p>
               </div>
             </div>
