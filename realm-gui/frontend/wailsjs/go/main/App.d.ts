@@ -9,7 +9,7 @@ export function GetPasswordCategories():Promise<string>;
 
 export function GetPasswordsByCategory(arg1:string):Promise<string>;
 
-export function GetSettings():Promise<[string, string]>;
+export function GetSettings():Promise<string>;
 
 export function Login(arg1:string,arg2:string):Promise<boolean>;
 

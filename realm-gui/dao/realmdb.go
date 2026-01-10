@@ -35,7 +35,7 @@ func (rd *RealmDao) ListAllWithoutMainDomain(ctx context.Context, db *gorm.DB, m
 }
 
 // Add a domain and passwd
-func (rd *RealmDao) AddDomain(ctx context.Context, db *gorm.DB, realm *model.Realm) (int64, error) {
+func (rd *RealmDao) AddRealm(ctx context.Context, db *gorm.DB, realm *model.Realm) (int64, error) {
 	u := query.Use(db).Realm
 	err := u.WithContext(ctx).Create(realm)
 	if err != nil {

@@ -15,8 +15,7 @@ import (
 )
 
 const (
-	DBName     string = "realm.db"
-	MainDomain string = "main.passwd"
+	DBName string = "realm.db"
 )
 
 // App struct
@@ -75,12 +74,12 @@ func (a *App) Login(username string, mainPwd string) (bool, error) {
 	if helper.IsStringBlank(mainPwd) {
 		return false, errors.New("main passwd can not be blank.")
 	}
-	pwddOri := helper.QueryDomain(a.db, MainDomain)
+	pwddOri := helper.QueryDomain(a.db, helper.MainDomain)
 	pwdd, _ := helper.GetAESEncrypted(mainPwd, mainPwd)
-	fmt.Println("username = ", MainDomain)
+	fmt.Println("username = ", helper.MainDomain)
 	fmt.Println("mainPwd = ", pwdd)
 	if len(pwddOri) == 0 {
-		helper.AddDomain(a.db, MainDomain, "", pwdd)
+		helper.AddPassword(a.db, mainPwd, helper.MainDomain, helper.MainUser, mainPwd, helper.MainCategory)
 		a.mainPwd = mainPwd
 		return false, errors.New("login success. Your first set your main passwd.")
 	}
@@ -130,7 +129,13 @@ func (a *App) AddPassword(passwordJSON string) (bool, error) {
 		return false, err
 	}
 	fmt.Println("password = ", password)
-	// Empty implementation - always return true
+	if helper.IsStringBlank(a.mainPwd) {
+		return false, errors.New("main password is not set, please login first")
+	}
+	id := helper.AddPassword(a.db, a.mainPwd, password.Domain, password.Username, password.Password, password.Category)
+	if id < 0 {
+		return false, errors.New("failed to add password")
+	}
 	return true, nil
 }
 

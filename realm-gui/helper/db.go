@@ -15,6 +15,12 @@ import (
 	"gorm.io/gorm/logger"
 )
 
+const (
+	MainDomain   string = "main.domain"
+	MainUser     string = "main.user"
+	MainCategory string = "main.category"
+)
+
 // https://gorm.io/gen/
 
 func OpenDB(dbname string) (db *gorm.DB, err error) {
@@ -49,8 +55,14 @@ func ListAll(realmdb *gorm.DB, mainPwd string) string {
 	return ret
 }
 
-func AddDomain(realmdb *gorm.DB, domain string, user string, pwdd string) int64 {
-	if IsStringBlank(domain) || IsStringBlank(pwdd) {
+func AddPassword(realmdb *gorm.DB, mainPwd string, domain string, user string, password string, category string) int64 {
+	if IsStringBlank(domain) || IsStringBlank(password) || IsStringBlank(mainPwd) {
+		return -1
+	}
+	// Encrypt password using main password
+	pwdd, err := GetAESEncrypted(mainPwd, password)
+	if err != nil {
+		fmt.Println("AddPassword encrypt error: ", err)
 		return -1
 	}
 	ctx := context.Background()
@@ -58,7 +70,8 @@ func AddDomain(realmdb *gorm.DB, domain string, user string, pwdd string) int64 
 	realm.Domain = domain
 	realm.Username = user
 	realm.Pwdd = pwdd
-	id, _ := dao.QRealm.AddDomain(ctx, realmdb, &realm)
+	realm.Category = category
+	id, _ := dao.QRealm.AddRealm(ctx, realmdb, &realm)
 	return id
 }
 
