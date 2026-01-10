@@ -1,28 +1,47 @@
-import {useState} from 'react';
-import logo from './assets/images/logo-universal.png';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { AppProvider } from './contexts/AppContext';
+import { ProtectedRoute } from './components/ProtectedRoute';
+import { LoginPage } from './pages/Login';
+import { MainPage } from './pages/Main';
+import { AddPasswordPage } from './pages/AddPassword';
+import { SettingsPage } from './pages/Settings';
 import './App.css';
-import {Greet} from "../wailsjs/go/main/App";
 
 function App() {
-    const [resultText, setResultText] = useState("Please enter your name below 👇");
-    const [name, setName] = useState('');
-    const updateName = (e: any) => setName(e.target.value);
-    const updateResultText = (result: string) => setResultText(result);
-
-    function greet() {
-        Greet(name).then(updateResultText);
-    }
-
     return (
-        <div id="App">
-            <img src={logo} id="logo" alt="logo"/>
-            <div id="result" className="result">{resultText}</div>
-            <div id="input" className="input-box">
-                <input id="name" className="input" onChange={updateName} autoComplete="off" name="input" type="text"/>
-                <button className="btn" onClick={greet}>Greet</button>
-            </div>
-        </div>
-    )
+        <AppProvider>
+            <BrowserRouter>
+                <Routes>
+                    <Route path="/login" element={<LoginPage />} />
+                    <Route
+                        path="/main"
+                        element={
+                            <ProtectedRoute>
+                                <MainPage />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/add"
+                        element={
+                            <ProtectedRoute>
+                                <AddPasswordPage />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/settings"
+                        element={
+                            <ProtectedRoute>
+                                <SettingsPage />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route path="/" element={<Navigate to="/login" replace />} />
+                </Routes>
+            </BrowserRouter>
+        </AppProvider>
+    );
 }
 
-export default App
+export default App;

@@ -2,12 +2,36 @@ package main
 
 import (
 	"context"
-	"fmt"
+	"encoding/json"
 )
 
 // App struct
 type App struct {
 	ctx context.Context
+}
+
+// Category represents a password category
+type Category struct {
+	Name  string `json:"name"`
+	Icon  string `json:"icon"`
+	Color string `json:"color"`
+}
+
+// Password represents a password entry
+type Password struct {
+	ID       string `json:"id"`
+	Name     string `json:"name"`
+	Url      string `json:"url"`
+	Username string `json:"username"`
+	Password string `json:"password"`
+	Category string `json:"category"`
+	Priority string `json:"priority"`
+}
+
+// Settings represents application settings
+type Settings struct {
+	Language string `json:"language"` // "zh" | "en"
+	Theme    string `json:"theme"`    // "light" | "dark"
 }
 
 // NewApp creates a new App application struct
@@ -21,7 +45,71 @@ func (a *App) startup(ctx context.Context) {
 	a.ctx = ctx
 }
 
-// Greet returns a greeting for the given name
-func (a *App) Greet(name string) string {
-	return fmt.Sprintf("Hello %s, It's show time!", name)
+// Login validates user credentials (empty implementation)
+func (a *App) Login(username string, password string) (bool, error) {
+	// Empty implementation - always return true for now
+	return true, nil
+}
+
+// GetPasswordCategories returns list of password categories (empty implementation)
+func (a *App) GetPasswordCategories() (string, error) {
+	categories := []Category{
+		{Name: "Dashboard", Icon: "grid_view", Color: "primary"},
+		{Name: "Financial", Icon: "account_balance", Color: "financial"},
+		{Name: "Social", Icon: "share", Color: "social"},
+		{Name: "Private", Icon: "description", Color: "private"},
+		{Name: "Work", Icon: "work", Color: "tech"},
+		{Name: "Settings", Icon: "settings", Color: "primary"},
+	}
+	data, err := json.Marshal(categories)
+	if err != nil {
+		return "", err
+	}
+	return string(data), nil
+}
+
+// GetPasswordsByCategory returns passwords for a specific category (empty implementation)
+func (a *App) GetPasswordsByCategory(category string) (string, error) {
+	// Empty implementation - return empty array
+	passwords := []Password{}
+	data, err := json.Marshal(passwords)
+	if err != nil {
+		return "", err
+	}
+	return string(data), nil
+}
+
+// AddPassword adds a new password entry (empty implementation)
+func (a *App) AddPassword(passwordJSON string) (bool, error) {
+	var password Password
+	err := json.Unmarshal([]byte(passwordJSON), &password)
+	if err != nil {
+		return false, err
+	}
+	// Empty implementation - always return true
+	return true, nil
+}
+
+// GetSettings returns current application settings (empty implementation)
+func (a *App) GetSettings() (string, error) {
+	settings := Settings{
+		Language: "en",
+		Theme:    "light",
+	}
+	data, err := json.Marshal(settings)
+	if err != nil {
+		return "", err
+	}
+	return string(data), nil
+}
+
+// UpdateSettings updates application settings (empty implementation)
+func (a *App) UpdateSettings(settingsJSON string) (bool, error) {
+	var settings Settings
+	err := json.Unmarshal([]byte(settingsJSON), &settings)
+	if err != nil {
+		return false, err
+	}
+	// Empty implementation - always return true
+	return true, nil
 }

@@ -1,0 +1,219 @@
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Password } from '../types';
+import { AddPassword } from '../../wailsjs/go/main/App';
+
+interface AddPasswordModalProps {
+  onClose: () => void;
+}
+
+export const AddPasswordModal: React.FC<AddPasswordModalProps> = ({ onClose }) => {
+  const [passwordType, setPasswordType] = useState('Financial');
+  const [websiteName, setWebsiteName] = useState('');
+  const [websiteLink, setWebsiteLink] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const navigate = useNavigate();
+
+  const generatePassword = () => {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*';
+    let generated = '';
+    for (let i = 0; i < 16; i++) {
+      generated += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    setPassword(generated);
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!websiteName.trim() || !username.trim() || !password.trim()) {
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      const newPassword: Password = {
+        id: Date.now().toString(),
+        name: websiteName,
+        url: websiteLink,
+        username: username,
+        password: password,
+        category: passwordType,
+        priority: 'Medium',
+      };
+
+      const success = await AddPassword(JSON.stringify(newPassword));
+      if (success) {
+        onClose();
+        navigate('/main');
+        // Reload the page to refresh the password list
+        window.location.reload();
+      }
+    } catch (error) {
+      console.error('Failed to add password:', error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const passwordTypes = [
+    { value: 'Financial', icon: 'account_balance', color: '#DAA520' },
+    { value: 'Social', icon: 'share', color: '#3B82F6' },
+    { value: 'Private', icon: 'description', color: '#A78BFA' },
+    { value: 'Work', icon: 'terminal', color: '#4F46E5' },
+  ];
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center glass-backdrop px-4">
+      <div className="w-full max-w-[480px] bg-white dark:bg-slate-900 rounded-[24px] border border-[#E2E8F0] dark:border-slate-700 shadow-2xl overflow-hidden max-h-[90vh] overflow-y-auto">
+        <div className="px-8 pt-8 pb-4 flex justify-between items-start sticky top-0 bg-white dark:bg-slate-900 z-10">
+          <div>
+            <h2 className="text-[#0e0d1b] dark:text-white text-2xl font-bold leading-tight">Add New Password</h2>
+            <p className="text-[#64748B] dark:text-slate-400 text-sm mt-1">Enter details to secure a new account credential.</p>
+          </div>
+          <button
+            onClick={onClose}
+            className="text-[#64748B] hover:text-[#0e0d1b] dark:hover:text-white transition-colors"
+          >
+            <span className="material-symbols-outlined">close</span>
+          </button>
+        </div>
+        <form onSubmit={handleSubmit}>
+          <div className="px-8 py-4 space-y-5">
+            <div className="flex flex-col gap-3">
+              <label className="text-[#64748B] dark:text-slate-400 text-[12px] font-medium uppercase tracking-wider">Password Type</label>
+              <div className="grid grid-cols-4 gap-3">
+                {passwordTypes.map((type) => (
+                  <label key={type.value} className="type-option cursor-pointer group">
+                    <input
+                      type="radio"
+                      name="password_type"
+                      value={type.value}
+                      checked={passwordType === type.value}
+                      onChange={(e) => setPasswordType(e.target.value)}
+                      className="hidden"
+                    />
+                    <div
+                      className={`flex flex-col items-center gap-2 p-3 rounded-xl border border-[#E2E8F0] dark:border-slate-700 transition-all hover:border-primary/50 ${
+                        passwordType === type.value ? 'border-primary bg-primary/5 ring-1 ring-primary/20' : ''
+                      }`}
+                    >
+                      <span className="material-symbols-outlined" style={{ color: type.color }}>
+                        {type.icon}
+                      </span>
+                      <span className="text-[12px] font-medium text-[#64748B] dark:text-slate-400">{type.value}</span>
+                    </div>
+                  </label>
+                ))}
+              </div>
+            </div>
+            <div className="flex flex-col gap-2">
+              <label className="text-[#64748B] dark:text-slate-400 text-[12px] font-medium uppercase tracking-wider">Website Name</label>
+              <div className="relative group">
+                <input
+                  type="text"
+                  value={websiteName}
+                  onChange={(e) => setWebsiteName(e.target.value)}
+                  className="w-full h-12 bg-background-light dark:bg-slate-800 border border-[#E2E8F0] dark:border-slate-700 rounded-xl px-4 text-[#0e0d1b] dark:text-white placeholder-[#94A3B8] focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none"
+                  placeholder="e.g. Netflix, GitHub"
+                  required
+                />
+                <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-[#94A3B8]">badge</span>
+              </div>
+            </div>
+            <div className="flex flex-col gap-2">
+              <label className="text-[#64748B] dark:text-slate-400 text-[12px] font-medium uppercase tracking-wider">
+                Website Link <span className="normal-case opacity-70">(Optional)</span>
+              </label>
+              <div className="relative group">
+                <input
+                  type="url"
+                  value={websiteLink}
+                  onChange={(e) => setWebsiteLink(e.target.value)}
+                  className="w-full h-12 bg-background-light dark:bg-slate-800 border border-[#E2E8F0] dark:border-slate-700 rounded-xl px-4 text-[#0e0d1b] dark:text-white placeholder-[#94A3B8] focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none"
+                  placeholder="https://example.com"
+                />
+                <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-[#94A3B8]">public</span>
+              </div>
+            </div>
+            <div className="flex flex-col gap-2">
+              <label className="text-[#64748B] dark:text-slate-400 text-[12px] font-medium uppercase tracking-wider">Username or Email</label>
+              <div className="relative group">
+                <input
+                  type="email"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  className="w-full h-12 bg-background-light dark:bg-slate-800 border border-[#E2E8F0] dark:border-slate-700 rounded-xl px-4 text-[#0e0d1b] dark:text-white placeholder-[#94A3B8] focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none"
+                  placeholder="yourname@email.com"
+                  required
+                />
+                <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-[#94A3B8]">person</span>
+              </div>
+            </div>
+            <div className="flex flex-col gap-2">
+              <div className="flex justify-between items-center">
+                <label className="text-[#64748B] dark:text-slate-400 text-[12px] font-medium uppercase tracking-wider">Password</label>
+                <button
+                  type="button"
+                  onClick={generatePassword}
+                  className="text-primary text-[11px] font-bold hover:underline tracking-tight"
+                >
+                  GENERATE STRONG
+                </button>
+              </div>
+              <div className="relative group">
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full h-12 bg-background-light dark:bg-slate-800 border border-[#E2E8F0] dark:border-slate-700 rounded-xl px-4 text-[#0e0d1b] dark:text-white placeholder-[#94A3B8] focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none"
+                  placeholder="••••••••••••"
+                  required
+                />
+                <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="text-[#94A3B8] hover:text-primary transition-colors"
+                  >
+                    <span className="material-symbols-outlined">{showPassword ? 'visibility_off' : 'visibility'}</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="px-8 pb-8 pt-4 flex flex-col gap-3">
+            <button
+              type="submit"
+              disabled={isSubmitting || !websiteName.trim() || !username.trim() || !password.trim()}
+              className="w-full h-14 bg-primary text-white font-bold rounded-xl active-scale shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <span className="material-symbols-outlined">lock</span>
+              {isSubmitting ? 'Adding...' : 'Add Password'}
+            </button>
+            <button
+              type="button"
+              onClick={onClose}
+              className="w-full h-10 text-[#64748B] dark:text-slate-400 font-medium hover:text-[#0e0d1b] dark:hover:text-white transition-colors"
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+export const AddPasswordPage: React.FC = () => {
+  const navigate = useNavigate();
+
+  return (
+    <div className="bg-background-light dark:bg-background-dark font-display min-h-screen">
+      <AddPasswordModal onClose={() => navigate('/main')} />
+    </div>
+  );
+};
