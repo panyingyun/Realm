@@ -11,7 +11,9 @@ Realm 密码本是一个基于 Go 语言开发的密码管理工具，使用 SQL
 - 🔐 **强大的加密保护**: 使用 AES-256-CBC 算法加密存储所有密码
 - 🔑 **主密码机制**: 通过单一主密码保护所有数据访问
 - 💾 **本地存储**: 数据完全存储在本地 SQLite 数据库，不会上传到任何服务器
-- 📦 **多版本支持**: 提供命令行和图形界面两个版本，满足不同用户需求
+- 📦 **双版本支持**: 提供命令行和图形界面两个完整版本，满足不同用户需求
+- 🌐 **多语言支持**: GUI 版本支持中文和英文界面
+- 🎨 **现代化界面**: GUI 版本提供美观的图形界面，支持深色/浅色主题
 - 🆓 **开源免费**: 基于 GPL-3.0 许可证，完全开源
 - 🚀 **轻量高效**: 程序小巧，运行快速，资源占用低
 
@@ -19,26 +21,33 @@ Realm 密码本是一个基于 Go 语言开发的密码管理工具，使用 SQL
 
 ```
 Realm/
-├── realm-cmder/          # 命令行版本（Realm CLI）
-│   ├── main.go     # 程序入口
-│   ├── helper/     # 核心功能模块
-│   ├── dao/        # 数据访问层
-│   ├── docs/       # 命令行版本文档和截图
-│   └── README.md   # 命令行版本详细文档
-├── realm-gui/            # 图形界面版本（开发中）
-├── docs/           # 项目文档和截图
-│   ├── realm_login/    # 登录功能演示
-│   ├── realm_add/      # 添加密码功能演示
-│   └── realm_query/    # 查询密码功能演示
-├── LICENSE         # GPL-3.0 许可证
-└── README.md       # 本文件
+├── realm-cmder/          # 命令行版本（Realm CLI）✅
+│   ├── main.go          # 程序入口
+│   ├── helper/          # 核心功能模块
+│   ├── dao/             # 数据访问层
+│   ├── docs/            # 命令行版本文档和截图
+│   └── README.md        # 命令行版本详细文档
+├── realm-gui/           # 图形界面版本（Realm GUI）✅
+│   ├── main.go          # 程序入口
+│   ├── app.go           # 应用逻辑
+│   ├── helper/          # 核心功能模块
+│   ├── dao/             # 数据访问层
+│   ├── frontend/        # 前端代码（React + TypeScript）
+│   ├── docs/            # GUI 版本文档和截图
+│   └── build/           # 构建配置
+├── docs/                # 项目文档和截图
+│   ├── realm_login/     # 登录功能演示
+│   ├── realm_add/       # 添加密码功能演示
+│   └── realm_query/     # 查询密码功能演示
+├── LICENSE              # GPL-3.0 许可证
+└── README.md            # 本文件
 ```
 
 ## 🚀 快速开始
 
 ### 命令行版本（Realm CLI）
 
-命令行版本已经开发完成，提供了完整的密码管理功能。
+命令行版本提供了完整的密码管理功能，适合喜欢使用命令行工具的用户。
 
 #### 系统要求
 
@@ -91,20 +100,87 @@ make run
 - **添加密码**: 查看 [realm_add/](docs/realm_add/screen.png) 了解如何添加密码
 - **查询密码**: 查看 [realm_query/](docs/realm_query/screen.png) 了解如何查询密码
 
-### 图形界面版本（GUI）
+### 图形界面版本（Realm GUI）
 
-图形界面版本正在开发中，将提供更加直观友好的用户界面，让密码管理更加便捷。
+图形界面版本提供了现代化的图形用户界面，操作更加直观便捷。
 
-**状态**: 🚧 开发中
+#### 系统要求
 
-GUI 版本将包含以下特性：
+- Go 1.23.4 或更高版本
+- Node.js 和 npm（用于前端开发）
+- Wails v2 框架
+- **Windows**: 无需额外依赖
+- **macOS**: 无需额外依赖
+- **Linux**: 
+  - Ubuntu 24.04: `libwebkit2gtk-4.1-dev libgtk-3-dev`
+  - Ubuntu 22.04: `libwebkit2gtk-4.0-dev libgtk-3-dev`
 
-- 🎨 现代化的图形用户界面
-- 🖱️ 鼠标操作，更加直观
-- 🔍 搜索和筛选功能
-- 📊 可视化数据展示
-- 💾 数据导入/导出功能
-- 🔄 与命令行版本数据兼容
+#### 安装使用
+
+1. **进入 GUI 版本目录**:
+```bash
+cd realm-gui
+```
+
+2. **安装开发环境**（首次使用）:
+```bash
+make env
+```
+
+这会安装以下工具：
+- `gofumpt`: Go 代码格式化工具
+- `gentool`: GORM 代码生成工具
+- `goreleaser`: 发布工具
+- `wails`: Wails 框架 CLI
+
+3. **安装依赖**:
+```bash
+# 后端依赖
+go mod tidy
+
+# 前端依赖
+cd frontend
+npm install
+cd ..
+```
+
+4. **开发模式运行**:
+```bash
+make dev
+# 或
+wails dev -tags webkit2_41
+```
+
+5. **构建生产版本**:
+```bash
+make build
+# 或
+wails build -tags webkit2_41
+```
+
+构建完成后，可执行文件位于 `build/bin/` 目录。
+
+#### 主要功能
+
+- ✅ 主密码登录/设置
+- ✅ 密码分类管理（Financial、Social、Private、Work）
+- ✅ 按分类查看密码
+- ✅ 添加密码（支持密码生成）
+- ✅ 密码搜索功能
+- ✅ 密码显示/隐藏和复制
+- ✅ 设置页面（语言、主题）
+- ✅ 多语言支持（中文/英文）
+- ✅ 深色/浅色主题切换
+- ✅ 现代化图形界面
+
+#### 界面截图
+
+GUI 版本提供了完整的界面截图，位于 `realm-gui/docs/` 目录：
+
+- **登录页面**: 查看 [01login/](realm-gui/docs/01login/extracted/screen.png)
+- **主界面**: 查看 [02main/](realm-gui/docs/02main/extracted/screen.png)
+- **添加密码**: 查看 [03add/](realm-gui/docs/03add/extracted/screen.png)
+- **设置页面**: 查看 [04settings/](realm-gui/docs/04settings/extracted/screen.png)
 
 ## 🔒 安全特性
 
@@ -126,12 +202,29 @@ GUI 版本将包含以下特性：
 
 项目使用 SQLite 数据库存储密码信息，数据结构如下：
 
+### realm 表（密码存储）
+
 ```sql
 CREATE TABLE `realm` (
    `id` INTEGER PRIMARY KEY NOT NULL,
+   `name` varchar(255) NOT NULL,
    `domain` varchar(255) NOT NULL,
-   `user` varchar(255) NOT NULL,
+   `category` varchar(255) NOT NULL,
+   `username` varchar(255) NOT NULL,
    `pwdd` varchar(255) NOT NULL,
+   `created_at` datetime DEFAULT NULL,
+   `updated_at` datetime DEFAULT NULL,
+   `deleted_at` datetime DEFAULT NULL
+);
+```
+
+### setting 表（设置存储，仅 GUI 版本）
+
+```sql
+CREATE TABLE `setting` (
+   `id` INTEGER PRIMARY KEY NOT NULL,
+   `language` varchar(255) NOT NULL,
+   `theme` varchar(255) NOT NULL,
    `created_at` datetime DEFAULT NULL,
    `updated_at` datetime DEFAULT NULL,
    `deleted_at` datetime DEFAULT NULL
@@ -150,13 +243,22 @@ CREATE TABLE `realm` (
 
 ### 图形界面版本
 
-- **状态**: 开发中
-- **技术选型**: 待定
+- **后端语言**: Go 1.23.4
+- **前端框架**: React 18 + TypeScript
+- **UI 框架**: Tailwind CSS
+- **图标**: Material Symbols
+- **桌面框架**: Wails v2
+- **数据库**: SQLite (使用 `github.com/glebarez/sqlite`)
+- **ORM**: GORM (`gorm.io/gorm`, `gorm.io/gen`)
+- **路由**: React Router
+- **构建工具**: Vite
+- **加密算法**: AES-256-CBC
 
 ## 📖 使用文档
 
 - **命令行版本详细文档**: [realm-cmder/README.md](realm-cmder/README.md)
 - **功能演示**: 查看 [docs/](docs/) 目录了解各功能的使用方法
+- **GUI 版本开发文档**: 查看 [realm-gui/docs/](realm-gui/docs/) 目录
 
 ## 🗺️ 开发路线图
 
@@ -167,19 +269,20 @@ CREATE TABLE `realm` (
 - [x] SQLite 数据库集成
 - [x] 密码生成器
 - [x] 命令行版本文档
-
-### 开发中 🚧
-
-- [ ] 图形界面版本开发
+- [x] 图形界面版本开发
+- [x] GUI 版本界面设计
+- [x] GUI 版本数据兼容性
+- [x] 多语言支持（中英文）
+- [x] 深色/浅色主题切换
 
 ### 计划中 📋
 
-- [ ] GUI 版本界面设计
-- [ ] GUI 版本数据兼容性
 - [ ] 数据导入/导出功能增强
 - [ ] 密码强度检测
 - [ ] 自动备份功能
-- [ ] 多语言支持
+- [ ] 更多语言支持
+- [ ] 密码同步功能
+- [ ] 浏览器扩展
 
 ## 🤝 贡献
 
@@ -204,7 +307,9 @@ CREATE TABLE `realm` (
 
 3. **数据安全**: 请妥善保管数据库文件，避免泄露给未授权人员。
 
-4. **版本兼容性**: 命令行版本和 GUI 版本将使用相同的数据格式，确保数据可以在两个版本间共享。
+4. **版本兼容性**: 命令行版本和 GUI 版本使用相同的数据格式，确保数据可以在两个版本间共享。
+
+5. **数据迁移**: 如果您在命令行版本中创建了数据库，可以直接在 GUI 版本中使用相同的数据库文件。
 
 ## 📞 联系方式
 
@@ -217,7 +322,13 @@ CREATE TABLE `realm` (
 
 感谢所有为开源密码管理工具发展做出贡献的开发者！
 
+特别感谢以下开源项目：
+
+- [Wails](https://wails.io/) - 优秀的 Go 桌面应用框架
+- [GORM](https://gorm.io/) - 强大的 Go ORM 库
+- [React](https://react.dev/) - 现代前端框架
+- [Tailwind CSS](https://tailwindcss.com/) - 实用优先的 CSS 框架
+
 ---
 
-**注意**: 本项目正在积极开发中，GUI 版本即将推出，敬请期待！
-
+**注意**: 两个版本都已开发完成，您可以根据自己的需求选择合适的版本使用！
