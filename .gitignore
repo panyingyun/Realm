@@ -33,3 +33,5 @@ go.work.sum
 .aider*
 
 Realm
+realm-cmder/dist/
+realm-gui/frontend/package.json.md5

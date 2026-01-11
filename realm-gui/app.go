@@ -57,11 +57,11 @@ func NewApp() *App {
 func (a *App) startup(ctx context.Context) {
 	a.ctx = ctx
 	dir, err := os.Getwd()
-	fmt.Println("pwd dir = ", dir)
+	//fmt.Println("pwd dir = ", dir)
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println("start up dir = ", dir)
+	//fmt.Println("start up dir = ", dir)
 	a.db, err = helper.OpenDB(path.Join(dir, DBName))
 	if err != nil {
 		log.Fatal(err)
@@ -75,8 +75,8 @@ func (a *App) Login(username string, mainPwd string) (bool, error) {
 	}
 	pwddOri := helper.QueryDomain(a.db, helper.MainDomain)
 	pwdd, _ := helper.GetAESEncrypted(mainPwd, mainPwd)
-	fmt.Println("username = ", helper.MainDomain)
-	fmt.Println("mainPwd = ", pwdd)
+	//fmt.Println("username = ", helper.MainDomain)
+	//fmt.Println("mainPwd = ", pwdd)
 	if len(pwddOri) == 0 {
 		helper.AddPassword(a.db, mainPwd, helper.MainName, helper.MainDomain, helper.MainUser, mainPwd, helper.MainCategory)
 		a.mainPwd = mainPwd
@@ -125,14 +125,14 @@ func (a *App) GetPasswordsByCategory(category string) ([]Password, error) {
 		})
 	}
 
-	fmt.Println("category = ", category)
-	fmt.Println("passwords = ", passwords)
+	//fmt.Println("category = ", category)
+	//fmt.Println("passwords = ", passwords)
 	return passwords, nil
 }
 
 // AddPassword adds a new password entry
 func (a *App) AddPassword(pwd Password) (bool, error) {
-	fmt.Println("password = ", pwd)
+	//fmt.Println("password = ", pwd)
 	if helper.IsStringBlank(a.mainPwd) {
 		return false, errors.New("main password is not set, please login first")
 	}
