@@ -103,7 +103,7 @@ builds:
     # 构建标签 - Ubuntu 22.04 使用 webkit2_40
     tags:
       - webkit2_40 
-      - -tags desktop,production
+      - desktop,production
 
     # LDFlags
     ldflags:
@@ -127,7 +127,7 @@ builds:
     # 构建标签 
     tags:
       - webkit2_40 
-      - -tags desktop,production
+      - desktop,production
     ldflags:
       - -s -w 
       - -H windowsgui
@@ -150,7 +150,7 @@ builds:
     # 构建标签
     tags:
       - webkit2_40 
-      - -tags desktop,production
+      - desktop,production
     ldflags:
       - -s -w
       - -X main.Version={{.Version}}
