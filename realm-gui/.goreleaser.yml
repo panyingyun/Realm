@@ -30,41 +30,44 @@ release:
     
     由 [GoReleaser](https://github.com/goreleaser/goreleaser) 自动生成
 
-# 构建前钩子 - 构建前端资源
+# 构建前钩子 - 构建前端资源和 Wails 应用
 before:
   hooks:
     - go mod tidy
     - npm --prefix frontend install
     - npm --prefix frontend run build
+    # 注意：Wails 应用需要使用 wails build 命令
+    # 但由于 GoReleaser 使用 go build，我们需要确保构建标签正确传递
 
 # 构建配置 - 支持多个平台和架构
 builds:
-  - id: default
+  # Linux 构建配置 - Ubuntu 24.04（需要 webkit2_41 标签）
+  - id: linux-webkit2_41
     # 主程序入口
     main: .
     
     # 二进制文件名称
-    # Windows 平台会自动添加 .exe 扩展名
     binary: realm
     
-    # 构建平台 - Linux、Windows、Mac 的 amd64 版本
+    # 构建平台
     goos:
       - linux
-      - windows
-      - darwin
     
-    # 架构 - amd64
+    # 架构
     goarch:
       - amd64
     
-    # 环境变量
-    # 注意：Wails 项目通常需要 CGO，但跨平台构建时可能需要禁用
+    # 环境变量 - Linux 平台需要 CGO（Wails 需要）
     env:
-      - CGO_ENABLED=0
+      - CGO_ENABLED=1
     
     # 构建标志
     flags:
       - -trimpath
+    
+    # 构建标签 - Ubuntu 24.04 使用 webkit2_41
+    tags:
+      - webkit2_41
     
     # LDFlags
     ldflags:
@@ -72,32 +75,134 @@ builds:
       - -X main.Version={{.Version}}
       - -X main.GitCommit={{.Commit}}
       - -X main.BuildTime={{.Date}}
+  
+  # Linux 构建配置 - Ubuntu 22.04（需要 webkit2_40 标签）
+  - id: linux-webkit2_40
+    # 主程序入口
+    main: .
     
-    # 忽略不需要的平台和架构组合
-    ignore:
-      - goos: windows
-        goarch: arm
-      - goos: windows
-        goarch: arm64
-      - goos: linux
-        goarch: arm
-      - goos: linux
-        goarch: arm64
-      - goos: darwin
-        goarch: arm
-      - goos: darwin
-        goarch: arm64
-      - goos: freebsd
-      - goos: openbsd
-      - goos: netbsd
+    # 二进制文件名称
+    binary: realm
+    
+    # 构建平台
+    goos:
+      - linux
+    
+    # 架构
+    goarch:
+      - amd64
+    
+    # 环境变量 - Linux 平台需要 CGO（Wails 需要）
+    env:
+      - CGO_ENABLED=1
+    
+    # 构建标志
+    flags:
+      - -trimpath
+    
+    # 构建标签 - Ubuntu 22.04 使用 webkit2_40
+    tags:
+      - webkit2_40 
+      - -tags desktop,production
+
+    # LDFlags
+    ldflags:
+      - -s -w
+      - -X main.Version={{.Version}}
+      - -X main.GitCommit={{.Commit}}
+      - -X main.BuildTime={{.Date}}
+  
+  # Windows 构建配置
+  - id: windows
+    main: .
+    binary: realm
+    goos:
+      - windows
+    goarch:
+      - amd64
+    env:
+      - CGO_ENABLED=0
+    flags:
+      - -trimpath
+    # 构建标签 
+    tags:
+      - webkit2_40 
+      - -tags desktop,production
+    ldflags:
+      - -s -w 
+      - -H windowsgui
+      - -X main.Version={{.Version}}
+      - -X main.GitCommit={{.Commit}}
+      - -X main.BuildTime={{.Date}}
+  
+  # macOS 构建配置
+  - id: darwin
+    main: .
+    binary: realm
+    goos:
+      - darwin
+    goarch:
+      - amd64
+    env:
+      - CGO_ENABLED=0
+    flags:
+      - -trimpath
+    # 构建标签
+    tags:
+      - webkit2_40 
+      - -tags desktop,production
+    ldflags:
+      - -s -w
+      - -X main.Version={{.Version}}
+      - -X main.GitCommit={{.Commit}}
+      - -X main.BuildTime={{.Date}}
 
 # 归档配置
 archives:
-  - id: default
-    # 文件名模板
-    name_template: "{{ .ProjectName }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}"
-    
+  # Ubuntu 24.04 归档配置（webkit2_41）
+  - id: linux-webkit2_41
+    builds:
+      - linux-webkit2_41
+    # 文件名模板 - 包含 webkit 版本信息
+    name_template: "{{ .ProjectName }}_{{ .Os }}_{{ .Arch }}_webkit2_41"
+    formats:
+      - tar.gz
     # 包含的文件
+    files:
+      - LICENSE
+      - README.md
+  
+  # Ubuntu 22.04 归档配置（webkit2_40）
+  - id: linux-webkit2_40
+    builds:
+      - linux-webkit2_40
+    # 文件名模板 - 包含 webkit 版本信息
+    name_template: "{{ .ProjectName }}_{{ .Os }}_{{ .Arch }}_webkit2_40"
+    formats:
+      - tar.gz
+    # 包含的文件
+    files:
+      - LICENSE
+      - README.md
+  
+  # Windows 归档配置
+  - id: windows
+    builds:
+      - windows
+    name_template: "{{ .ProjectName }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}"
+    formats:
+      - zip
+    files:
+      - LICENSE
+      - README.md
+  
+  # macOS 归档配置
+  - id: darwin
+    builds:
+      - darwin
+    name_template: "{{ .ProjectName }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}"
+    formats:
+      - tar.gz
     files:
       - LICENSE
       - README.md

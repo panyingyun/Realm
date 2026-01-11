@@ -3,3 +3,4 @@ frontend/dist
 realm
 realm.db
 build/bin/realm
+dist/
