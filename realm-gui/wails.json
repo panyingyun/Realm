@@ -7,7 +7,13 @@
   "frontend:dev:watcher": "npm run dev",
   "frontend:dev:serverUrl": "auto",
   "author": {
-    "name": "michaeltosmart",
-    "email": "michaeltosmart@gmail.com"
+    "name": "panyingyun",
+    "email": "panyingyun@gmail.com"
+  },
+  "info": {
+    "productName": "Realm",
+    "productVersion": "1.6.0",
+    "copyright": "Copyright © 2026 panyingyun All rights reserved",
+    "comments": "Realm 密码管理器应用"
   }
 }
