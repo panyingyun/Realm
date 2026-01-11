@@ -1,5 +1,11 @@
 # GoReleaser 配置文件
 # 用于自动化构建和发布多个平台版本
+#
+# 注意：
+# 1. Linux 版本需要在 Linux 系统上构建（需要 CGO 和 gcc）
+# 2. macOS 版本需要在 macOS 系统上构建（需要 macOS SDK）
+# 3. Windows 版本可以在任何系统上交叉编译
+# 4. 如果只想构建当前平台的版本，可以使用 --skip 参数跳过其他平台
 
 version: 2
 
@@ -34,14 +40,15 @@ release:
 before:
   hooks:
     - go mod tidy
-    - npm --prefix frontend install
-    - npm --prefix frontend run build
-    # 注意：Wails 应用需要使用 wails build 命令
-    # 但由于 GoReleaser 使用 go build，我们需要确保构建标签正确传递
+    # 注意：如果 npm 不在 PATH 中，可以注释掉以下两行
+    # 前提是前端资源已经构建完成（frontend/dist 目录存在）
+    # - npm --prefix frontend install
+    # - npm --prefix frontend run build
 
 # 构建配置 - 支持多个平台和架构
 builds:
   # Linux 构建配置 - Ubuntu 24.04（需要 webkit2_41 标签）
+  # 注意：此构建需要在 Linux 系统上执行，需要安装 gcc 和 webkit2gtk-4.1-dev
   - id: linux-webkit2_41
     # 主程序入口
     main: .
@@ -58,6 +65,7 @@ builds:
       - amd64
     
     # 环境变量 - Linux 平台需要 CGO（Wails 需要）
+    # 在 Windows 上交叉编译时，需要安装 gcc（如 MinGW 或 TDM-GCC）
     env:
       - CGO_ENABLED=1
     
@@ -68,6 +76,8 @@ builds:
     # 构建标签 - Ubuntu 24.04 使用 webkit2_41
     tags:
       - webkit2_41
+      - desktop
+      - production
     
     # LDFlags
     ldflags:
@@ -77,6 +87,7 @@ builds:
       - -X main.BuildTime={{.Date}}
   
   # Linux 构建配置 - Ubuntu 22.04（需要 webkit2_40 标签）
+  # 注意：此构建需要在 Linux 系统上执行，需要安装 gcc 和 webkit2gtk-4.0-dev
   - id: linux-webkit2_40
     # 主程序入口
     main: .
@@ -102,8 +113,9 @@ builds:
     
     # 构建标签 - Ubuntu 22.04 使用 webkit2_40
     tags:
-      - webkit2_40 
-      - desktop,production
+      - webkit2_40
+      - desktop
+      - production
 
     # LDFlags
     ldflags:
@@ -124,18 +136,19 @@ builds:
       - CGO_ENABLED=0
     flags:
       - -trimpath
-    # 构建标签 
+    # 构建标签 - Windows 平台
     tags:
-      - webkit2_40 
-      - desktop,production
+      - desktop
+      - production
     ldflags:
-      - -s -w 
-      - -H windowsgui
+      - -s -w
+      - -H=windowsgui
       - -X main.Version={{.Version}}
       - -X main.GitCommit={{.Commit}}
       - -X main.BuildTime={{.Date}}
   
   # macOS 构建配置
+  # 注意：此构建需要在 macOS 系统上执行，需要安装 Xcode
   - id: darwin
     main: .
     binary: realm
@@ -143,15 +156,15 @@ builds:
       - darwin
     goarch:
       - amd64
-    # 环境变量 - Linux 平台需要 CGO（Wails 需要）
+    # 环境变量 - macOS 平台
     env:
-      - CGO_ENABLED=1
+      - CGO_ENABLED=0
     flags:
       - -trimpath
-    # 构建标签
+    # 构建标签 - macOS 平台
     tags:
-      - webkit2_40 
-      - desktop,production
+      - desktop
+      - production
     ldflags:
       - -s -w
       - -X main.Version={{.Version}}
@@ -161,9 +174,8 @@ builds:
 # 归档配置
 archives:
   # Ubuntu 24.04 归档配置（webkit2_41）
+  # 注意：id 必须与 builds 中的 id 匹配，GoReleaser 会自动关联
   - id: linux-webkit2_41
-    builds:
-      - linux-webkit2_41
     # 文件名模板 - 包含 webkit 版本信息
     name_template: "{{ .ProjectName }}_{{ .Os }}_{{ .Arch }}_webkit2_41"
     formats:
@@ -175,8 +187,6 @@ archives:
   
   # Ubuntu 22.04 归档配置（webkit2_40）
   - id: linux-webkit2_40
-    builds:
-      - linux-webkit2_40
     # 文件名模板 - 包含 webkit 版本信息
     name_template: "{{ .ProjectName }}_{{ .Os }}_{{ .Arch }}_webkit2_40"
     formats:
@@ -188,8 +198,6 @@ archives:
   
   # Windows 归档配置
   - id: windows
-    builds:
-      - windows
     name_template: "{{ .ProjectName }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}"
     formats:
       - zip
@@ -199,8 +207,6 @@ archives:
   
   # macOS 归档配置
   - id: darwin
-    builds:
-      - darwin
     name_template: "{{ .ProjectName }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}"
     formats:
       - tar.gz

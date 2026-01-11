@@ -138,12 +138,170 @@ sudo apt install libwebkit2gtk-4.0-dev libgtk-3-dev -y
 
 ## 自动化构建和发布
 
-项目配置了 GoReleaser 用于自动化构建和发布。配置文件：`.goreleaser.yml`
+项目配置了 GoReleaser 用于自动化构建和发布多个平台版本。
 
-使用 GoReleaser 发布：
+### 安装 GoReleaser
+
 ```bash
-goreleaser release
+# 使用 Go 安装
+go install github.com/goreleaser/goreleaser/v2@latest
+
+# 或使用包管理器（Windows）
+choco install goreleaser
+
+# 或使用包管理器（macOS）
+brew install goreleaser
 ```
+
+### 配置文件说明
+
+- **`.goreleaser.yml`**: 主配置文件，支持所有平台构建
+  - Linux (Ubuntu 24.04): `webkit2_41` 标签
+  - Linux (Ubuntu 22.04): `webkit2_40` 标签
+  - Windows: amd64 版本
+  - macOS: amd64 版本
+
+- **`.goreleaser.windows.yml`**: Windows 专用配置文件，用于在 Windows 系统上只构建 Windows 版本
+
+### 使用方法
+
+#### 1. 测试构建（快照模式）
+
+```bash
+# 使用主配置文件测试构建（会尝试构建所有平台）
+goreleaser build --snapshot --clean
+
+# 在 Windows 上只构建 Windows 版本
+goreleaser build --snapshot --clean -f .goreleaser.windows.yml
+
+# 跳过验证步骤
+goreleaser build --snapshot --clean --skip=validate
+```
+
+#### 2. 验证配置文件
+
+```bash
+# 检查配置文件语法
+goreleaser check
+```
+
+#### 3. 发布版本
+
+**前提条件**：
+- 需要创建 Git 标签（如 `v1.0.0`）
+- 需要设置 GitHub Token（环境变量 `GITHUB_TOKEN`）
+
+```bash
+# 创建 Git 标签
+git tag -a v1.0.0 -m "Release v1.0.0"
+git push origin v1.0.0
+
+# 设置 GitHub Token（Windows PowerShell）
+$env:GITHUB_TOKEN="your_github_token"
+
+# 设置 GitHub Token（Linux/macOS）
+export GITHUB_TOKEN=your_github_token
+
+# 发布版本
+goreleaser release
+
+# 发布版本（跳过发布，只构建）
+goreleaser release --skip=publish
+```
+
+#### 4. 平台特定构建
+
+**在 Windows 系统上**：
+```bash
+# 只构建 Windows 版本
+goreleaser build --snapshot --clean -f .goreleaser.windows.yml
+```
+
+**在 Linux 系统上**：
+```bash
+# 构建所有平台（需要安装 gcc 和 webkit2gtk）
+goreleaser build --snapshot --clean
+
+# 或只构建 Linux 版本（需要修改配置文件）
+```
+
+**在 macOS 系统上**：
+```bash
+# 构建所有平台（需要 Xcode）
+goreleaser build --snapshot --clean
+```
+
+### 构建输出
+
+构建完成后，文件位于 `dist/` 目录：
+
+- `realm_linux_amd64_webkit2_41.tar.gz` - Ubuntu 24.04 版本
+- `realm_linux_amd64_webkit2_40.tar.gz` - Ubuntu 22.04 版本
+- `realm_windows_amd64.zip` - Windows 版本
+- `realm_darwin_amd64.tar.gz` - macOS 版本
+- `realm_1.6.0_checksums.txt` - 校验和文件
+
+### 常见问题
+
+#### 1. Linux 构建失败：找不到 gcc
+
+**错误信息**: `cgo: C compiler "gcc" not found`
+
+**解决方案**：
+- Linux 版本需要在 Linux 系统上构建
+- 或安装 gcc 工具链（Windows 上可安装 MinGW 或 TDM-GCC）
+
+#### 2. npm 命令未找到
+
+**错误信息**: `exec: "npm": executable file not found`
+
+**解决方案**：
+- 确保前端资源已构建（`frontend/dist` 目录存在）
+- 或安装 Node.js 和 npm
+- 或注释掉 `.goreleaser.yml` 中的 npm 相关钩子
+
+#### 3. 归档配置弃用警告
+
+**警告信息**: `DEPRECATED: archives.builds should not be used anymore`
+
+**解决方案**：
+- 已修复：移除了 `archives.builds` 字段
+- GoReleaser 会自动根据 `id` 匹配构建和归档配置
+
+#### 4. 构建标签错误
+
+**错误信息**: `Error: Wails applications will not build without the correct build tags.`
+
+**解决方案**：
+- Linux 平台必须使用 `webkit2_41` 或 `webkit2_40` 标签
+- Windows 和 macOS 平台使用 `desktop` 和 `production` 标签
+
+### 构建配置说明
+
+#### Linux 构建要求
+
+- **Ubuntu 24.04**: 需要 `libwebkit2gtk-4.1-dev` 和 `libgtk-3-dev`
+- **Ubuntu 22.04**: 需要 `libwebkit2gtk-4.0-dev` 和 `libgtk-3-dev`
+- 需要 CGO 支持（`CGO_ENABLED=1`）
+- 需要 gcc 编译器
+
+#### Windows 构建要求
+
+- 不需要 CGO（`CGO_ENABLED=0`）
+- 可以在任何系统上交叉编译
+- 使用 `-H=windowsgui` 隐藏控制台窗口
+
+#### macOS 构建要求
+
+- 需要在 macOS 系统上构建
+- 需要安装 Xcode
+- 不需要 CGO（交叉编译时）
+
+### 参考资源
+
+- [GoReleaser 官方文档](https://goreleaser.com/)
+- [GoReleaser 配置参考](https://goreleaser.com/reference/)
+- [Wails 官方文档](https://wails.io/docs/)
 
 ## 参考资源
 
