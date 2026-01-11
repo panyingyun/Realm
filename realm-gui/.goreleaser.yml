@@ -30,6 +30,13 @@ release:
     
     由 [GoReleaser](https://github.com/goreleaser/goreleaser) 自动生成
 
+# 构建前钩子 - 构建前端资源
+before:
+  hooks:
+    - go mod tidy
+    - npm --prefix frontend install
+    - npm --prefix frontend run build
+
 # 构建配置 - 支持多个平台和架构
 builds:
   - id: default
@@ -37,30 +44,21 @@ builds:
     main: .
     
     # 二进制文件名称
+    # Windows 平台会自动添加 .exe 扩展名
     binary: realm
     
-    # 构建命令
+    # 构建平台 - Linux、Windows、Mac 的 amd64 版本
     goos:
       - linux
       - windows
       - darwin
-      - freebsd
-      - openbsd
-      - netbsd
     
-    # 架构
+    # 架构 - amd64
     goarch:
       - amd64
-      - arm64
-      - arm
-      - 386
-    
-    # ARM架构版本（适用于arm和arm64）
-    goarm:
-      - "6"
-      - "7"
     
     # 环境变量
+    # 注意：Wails 项目通常需要 CGO，但跨平台构建时可能需要禁用
     env:
       - CGO_ENABLED=0
     
@@ -75,18 +73,23 @@ builds:
       - -X main.GitCommit={{.Commit}}
       - -X main.BuildTime={{.Date}}
     
-    # 忽略错误
+    # 忽略不需要的平台和架构组合
     ignore:
       - goos: windows
         goarch: arm
       - goos: windows
         goarch: arm64
+      - goos: linux
+        goarch: arm
+      - goos: linux
+        goarch: arm64
+      - goos: darwin
+        goarch: arm
+      - goos: darwin
+        goarch: arm64
       - goos: freebsd
-        goarch: arm
       - goos: openbsd
-        goarch: arm
       - goos: netbsd
-        goarch: arm
 
 # 归档配置
 archives:
