@@ -44,25 +44,14 @@ builds:
       - linux
       - windows
       - darwin
-      - freebsd
-      - openbsd
-      - netbsd
     
     # 架构
     goarch:
       - amd64
-      - arm64
-      - arm
-      - 386
-    
-    # ARM架构版本（适用于arm和arm64）
-    goarm:
-      - "6"
-      - "7"
     
     # 环境变量
     env:
-      - CGO_ENABLED=1
+      - CGO_ENABLED=0
     
     # 构建标志
     flags:
