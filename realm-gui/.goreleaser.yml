@@ -143,8 +143,9 @@ builds:
       - darwin
     goarch:
       - amd64
+    # 环境变量 - Linux 平台需要 CGO（Wails 需要）
     env:
-      - CGO_ENABLED=0
+      - CGO_ENABLED=1
     flags:
       - -trimpath
     # 构建标签
