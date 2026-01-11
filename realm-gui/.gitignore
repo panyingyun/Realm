@@ -2,3 +2,4 @@ node_modules
 frontend/dist
 realm
 realm.db
+build/bin/realm
