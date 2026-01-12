@@ -162,12 +162,10 @@ export const MainPage: React.FC = () => {
 
   const filteredPasswords = passwords.filter((pw) => {
     if (!searchQuery) return true;
-    const query = searchQuery.toLowerCase();
-    return (
-      pw.name.toLowerCase().includes(query) ||
-      pw.domain.toLowerCase().includes(query) ||
-      pw.username.toLowerCase().includes(query)
-    );
+    const query = searchQuery.toLowerCase().trim();
+    const name = pw.name.toLowerCase().trim();
+    // Match by Website Name: exact match or partial match
+    return name === query || name.includes(query);
   });
 
   const handleCategoryClick = (category: string) => {
