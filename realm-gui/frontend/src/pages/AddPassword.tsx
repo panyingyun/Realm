@@ -9,7 +9,7 @@ interface AddPasswordModalProps {
 }
 
 export const AddPasswordModal: React.FC<AddPasswordModalProps> = ({ onClose }) => {
-  const [passwordType, setPasswordType] = useState('Financial');
+  const [passwordType, setPasswordType] = useState('Work');
   const [websiteName, setWebsiteName] = useState('');
   const [websiteLink, setWebsiteLink] = useState('');
   const [username, setUsername] = useState('');
@@ -18,7 +18,6 @@ export const AddPasswordModal: React.FC<AddPasswordModalProps> = ({ onClose }) =
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
   const [usernameError, setUsernameError] = useState('');
-  const [websiteLinkError, setWebsiteLinkError] = useState('');
   const navigate = useNavigate();
   const { t } = useI18n();
 
@@ -47,7 +46,6 @@ export const AddPasswordModal: React.FC<AddPasswordModalProps> = ({ onClose }) =
 
     // Clear previous errors
     setUsernameError('');
-    setWebsiteLinkError('');
 
     // Validate username field
     if (!username.trim()) {
@@ -55,11 +53,7 @@ export const AddPasswordModal: React.FC<AddPasswordModalProps> = ({ onClose }) =
       return;
     }
 
-    // Validate website link field
-    if (!websiteLink.trim()) {
-      setWebsiteLinkError(t.addPassword.websiteEmpty);
-      return;
-    }
+    // Website link is optional, no validation needed
 
     if (!websiteName.trim() || !password.trim()) {
       return;
@@ -88,11 +82,21 @@ export const AddPasswordModal: React.FC<AddPasswordModalProps> = ({ onClose }) =
   };
 
   const passwordTypes = [
-    { value: 'Financial', icon: 'account_balance', color: '#DAA520' },
-    { value: 'Social', icon: 'share', color: '#3B82F6' },
-    { value: 'Private', icon: 'description', color: '#A78BFA' },
     { value: 'Work', icon: 'terminal', color: '#4F46E5' },
+    { value: 'Private', icon: 'description', color: '#A78BFA' },
+    { value: 'Social', icon: 'share', color: '#3B82F6' },
+    { value: 'Financial', icon: 'account_balance', color: '#DAA520' },
   ];
+
+  const getCategoryDisplayName = (categoryName: string) => {
+    const categoryMap: { [key: string]: string } = {
+      'Financial': t.categories.financial,
+      'Social': t.categories.social,
+      'Private': t.categories.private,
+      'Work': t.categories.work,
+    };
+    return categoryMap[categoryName] || categoryName;
+  };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center glass-backdrop px-4">
@@ -132,7 +136,7 @@ export const AddPasswordModal: React.FC<AddPasswordModalProps> = ({ onClose }) =
                       <span className="material-symbols-outlined" style={{ color: type.color }}>
                         {type.icon}
                       </span>
-                      <span className="text-[12px] font-medium text-[#64748B] dark:text-slate-400">{type.value}</span>
+                      <span className="text-[12px] font-medium text-[#64748B] dark:text-slate-400">{getCategoryDisplayName(type.value)}</span>
                     </div>
                   </label>
                 ))}
@@ -154,31 +158,18 @@ export const AddPasswordModal: React.FC<AddPasswordModalProps> = ({ onClose }) =
             </div>
             <div className="flex flex-col gap-2">
               <label className="text-[#64748B] dark:text-slate-400 text-[12px] font-medium uppercase tracking-wider">
-                {t.addPassword.websiteLink} <span className="normal-case opacity-70">(Optional)</span>
+                {t.addPassword.websiteLink} <span className="normal-case opacity-70">({t.addPassword.optional})</span>
               </label>
               <div className="relative group">
                 <input
                   type="text"
                   value={websiteLink}
-                  onChange={(e) => {
-                    setWebsiteLink(e.target.value);
-                    // Clear error when user starts typing
-                    if (websiteLinkError) {
-                      setWebsiteLinkError('');
-                    }
-                  }}
-                  className={`w-full h-12 bg-background-light dark:bg-slate-800 border rounded-xl px-4 text-[#0e0d1b] dark:text-white placeholder-[#94A3B8] focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none ${
-                    websiteLinkError
-                      ? 'border-red-500 dark:border-red-500 focus:border-red-500 focus:ring-red-500/20'
-                      : 'border-[#E2E8F0] dark:border-slate-700'
-                  }`}
+                  onChange={(e) => setWebsiteLink(e.target.value)}
+                  className="w-full h-12 bg-background-light dark:bg-slate-800 border border-[#E2E8F0] dark:border-slate-700 rounded-xl px-4 text-[#0e0d1b] dark:text-white placeholder-[#94A3B8] focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none"
                   placeholder={t.addPassword.websiteLinkPlaceholder}
                 />
                 <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-[#94A3B8]">public</span>
               </div>
-              {websiteLinkError && (
-                <p className="text-red-500 text-sm mt-1 px-1">{websiteLinkError}</p>
-              )}
             </div>
             <div className="flex flex-col gap-2">
               <label className="text-[#64748B] dark:text-slate-400 text-[12px] font-medium uppercase tracking-wider">{t.addPassword.usernameOrEmail}</label>

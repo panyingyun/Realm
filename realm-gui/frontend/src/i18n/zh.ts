@@ -50,9 +50,9 @@ export const zh = {
     subtitle: '输入详细信息以保护新的账户凭据',
     passwordType: '密码类型',
     websiteName: '网站名称',
-    websiteNamePlaceholder: '例如：Netflix, GitHub',
+    websiteNamePlaceholder: '例如：Google，微信, 追光动画',
     websiteLink: '网站链接',
-    websiteLinkPlaceholder: 'https://www.example.com',
+    websiteLinkPlaceholder: 'https://www.zhuiguang.com',
     usernameOrEmail: '用户名或邮箱',
     usernameOrEmailPlaceholder: '输入用户名或邮箱',
     password: '密码',
@@ -62,6 +62,7 @@ export const zh = {
     adding: '添加中...',
     usernameEmpty: '你输入的用户名为空',
     websiteEmpty: '你输入的webside为空',
+    optional: '可选',
   },
 
   // Settings Page

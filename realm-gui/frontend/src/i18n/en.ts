@@ -50,9 +50,9 @@ export const en = {
     subtitle: 'Enter details to secure a new account credential',
     passwordType: 'Password Type',
     websiteName: 'Website Name',
-    websiteNamePlaceholder: 'e.g. Netflix, GitHub',
+    websiteNamePlaceholder: 'e.g. Google, WeChat, zhuiguang',
     websiteLink: 'Website Link',
-    websiteLinkPlaceholder: 'https://example.com',
+    websiteLinkPlaceholder: 'https://www.zhuiguang.com',
     usernameOrEmail: 'Username or Email',
     usernameOrEmailPlaceholder: 'Enter username or email',
     password: 'Password',
@@ -62,6 +62,7 @@ export const en = {
     adding: 'Adding...',
     usernameEmpty: 'Username cannot be empty',
     websiteEmpty: 'Website cannot be empty',
+    optional: 'Optional',
   },
 
   // Settings Page

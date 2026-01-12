@@ -8,7 +8,7 @@ import { useI18n } from '../i18n';
 export const MainPage: React.FC = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [passwords, setPasswords] = useState<Password[]>([]);
-  const [activeCategory, setActiveCategory] = useState('Financial');
+  const [activeCategory, setActiveCategory] = useState('Work');
   const [searchQuery, setSearchQuery] = useState('');
   const [visiblePasswords, setVisiblePasswords] = useState<Set<string>>(new Set());
   const navigate = useNavigate();
@@ -233,7 +233,7 @@ export const MainPage: React.FC = () => {
         </header>
         <div className="flex-1 overflow-y-auto p-8 space-y-6">
           <div className="flex border-b border-slate-200 dark:border-slate-700 gap-8">
-            {['Financial', 'Social', 'Private', 'Work'].map((cat) => {
+            {['Work', 'Private', 'Social', 'Financial'].map((cat) => {
               const categoryName = cat === 'Financial' ? t.categories.financial :
                                    cat === 'Social' ? t.categories.social :
                                    cat === 'Private' ? t.categories.private :
