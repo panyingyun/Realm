@@ -49,15 +49,25 @@ export const MainPage: React.FC = () => {
       }));
       // Filter out Dashboard category
       const filteredCats = convertedCats.filter(cat => cat.name !== 'Dashboard');
-      setCategories(filteredCats);
+      // Sort categories: Work, Private, Social, Financial, Settings
+      const categoryOrder = ['Work', 'Private', 'Social', 'Financial', 'Settings'];
+      const sortedCats = filteredCats.sort((a, b) => {
+        const indexA = categoryOrder.indexOf(a.name);
+        const indexB = categoryOrder.indexOf(b.name);
+        // If not found in order, put at the end
+        if (indexA === -1) return 1;
+        if (indexB === -1) return -1;
+        return indexA - indexB;
+      });
+      setCategories(sortedCats);
     } catch (error) {
       console.error('Failed to load categories:', error);
       // Mock data for development
       setCategories([
-        { name: 'Financial', icon: 'account_balance', color: 'financial' },
-        { name: 'Social', icon: 'share', color: 'social' },
-        { name: 'Private', icon: 'description', color: 'private' },
         { name: 'Work', icon: 'work', color: 'tech' },
+        { name: 'Private', icon: 'description', color: 'private' },
+        { name: 'Social', icon: 'share', color: 'social' },
+        { name: 'Financial', icon: 'account_balance', color: 'financial' },
         { name: 'Settings', icon: 'settings', color: 'primary' },
       ]);
     }

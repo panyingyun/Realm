@@ -93,10 +93,10 @@ func (a *App) Login(username string, mainPwd string) (bool, error) {
 // GetPasswordCategories returns list of password categories (empty implementation)
 func (a *App) GetPasswordCategories() ([]Category, error) {
 	categories := []Category{
-		{Name: "Financial", Icon: "account_balance", Color: "financial"},
-		{Name: "Social", Icon: "share", Color: "social"},
-		{Name: "Private", Icon: "description", Color: "private"},
 		{Name: "Work", Icon: "work", Color: "tech"},
+		{Name: "Private", Icon: "description", Color: "private"},
+		{Name: "Social", Icon: "share", Color: "social"},
+		{Name: "Financial", Icon: "account_balance", Color: "financial"},
 		{Name: "Settings", Icon: "settings", Color: "primary"},
 	}
 	return categories, nil
