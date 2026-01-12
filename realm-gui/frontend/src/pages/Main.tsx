@@ -168,7 +168,7 @@ export const MainPage: React.FC = () => {
   };
 
   return (
-    <div className="flex h-screen overflow-hidden bg-background-slate font-display text-slate-900">
+    <div className="flex h-screen overflow-hidden bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100">
       <aside className="w-64 border-r border-slate-200 bg-white dark:bg-slate-900 dark:border-slate-800 flex flex-col justify-between p-6">
         <div className="flex flex-col gap-8">
           <div className="flex items-center gap-3 px-2">
@@ -187,8 +187,8 @@ export const MainPage: React.FC = () => {
                 onClick={() => handleCategoryClick(category.name)}
                 className={`flex items-center gap-3 px-3 py-2.5 rounded-xl cursor-pointer transition-all ${
                   activeCategory === category.name
-                    ? 'sidebar-item-active'
-                    : 'sidebar-item-inactive'
+                    ? 'bg-primary/10 text-primary dark:bg-primary/20 dark:text-primary'
+                    : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800'
                 }`}
               >
                 <span className="material-symbols-outlined text-[20px]">{category.icon}</span>
@@ -241,7 +241,7 @@ export const MainPage: React.FC = () => {
             </button>
           </div>
         </header>
-        <div className="flex-1 overflow-y-auto p-8 space-y-6">
+        <div className="flex-1 overflow-y-auto p-8 space-y-6 bg-background-light dark:bg-background-dark">
           <div className="flex border-b border-slate-200 dark:border-slate-700 gap-8">
             {['Work', 'Private', 'Social', 'Financial'].map((cat) => {
               const categoryName = cat === 'Financial' ? t.categories.financial :
@@ -255,7 +255,7 @@ export const MainPage: React.FC = () => {
                   className={`pb-3 font-medium text-sm transition-colors border-b-2 cursor-pointer ${
                     activeCategory === cat
                       ? 'border-primary text-primary font-semibold'
-                      : 'border-transparent text-slate-500 hover:text-primary'
+                      : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-primary'
                   }`}
                 >
                   {categoryName}

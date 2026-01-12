@@ -50,7 +50,7 @@ export const zh = {
     subtitle: '输入详细信息以保护新的账户凭据',
     passwordType: '密码类型',
     websiteName: '网站名称',
-    websiteNamePlaceholder: '例如：Google，微信, 追光动画',
+    websiteNamePlaceholder: '例如：Google，微信，追光动画',
     websiteLink: '网站链接',
     websiteLinkPlaceholder: 'https://www.zhuiguang.com',
     usernameOrEmail: '用户名或邮箱',
