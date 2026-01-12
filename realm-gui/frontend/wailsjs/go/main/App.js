@@ -18,6 +18,10 @@ export function GetPasswordsByCategory(arg1) {
   return window['go']['main']['App']['GetPasswordsByCategory'](arg1);
 }
 
+export function GetRealmHealth() {
+  return window['go']['main']['App']['GetRealmHealth']();
+}
+
 export function GetSettings() {
   return window['go']['main']['App']['GetSettings']();
 }

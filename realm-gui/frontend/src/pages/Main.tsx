@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useApp } from '../contexts/AppContext';
 import { Category, Password } from '../types';
-import { GetPasswordCategories, GetPasswordsByCategory } from '../../wailsjs/go/main/App';
+import { GetPasswordCategories, GetPasswordsByCategory, GetRealmHealth } from '../../wailsjs/go/main/App';
 import { useI18n } from '../i18n';
 
 export const MainPage: React.FC = () => {
@@ -11,6 +11,7 @@ export const MainPage: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState('Work');
   const [searchQuery, setSearchQuery] = useState('');
   const [visiblePasswords, setVisiblePasswords] = useState<Set<string>>(new Set());
+  const [realmHealth, setRealmHealth] = useState<number>(100);
   const navigate = useNavigate();
   const location = useLocation();
   const prevLocationRef = useRef<string>('');
@@ -19,13 +20,14 @@ export const MainPage: React.FC = () => {
 
   useEffect(() => {
     loadCategories();
+    loadRealmHealth();
   }, []);
 
   useEffect(() => {
     loadPasswords(activeCategory);
   }, [activeCategory]);
 
-  // Refresh passwords when returning from add password page
+  // Refresh passwords and health when returning from add password page
   useEffect(() => {
     // Check if we're returning from /add to /main
     const prevPath = prevLocationRef.current;
@@ -34,6 +36,8 @@ export const MainPage: React.FC = () => {
     if (location.pathname === '/main' && prevPath === '/add') {
       // Refresh passwords for the current active category
       loadPasswords(activeCategory);
+      // Refresh health after adding password
+      loadRealmHealth();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname]);
@@ -89,6 +93,17 @@ export const MainPage: React.FC = () => {
     } catch (error) {
       console.error('Failed to load passwords:', error);
       setPasswords([]);
+    }
+  };
+
+  const loadRealmHealth = async () => {
+    try {
+      const health = await GetRealmHealth();
+      setRealmHealth(Math.round(health));
+    } catch (error) {
+      console.error('Failed to load realm health:', error);
+      // Default to 100% if error
+      setRealmHealth(100);
     }
   };
 
@@ -202,10 +217,10 @@ export const MainPage: React.FC = () => {
         <div className="bg-primary/5 p-4 rounded-xl border border-primary/10">
           <div className="flex items-center justify-between mb-2">
             <span className="text-xs font-semibold text-primary">{t.main.realmHealth}</span>
-            <span className="text-xs font-bold text-primary">92%</span>
+            <span className="text-xs font-bold text-primary">{realmHealth}%</span>
           </div>
           <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-1.5">
-            <div className="bg-primary h-1.5 rounded-full" style={{ width: '92%' }}></div>
+            <div className="bg-primary h-1.5 rounded-full" style={{ width: `${realmHealth}%` }}></div>
           </div>
         </div>
       </aside>

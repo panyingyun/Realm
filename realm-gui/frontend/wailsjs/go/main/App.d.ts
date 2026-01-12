@@ -10,6 +10,8 @@ export function GetPasswordCategories():Promise<Array<main.Category>>;
 
 export function GetPasswordsByCategory(arg1:string):Promise<Array<main.Password>>;
 
+export function GetRealmHealth():Promise<number>;
+
 export function GetSettings():Promise<string>;
 
 export function Login(arg1:string,arg2:string):Promise<boolean>;

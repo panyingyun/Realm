@@ -151,3 +151,62 @@ func QueryPasswordsByCategory(realmdb *gorm.DB, mainPwd string, category string)
 	}
 	return results, nil
 }
+
+// CalculateRealmHealth calculates password health based on password duplication
+// Returns health percentage: 100% - duplicate ratio
+// Health = 100% - (total passwords - unique passwords) / total passwords
+func CalculateRealmHealth(realmdb *gorm.DB, mainPwd string) (float64, error) {
+	ctx := context.Background()
+	// Get all passwords excluding main domain
+	realms, err := dao.QRealm.ListAllWithoutMainDomain(ctx, realmdb, MainDomain)
+	if err != nil {
+		return 0, err
+	}
+
+	// If no passwords, return 100% health
+	if len(realms) == 0 {
+		return 100.0, nil
+	}
+
+	// Decrypt all passwords and count duplicates
+	passwordCount := make(map[string]int)
+	totalPasswords := 0
+
+	for _, realm := range realms {
+		decryptedPwd, err := GetAESDecrypted(mainPwd, realm.Pwdd)
+		if err != nil {
+			// Skip passwords that can't be decrypted
+			continue
+		}
+		// Only count non-empty passwords
+		if !IsStringBlank(decryptedPwd) {
+			passwordCount[decryptedPwd]++
+			totalPasswords++
+		}
+	}
+
+	// If no valid passwords, return 100% health
+	if totalPasswords == 0 {
+		return 100.0, nil
+	}
+
+	// Calculate unique passwords count
+	uniquePasswords := len(passwordCount)
+
+	// Calculate duplicate ratio
+	// duplicateRatio = (total - unique) / total
+	duplicateRatio := float64(totalPasswords-uniquePasswords) / float64(totalPasswords)
+
+	// Health = 100% - duplicate ratio
+	health := (1.0 - duplicateRatio) * 100.0
+
+	// Ensure health is between 0 and 100
+	if health < 0 {
+		health = 0
+	}
+	if health > 100 {
+		health = 100
+	}
+
+	return health, nil
+}

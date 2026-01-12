@@ -164,3 +164,16 @@ func (a *App) GeneratePassword() (string, error) {
 	password := helper.MustGenerate(13, 6, 1, false, false)
 	return string(password), nil
 }
+
+// GetRealmHealth calculates and returns the Realm health percentage
+// Health is calculated as: 100% - password duplication ratio
+func (a *App) GetRealmHealth() (float64, error) {
+	if helper.IsStringBlank(a.mainPwd) {
+		return 0, errors.New("main password is not set, please login first")
+	}
+	health, err := helper.CalculateRealmHealth(a.db, a.mainPwd)
+	if err != nil {
+		return 0, err
+	}
+	return health, nil
+}

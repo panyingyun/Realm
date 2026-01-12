@@ -6,7 +6,6 @@ import { useI18n } from '../i18n';
 
 export const LoginPage: React.FC = () => {
   const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { isAuthenticated, setAuthenticated, settings, updateSettings } = useApp();
@@ -109,21 +108,13 @@ export const LoginPage: React.FC = () => {
                     <p className="text-slate-900 dark:text-white text-sm font-semibold leading-normal pb-2 px-1">{t.login.masterPassword}</p>
                     <div className="flex w-full items-stretch rounded-xl group">
                       <input
-                        type={showPassword ? 'text' : 'password'}
+                        type="password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         onKeyPress={(e) => e.key === 'Enter' && handleLogin()}
-                        className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-slate-900 dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-slate-200 dark:border-white/10 bg-white/50 dark:bg-white/5 focus:border-primary h-14 placeholder:text-slate-400 p-[15px] rounded-r-none border-r-0 pr-2 text-base font-normal leading-normal transition-all"
+                        className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-slate-900 dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-slate-200 dark:border-white/10 bg-white/50 dark:bg-white/5 focus:border-primary h-14 placeholder:text-slate-400 p-[15px] text-base font-normal leading-normal transition-all"
                         placeholder="••••••••"
                       />
-                      <div
-                        onClick={() => setShowPassword(!showPassword)}
-                        className="text-slate-400 flex border border-slate-200 dark:border-white/10 bg-white/50 dark:bg-white/5 items-center justify-center pr-[15px] rounded-r-xl border-l-0 cursor-pointer hover:text-primary transition-colors"
-                      >
-                        <span className="material-symbols-outlined text-2xl">
-                          {showPassword ? 'visibility_off' : 'visibility'}
-                        </span>
-                      </div>
                     </div>
                   </label>
                   <div className="flex justify-between px-1">
