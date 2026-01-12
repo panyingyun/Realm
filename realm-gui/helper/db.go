@@ -57,7 +57,8 @@ func ListAll(realmdb *gorm.DB, mainPwd string) string {
 }
 
 func AddPassword(realmdb *gorm.DB, mainPwd string, name string, domain string, user string, password string, category string) int64 {
-	if IsStringBlank(domain) || IsStringBlank(password) || IsStringBlank(mainPwd) {
+	// Domain is optional, only check password and mainPwd
+	if IsStringBlank(password) || IsStringBlank(mainPwd) {
 		return -1
 	}
 	// Encrypt password using main password
