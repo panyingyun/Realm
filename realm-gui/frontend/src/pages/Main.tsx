@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useApp } from '../contexts/AppContext';
 import { Category, Password } from '../types';
 import { GetPasswordCategories, GetPasswordsByCategory, GetRealmHealth } from '../../wailsjs/go/main/App';
+import { BrowserOpenURL } from '../../wailsjs/runtime/runtime';
 import { useI18n } from '../i18n';
 
 export const MainPage: React.FC = () => {
@@ -180,6 +181,27 @@ export const MainPage: React.FC = () => {
   const handleSignOut = () => {
     setAuthenticated(false);
     navigate('/login');
+  };
+
+  const handleOpenWebsite = (password: Password) => {
+    // If domain is not empty, open in browser
+    if (password.domain && password.domain.trim() !== '') {
+      let url = password.domain.trim();
+      // Add https:// if no protocol specified
+      if (!url.startsWith('http://') && !url.startsWith('https://')) {
+        url = 'https://' + url;
+      }
+      try {
+        BrowserOpenURL(url);
+      } catch (error) {
+        console.error('Failed to open URL:', error);
+        // Fallback: navigate to main page if browser open fails
+        navigate('/main');
+      }
+    } else {
+      // If domain is empty, navigate to main page
+      navigate('/main');
+    }
   };
 
   return (
@@ -368,6 +390,7 @@ export const MainPage: React.FC = () => {
                   </div>
                   <div className="flex gap-2">
                     <button
+                      onClick={() => handleOpenWebsite(password)}
                       className="flex-1 bg-slate-50 dark:bg-slate-700 text-sm font-bold py-2 rounded-xl transition-colors dark:text-slate-300"
                       onMouseEnter={(e) => {
                         e.currentTarget.style.backgroundColor = `${colorValue}10`;
@@ -379,21 +402,6 @@ export const MainPage: React.FC = () => {
                       }}
                     >
                       {password.category === 'Private' ? t.main.readNote : password.category === 'Social' ? t.main.viewProfile : password.category === 'Work' ? t.main.openConsole : t.main.viewAccount}
-                    </button>
-                    <button
-                      className="px-3 bg-slate-50 dark:bg-slate-700 rounded-xl transition-colors dark:text-slate-300"
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.backgroundColor = `${colorValue}10`;
-                        e.currentTarget.style.color = colorValue;
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.backgroundColor = '';
-                        e.currentTarget.style.color = '';
-                      }}
-                    >
-                      <span className="material-symbols-outlined text-[18px]">
-                        {password.category === 'Private' ? 'edit' : password.category === 'Work' ? 'terminal' : 'open_in_new'}
-                      </span>
                     </button>
                   </div>
                 </div>
