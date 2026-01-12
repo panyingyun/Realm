@@ -51,108 +51,6 @@ npm --prefix frontend install
 npm --prefix frontend run build
 ```
 
-### 构建各平台版本
-
-#### Linux amd64 版本
-
-```bash
-wails build -tags webkit2_41 -platform linux/amd64
-```
-
-**输出位置**: `build/bin/realm`
-
-**说明**: Linux 平台必须使用 `-tags webkit2_41` 构建标签
-
-#### Windows amd64 版本
-
-**在 Windows 系统上**：
-```bash
-wails build -platform windows/amd64
-```
-
-**在 Linux/macOS 上交叉编译**：
-```bash
-export GOOS=windows
-export GOARCH=amd64
-export CGO_ENABLED=0
-wails build -platform windows/amd64
-```
-
-**输出位置**: `build/bin/realm.exe`
-
-#### macOS (Darwin) amd64 版本
-
-```bash
-wails build -platform darwin/amd64
-```
-
-**输出位置**: `build/bin/realm` 或 `build/bin/realm.app`
-
-**说明**: macOS 版本通常需要在 macOS 系统上构建
-
-### 使用 Makefile 构建
-
-```bash
-# 构建当前平台版本
-make build
-
-# 开发模式
-make dev
-```
-
-### 构建参数说明
-
-- `-platform <os/arch>`: 指定目标平台和架构
-  - `linux/amd64`: Linux 64位
-  - `windows/amd64`: Windows 64位
-  - `darwin/amd64`: macOS Intel
-  - `darwin/arm64`: macOS Apple Silicon
-
-- `-tags <tags>`: 指定构建标签
-  - `webkit2_41`: Linux 平台使用 WebKit2GTK 4.1（必需）
-  - `webkit2_40`: Linux 平台使用 WebKit2GTK 4.0
-
-- `-package`: 打包为平台特定的安装包（如 .app、.dmg、.deb 等）
-
-### 常见问题
-
-#### 1. Linux 构建失败：找不到 webkit2gtk
-
-```bash
-# Ubuntu 24.04
-sudo apt install libwebkit2gtk-4.1-dev libgtk-3-dev -y
-
-# Ubuntu 22.04
-sudo apt install libwebkit2gtk-4.0-dev libgtk-3-dev -y
-```
-
-#### 2. 构建标签错误
-
-**错误信息**: `Error: Wails applications will not build without the correct build tags.`
-
-**解决方案**: Linux 平台必须使用 `-tags webkit2_41` 或 `-tags webkit2_40`
-
-#### 3. 交叉编译 Windows 版本
-
-确保设置了 `CGO_ENABLED=0`，Windows 版本不需要 CGO
-
-## 自动化构建和发布
-
-项目配置了 GoReleaser 用于自动化构建和发布多个平台版本。
-
-### 安装 GoReleaser
-
-```bash
-# 使用 Go 安装
-go install github.com/goreleaser/goreleaser/v2@latest
-
-# 或使用包管理器（Windows）
-choco install goreleaser
-
-# 或使用包管理器（macOS）
-brew install goreleaser
-```
-
 ### 配置文件说明
 
 - **`.goreleaser.yml`**: 主配置文件，支持所有平台构建
@@ -163,72 +61,111 @@ brew install goreleaser
 
 - **`.goreleaser.windows.yml`**: Windows 专用配置文件，用于在 Windows 系统上只构建 Windows 版本
 
+- **`.goreleaser.ubuntu22.04.yml`**: Ubuntu 22.04 专用配置文件，用于在 Ubuntu 22.04 系统上构建 Linux 版本（使用 `webkit2_40` 标签）
+
+- **`.goreleaser.ubuntu24.04.yml`**: Ubuntu 24.04 专用配置文件，用于在 Ubuntu 24.04 系统上构建 Linux 版本（使用 `webkit2_41` 标签）
+
+- **`.goreleaser.macos.yml`**: macOS 专用配置文件，用于在 macOS 系统上只构建 macOS 版本
+
 ### 使用方法
 
 #### 1. 测试构建（快照模式）
-
-```bash
-# 使用主配置文件测试构建（会尝试构建所有平台）
-goreleaser build --snapshot --clean
-
-# 在 Windows 上只构建 Windows 版本
-goreleaser build --snapshot --clean -f .goreleaser.windows.yml
-
-# 跳过验证步骤
-goreleaser build --snapshot --clean --skip=validate
-```
-
-#### 2. 验证配置文件
-
-```bash
-# 检查配置文件语法
-goreleaser check
-```
-
-#### 3. 发布版本
-
-**前提条件**：
-- 需要创建 Git 标签（如 `v1.0.0`）
-- 需要设置 GitHub Token（环境变量 `GITHUB_TOKEN`）
-
-```bash
-# 创建 Git 标签
-git tag -a v1.0.0 -m "Release v1.0.0"
-git push origin v1.0.0
-
-# 设置 GitHub Token（Windows PowerShell）
-$env:GITHUB_TOKEN="your_github_token"
-
-# 设置 GitHub Token（Linux/macOS）
-export GITHUB_TOKEN=your_github_token
-
-# 发布版本
-goreleaser release
-
-# 发布版本（跳过发布，只构建）
-goreleaser release --skip=publish
-```
-
-#### 4. 平台特定构建
 
 **在 Windows 系统上**：
 ```bash
 # 只构建 Windows 版本
 goreleaser build --snapshot --clean -f .goreleaser.windows.yml
+
+# 验证配置文件
+goreleaser check -f .goreleaser.windows.yml
 ```
 
-**在 Linux 系统上**：
+**在 Ubuntu 22.04 系统上**：
 ```bash
-# 构建所有平台（需要安装 gcc 和 webkit2gtk）
-goreleaser build --snapshot --clean
+# 只构建 Ubuntu 22.04 版本（使用 webkit2_40）
+goreleaser build --snapshot --clean -f .goreleaser.ubuntu22.04.yml
 
-# 或只构建 Linux 版本（需要修改配置文件）
+# 验证配置文件
+goreleaser check -f .goreleaser.ubuntu22.04.yml
+```
+
+**在 Ubuntu 24.04 系统上**：
+```bash
+# 只构建 Ubuntu 24.04 版本（使用 webkit2_41）
+goreleaser build --snapshot --clean -f .goreleaser.ubuntu24.04.yml
+
+# 验证配置文件
+goreleaser check -f .goreleaser.ubuntu24.04.yml
 ```
 
 **在 macOS 系统上**：
 ```bash
-# 构建所有平台（需要 Xcode）
+# 只构建 macOS 版本
+goreleaser build --snapshot --clean -f .goreleaser.macos.yml
+
+# 验证配置文件
+goreleaser check -f .goreleaser.macos.yml
+
+# 或构建所有平台（需要 Xcode）
 goreleaser build --snapshot --clean
+```
+
+#### 2. 发布版本
+
+**前提条件**：
+- 需要创建 Git 标签（如 `v1.0.0`）
+- 需要设置 GitHub Token（环境变量 `GITHUB_TOKEN`）
+
+**在 Ubuntu 22.04 上发布**：
+```bash
+# 创建 Git 标签
+git tag -a v1.0.0 -m "Release v1.0.0"
+git push origin v1.0.0
+
+# 设置 GitHub Token
+export GITHUB_TOKEN=your_github_token
+
+# 发布 Ubuntu 22.04 版本
+goreleaser release -f .goreleaser.ubuntu22.04.yml
+```
+
+**在 Ubuntu 24.04 上发布**：
+```bash
+# 创建 Git 标签
+git tag -a v1.0.0 -m "Release v1.0.0"
+git push origin v1.0.0
+
+# 设置 GitHub Token
+export GITHUB_TOKEN=your_github_token
+
+# 发布 Ubuntu 24.04 版本
+goreleaser release -f .goreleaser.ubuntu24.04.yml
+```
+
+**在 macOS 上发布**：
+```bash
+# 创建 Git 标签
+git tag -a v1.0.0 -m "Release v1.0.0"
+git push origin v1.0.0
+
+# 设置 GitHub Token
+export GITHUB_TOKEN=your_github_token
+
+# 发布 macOS 版本
+goreleaser release -f .goreleaser.macos.yml
+```
+
+**在 Windows 上发布**：
+```bash
+# 创建 Git 标签
+git tag -a v1.0.0 -m "Release v1.0.0"
+git push origin v1.0.0
+
+# 设置 GitHub Token（PowerShell）
+$env:GITHUB_TOKEN="your_github_token"
+
+# 发布 Windows 版本
+goreleaser release -f .goreleaser.windows.yml
 ```
 
 ### 构建输出

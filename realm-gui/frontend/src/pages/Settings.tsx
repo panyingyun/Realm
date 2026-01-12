@@ -58,13 +58,13 @@ export const SettingsPage: React.FC = () => {
       <div className="flex h-screen overflow-hidden">
         <aside className="w-64 flex-shrink-0 border-r border-slate-200 dark:border-slate-800 flex flex-col justify-between p-6 bg-white dark:bg-slate-900">
           <div className="flex flex-col gap-8">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-white">
-                <span className="material-symbols-outlined fill-icon">shield_lock</span>
+            <div className="flex items-center gap-3 px-2">
+              <div className="bg-primary p-2 rounded-lg text-white">
+                <span className="material-symbols-outlined block">shield_lock</span>
               </div>
-              <div className="flex flex-col">
-                <h1 className="text-slate-900 dark:text-white text-base font-bold leading-none">{t.main.title}</h1>
-                <p className="text-slate-500 dark:text-slate-400 text-xs font-normal">{t.main.subtitle}</p>
+              <div>
+                <h1 className="text-lg font-bold leading-none dark:text-white">{t.main.title}</h1>
+                <p className="text-primary text-xs font-medium">{t.main.subtitle}</p>
               </div>
             </div>
             <nav className="flex flex-col gap-2">
