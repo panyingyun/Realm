@@ -1,3 +1,6 @@
+/* Import Material Symbols font */
+@import './assets/fonts/material-symbols.css';
+
 * {
     margin: 0;
     padding: 0;

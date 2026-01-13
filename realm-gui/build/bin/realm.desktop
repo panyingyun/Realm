@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=realm
+Exec=/usr/local/bin/realm 
+Icon=appicon--512
+Type=Application
+Categories=GTK;GNOME;Utility;Development;
