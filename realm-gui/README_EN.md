@@ -2,10 +2,11 @@
 
 ## About
 
-Realm is a cross-platform password manager application built with Wails + React + TypeScript. Realm is Local alternatives to 1password
+Realm is a cross-platform password manager application built with Wails + React + TypeScript. Realm is a local alternative to 1Password.
 
-You can configure the project by editing `wails.json`. More information about project settings can be found here:
-https://wails.io/docs/reference/project-config
+## Download & Install
+
+The easiest way is to download the release package directly.
 
 ## Development Environment
 
@@ -97,6 +98,6 @@ wails dev -tags webkit2_41
 If you find Realm useful, consider buying the author a coffee ☕
 
 <div style="display: flex; gap: 10px;">
-  <img src="docs/alipay.jpg" alt="Alipay" width="200" />
-  <img src="docs/wcpay.png" alt="WeChat Pay" width="200" />
+  <img src="docs/alipay.jpg" alt="Alipay" width="200" height="373"/>
+  <img src="docs/wcpay.png" alt="WeChat Pay" width="200" height="373"/>
 </div>

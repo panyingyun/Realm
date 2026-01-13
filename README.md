@@ -330,7 +330,7 @@ CREATE TABLE `setting` (
 如果你觉得 Realm 软件对你有帮助，欢迎请作者喝一杯咖啡 ☕
 
 <div style="display: flex; gap: 10px;">
-  <img src="realm-gui/docs/alipay.jpg" alt="支付宝" width="200" />
-  <img src="realm-gui/docs/wcpay.png" alt="微信支付" width="200" />
+  <img src="docs/alipay.jpg" alt="支付宝" width="200"  height="373"/>
+  <img src="docs/wcpay.png" alt="微信支付" width="200" height="373"/>
 </div>
 
