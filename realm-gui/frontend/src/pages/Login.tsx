@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useApp } from '../contexts/AppContext';
 import { Login } from '../../wailsjs/go/main/App';
 import { useI18n } from '../i18n';
+import appIcon from '../assets/images/appicon.png';
 
 export const LoginPage: React.FC = () => {
   const [password, setPassword] = useState('');
@@ -67,18 +68,16 @@ export const LoginPage: React.FC = () => {
               <div className="flex items-center bg-white/50 dark:bg-white/10 rounded-xl p-1 border border-white/20">
                 <button
                   onClick={toggleLanguage}
-                  className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all ${
-                    lang === 'en' ? 'bg-white dark:bg-white/20 shadow-sm text-primary' : 'text-slate-400 hover:text-primary'
-                  }`}
+                  className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all ${lang === 'en' ? 'bg-white dark:bg-white/20 shadow-sm text-primary' : 'text-slate-400 hover:text-primary'
+                    }`}
                 >
                   EN
                 </button>
                 <div className="w-[1px] h-3 bg-slate-300 dark:bg-slate-700 mx-1"></div>
                 <button
                   onClick={toggleLanguage}
-                  className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all ${
-                    lang === 'zh' ? 'bg-white dark:bg-white/20 shadow-sm text-primary' : 'text-slate-400 hover:text-primary'
-                  }`}
+                  className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all ${lang === 'zh' ? 'bg-white dark:bg-white/20 shadow-sm text-primary' : 'text-slate-400 hover:text-primary'
+                    }`}
                 >
                   中文
                 </button>
@@ -94,8 +93,8 @@ export const LoginPage: React.FC = () => {
           <main className="flex-1 flex items-center justify-center px-4">
             <div className="glass-card w-full max-w-[480px] rounded-xl p-10 shadow-2xl flex flex-col gap-8">
               <div className="flex flex-col items-center gap-4">
-                <div className="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center shadow-lg shadow-indigo-500/30">
-                  <span className="material-symbols-outlined text-white text-4xl">lock</span>
+                <div className="rounded-lg overflow-hidden">
+                  <img src={appIcon} alt="Realm Logo" className="w-16 h-16 object-contain" />
                 </div>
                 <div className="text-center">
                   <h1 className="text-slate-900 dark:text-white text-[32px] font-bold leading-tight">{t.login.title}</h1>

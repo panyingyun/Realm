@@ -4,6 +4,7 @@ import { useApp } from '../contexts/AppContext';
 import { Settings as SettingsType } from '../types';
 import { GetSettings, UpdateSettings } from '../../wailsjs/go/main/App';
 import { useI18n } from '../i18n';
+import appIcon from '../assets/images/appicon.png';
 
 export const SettingsPage: React.FC = () => {
   const { settings, updateSettings: setSettings, setAuthenticated } = useApp();
@@ -59,8 +60,8 @@ export const SettingsPage: React.FC = () => {
         <aside className="w-64 flex-shrink-0 border-r border-slate-200 dark:border-slate-800 flex flex-col justify-between p-6 bg-white dark:bg-slate-900">
           <div className="flex flex-col gap-8">
             <div className="flex items-center gap-3 px-2">
-              <div className="bg-primary p-2 rounded-lg text-white">
-                <span className="material-symbols-outlined block">shield_lock</span>
+              <div className="rounded-lg overflow-hidden">
+                <img src={appIcon} alt="Realm Logo" className="w-16 h-16 object-contain" />
               </div>
               <div>
                 <h1 className="text-lg font-bold leading-none dark:text-white">{t.main.title}</h1>

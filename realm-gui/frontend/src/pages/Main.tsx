@@ -5,6 +5,7 @@ import { Category, Password } from '../types';
 import { GetPasswordCategories, GetPasswordsByCategory, GetRealmHealth } from '../../wailsjs/go/main/App';
 import { BrowserOpenURL } from '../../wailsjs/runtime/runtime';
 import { useI18n } from '../i18n';
+import appIcon from '../assets/images/appicon.png';
 
 export const MainPage: React.FC = () => {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -207,8 +208,8 @@ export const MainPage: React.FC = () => {
       <aside className="w-64 border-r border-slate-200 bg-white dark:bg-slate-900 dark:border-slate-800 flex flex-col justify-between p-6">
         <div className="flex flex-col gap-8">
           <div className="flex items-center gap-3 px-2">
-            <div className="bg-primary p-2 rounded-lg text-white">
-              <span className="material-symbols-outlined block">shield_lock</span>
+            <div className="rounded-lg overflow-hidden">
+              <img src={appIcon} alt="Realm Logo" className="w-16 h-16 object-contain" />
             </div>
             <div>
               <h1 className="text-lg font-bold leading-none dark:text-white">{t.main.title}</h1>
@@ -267,12 +268,6 @@ export const MainPage: React.FC = () => {
             >
               <span className="material-symbols-outlined text-[20px]">add</span>
               <span>{t.main.addNew}</span>
-            </button>
-            <button className="p-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors text-slate-600 dark:text-slate-300">
-              <span className="material-symbols-outlined text-[20px]">notifications</span>
-            </button>
-            <button className="p-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors text-slate-600 dark:text-slate-300">
-              <span className="material-symbols-outlined text-[20px]">account_circle</span>
             </button>
           </div>
         </header>
