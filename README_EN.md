@@ -329,6 +329,6 @@ Special thanks to the following open source projects:
 If you find Realm useful, consider buying the author a coffee ☕
 
 <div style="display: flex; gap: 10px;">
-  <img src="docs/alipay.jpg" alt="Alipay" width="200" height="373"/>
-  <img src="docs/wcpay.png" alt="WeChat Pay" width="200" height="373"/>
+  <img src="realm-gui/docs/alipay.jpg" alt="Alipay" width="200" height="373"/>
+  <img src="realm-gui/docs/wcpay.png" alt="WeChat Pay" width="200" height="373"/>
 </div>
