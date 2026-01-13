@@ -96,5 +96,7 @@ wails dev -tags webkit2_41
 
 If you find Realm useful, consider buying the author a coffee ☕
 
-![Alipay](docs/alipay.jpg)
-![WeChat Pay](docs/wcpay.png)
+<div style="display: flex; gap: 10px;">
+  <img src="docs/alipay.jpg" alt="Alipay" width="200" />
+  <img src="docs/wcpay.png" alt="WeChat Pay" width="200" />
+</div>
