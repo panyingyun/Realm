@@ -25,7 +25,10 @@ env:
 	# //for ubuntu22.04
 	# sudo apt install libwebkit2gtk-4.0-dev  libgtk-3-dev -y
 	GOPROXY=https://goproxy.cn/,direct go install github.com/wailsapp/wails/v2/cmd/wails@latest
-
+	@echo "=========install tsc ==========="
+	npm install -g typescript
+	echo "=========install vite ==========="
+	npm install -g vite
 gensql:
 	gentool -dsn "root:Cjj123@tcp(192.168.1.120:6306)/realmdb?charset=utf8mb4&parseTime=True&loc=Local" -outPath "/home/yypan/panyingyun/Realm/realm-gui/dao/query"
 
