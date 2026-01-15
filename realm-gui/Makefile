@@ -32,11 +32,16 @@ env:
 gensql:
 	gentool -dsn "root:Cjj123@tcp(192.168.1.120:6306)/realmdb?charset=utf8mb4&parseTime=True&loc=Local" -outPath "/home/yypan/panyingyun/Realm/realm-gui/dao/query"
 
-dev:
+dev_ubuntu2204:
+	go mod tidy
+	gofumpt -l -w .
+	wails dev -tags webkit2_40
+
+dev_ubuntu2404:
 	go mod tidy
 	gofumpt -l -w .
 	wails dev -tags webkit2_41
-		
+			
 clean:
 	go clean -i .
 

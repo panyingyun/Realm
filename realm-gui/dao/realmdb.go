@@ -75,14 +75,19 @@ func (rd *RealmDao) UpdateDomainPasswd(ctx context.Context, db *gorm.DB, realm *
 }
 
 // Query a settings from database
-func (sd *SettingDao) QuerySettings(ctx context.Context, db *gorm.DB) (*model.Setting, error) {
+// defaultLanguage is used when creating default settings record
+func (sd *SettingDao) QuerySettings(ctx context.Context, db *gorm.DB, defaultLanguage string) (*model.Setting, error) {
 	u := query.Use(db).Setting
 	// 在查询数据库时会自动添加 LIMIT 1 条件，如果没有,则创建一台默认记录
 	setting, err := u.WithContext(ctx).First()
 	if err != nil {
+		// Use system default language if provided, otherwise default to "en"
+		if defaultLanguage != "zh" && defaultLanguage != "en" {
+			defaultLanguage = "en"
+		}
 		u.WithContext(ctx).Create(&model.Setting{
 			ID:       1,
-			Language: "en",
+			Language: defaultLanguage,
 			Theme:    "light",
 		})
 	}

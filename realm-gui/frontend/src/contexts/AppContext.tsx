@@ -10,6 +10,32 @@ interface AppContextType {
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
+// Get system default language
+const getSystemLanguage = (): string => {
+  try {
+    const lang = navigator.language || (navigator as any).userLanguage || 'en';
+    // Check if language starts with "zh" (Chinese)
+    if (lang.toLowerCase().startsWith('zh')) {
+      return 'zh';
+    }
+  } catch (error) {
+    console.error('Failed to detect system language:', error);
+  }
+  return 'en';
+};
+
+// Get system default theme
+const getSystemTheme = (): string => {
+  try {
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      return 'dark';
+    }
+  } catch (error) {
+    console.error('Failed to detect system theme:', error);
+  }
+  return 'light';
+};
+
 export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   // Use sessionStorage to remember login state during app session
   // sessionStorage is automatically cleared when the app is closed
@@ -23,10 +49,12 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       try {
         return JSON.parse(saved);
       } catch {
-        return { language: 'en', theme: 'light' };
+        // If parsing fails, use system defaults
+        return { language: getSystemLanguage(), theme: getSystemTheme() };
       }
     }
-    return { language: 'en', theme: 'light' };
+    // If no saved settings, use system defaults
+    return { language: getSystemLanguage(), theme: getSystemTheme() };
   });
 
   // Save authentication state to sessionStorage (cleared on app close)

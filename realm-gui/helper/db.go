@@ -4,12 +4,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"os"
 	"strings"
 
 	"realm/dao"
 	"realm/dao/model"
 
 	"github.com/glebarez/sqlite"
+	"golang.org/x/text/language"
 
 	gorm "gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -99,12 +101,40 @@ func UpdateDomainPasswd(realmdb *gorm.DB, domain string, user string, pwdd strin
 	return dao.QRealm.UpdateDomainPasswd(ctx, realmdb, &realm)
 }
 
+// GetSystemLanguage detects system language and returns "zh" or "en"
+// Returns "en" if detection fails
+func GetSystemLanguage() string {
+	// Try to get language from environment variables
+	lang := os.Getenv("LANG")
+	if lang == "" {
+		lang = os.Getenv("LANGUAGE")
+	}
+
+	if lang != "" {
+		// Parse language tag (e.g., "zh_CN.UTF-8" -> "zh")
+		tag, err := language.Parse(lang)
+		if err == nil {
+			base, _ := tag.Base()
+			if base.String() == "zh" {
+				return "zh"
+			}
+		}
+		// Simple check for Chinese language codes
+		if strings.HasPrefix(strings.ToLower(lang), "zh") {
+			return "zh"
+		}
+	}
+
+	// Default to English if detection fails
+	return "en"
+}
+
 func QuerySettings(realmdb *gorm.DB) (string, string) {
 	ctx := context.Background()
-	settings, err := dao.QSetting.QuerySettings(ctx, realmdb)
+	settings, err := dao.QSetting.QuerySettings(ctx, realmdb, GetSystemLanguage())
 	if err != nil {
 		fmt.Println("QuerySettings error: ", err)
-		return "en", "light"
+		return GetSystemLanguage(), "light"
 	}
 	return settings.Language, settings.Theme
 }

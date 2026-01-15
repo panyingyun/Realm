@@ -5,6 +5,7 @@ go 1.23
 require (
 	github.com/glebarez/sqlite v1.11.0
 	github.com/wailsapp/wails/v2 v2.11.0
+	golang.org/x/text v0.22.0
 	gorm.io/gen v0.3.27
 	gorm.io/gorm v1.31.1
 	gorm.io/plugin/dbresolver v1.6.2
@@ -46,7 +47,6 @@ require (
 	golang.org/x/net v0.35.0 // indirect
 	golang.org/x/sync v0.11.0 // indirect
 	golang.org/x/sys v0.30.0 // indirect
-	golang.org/x/text v0.22.0 // indirect
 	golang.org/x/tools v0.30.0 // indirect
 	gorm.io/datatypes v1.2.4 // indirect
 	gorm.io/driver/mysql v1.5.7 // indirect
