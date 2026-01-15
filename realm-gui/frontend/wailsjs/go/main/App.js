@@ -6,6 +6,10 @@ export function AddPassword(arg1) {
   return window['go']['main']['App']['AddPassword'](arg1);
 }
 
+export function DeletePassword(arg1) {
+  return window['go']['main']['App']['DeletePassword'](arg1);
+}
+
 export function GeneratePassword() {
   return window['go']['main']['App']['GeneratePassword']();
 }

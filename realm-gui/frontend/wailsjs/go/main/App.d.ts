@@ -4,6 +4,8 @@ import {main} from '../models';
 
 export function AddPassword(arg1:main.Password):Promise<boolean>;
 
+export function DeletePassword(arg1:string):Promise<boolean>;
+
 export function GeneratePassword():Promise<string>;
 
 export function GetPasswordCategories():Promise<Array<main.Category>>;
