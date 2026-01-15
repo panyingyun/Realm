@@ -177,3 +177,19 @@ func (a *App) GetRealmHealth() (float64, error) {
 	}
 	return health, nil
 }
+
+// DeletePassword deletes a password entry by ID
+func (a *App) DeletePassword(id string) (bool, error) {
+	if helper.IsStringBlank(a.mainPwd) {
+		return false, errors.New("main password is not set, please login first")
+	}
+	idInt, err := helper.StrToInt64(id)
+	if err != nil {
+		return false, fmt.Errorf("invalid password ID: %w", err)
+	}
+	err = helper.DeletePassword(a.db, idInt)
+	if err != nil {
+		return false, err
+	}
+	return true, nil
+}

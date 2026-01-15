@@ -144,6 +144,12 @@ func UpdateSettings(realmdb *gorm.DB, language string, theme string) error {
 	return dao.QSetting.UpdateSettings(ctx, realmdb, language, theme)
 }
 
+// DeletePassword deletes a password by ID
+func DeletePassword(realmdb *gorm.DB, id int64) error {
+	ctx := context.Background()
+	return dao.QRealm.DeletePasswordByID(ctx, realmdb, id)
+}
+
 // PasswordResult represents a decrypted password entry
 type PasswordResult struct {
 	ID       int64

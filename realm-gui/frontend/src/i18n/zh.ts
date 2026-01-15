@@ -42,6 +42,10 @@ export const zh = {
     viewProfile: '打开浏览器',
     readNote: '打开浏览器',
     openConsole: '打开浏览器',
+    deleteConfirmTitle: '确认删除',
+    deleteConfirmMessage: '删除后密码永久消失',
+    deleteSuccess: '密码已删除',
+    deleteError: '删除失败',
   },
 
   // Add Password Page

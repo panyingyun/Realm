@@ -42,6 +42,10 @@ export const en = {
     viewProfile: 'Open Browser',
     readNote: 'Open Browser',
     openConsole: 'Open Browser',
+    deleteConfirmTitle: 'Confirm Delete',
+    deleteConfirmMessage: 'Password will be permanently deleted',
+    deleteSuccess: 'Password deleted',
+    deleteError: 'Failed to delete',
   },
 
   // Add Password Page

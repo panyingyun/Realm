@@ -74,6 +74,13 @@ func (rd *RealmDao) UpdateDomainPasswd(ctx context.Context, db *gorm.DB, realm *
 	return err
 }
 
+// Delete a password by ID
+func (rd *RealmDao) DeletePasswordByID(ctx context.Context, db *gorm.DB, id int64) error {
+	u := query.Use(db).Realm
+	_, err := u.WithContext(ctx).Where(u.ID.Eq(id)).Delete()
+	return err
+}
+
 // Query a settings from database
 // defaultLanguage is used when creating default settings record
 func (sd *SettingDao) QuerySettings(ctx context.Context, db *gorm.DB, defaultLanguage string) (*model.Setting, error) {

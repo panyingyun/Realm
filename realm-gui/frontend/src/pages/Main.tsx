@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useApp } from '../contexts/AppContext';
 import { Category, Password } from '../types';
-import { GetPasswordCategories, GetPasswordsByCategory, GetRealmHealth } from '../../wailsjs/go/main/App';
+import { GetPasswordCategories, GetPasswordsByCategory, GetRealmHealth, DeletePassword } from '../../wailsjs/go/main/App';
 import { BrowserOpenURL } from '../../wailsjs/runtime/runtime';
 import { useI18n } from '../i18n';
 import appIcon from '../assets/images/appicon.png';
@@ -14,6 +14,8 @@ export const MainPage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [visiblePasswords, setVisiblePasswords] = useState<Set<string>>(new Set());
   const [realmHealth, setRealmHealth] = useState<number>(100);
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+  const [passwordToDelete, setPasswordToDelete] = useState<Password | null>(null);
   const navigate = useNavigate();
   const location = useLocation();
   const prevLocationRef = useRef<string>('');
@@ -203,6 +205,36 @@ export const MainPage: React.FC = () => {
     }
   };
 
+  const handleDeleteClick = (password: Password) => {
+    setPasswordToDelete(password);
+    setDeleteConfirmOpen(true);
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (!passwordToDelete) return;
+
+    try {
+      const success = await DeletePassword(passwordToDelete.id);
+      if (success) {
+        // Refresh passwords list
+        await loadPasswords(activeCategory);
+        // Refresh health
+        await loadRealmHealth();
+        setDeleteConfirmOpen(false);
+        setPasswordToDelete(null);
+      } else {
+        console.error(t.main.deleteError);
+      }
+    } catch (error) {
+      console.error(t.main.deleteError, error);
+    }
+  };
+
+  const handleDeleteCancel = () => {
+    setDeleteConfirmOpen(false);
+    setPasswordToDelete(null);
+  };
+
   return (
     <div className="flex h-screen overflow-hidden bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100">
       <aside className="w-64 border-r border-slate-200 bg-white dark:bg-slate-900 dark:border-slate-800 flex flex-col justify-between p-6">
@@ -321,11 +353,18 @@ export const MainPage: React.FC = () => {
                       >
                         <span className="material-symbols-outlined text-[28px]">{getCategoryIcon(password.category)}</span>
                       </div>
-                      <div>
+                      <div className="flex-1">
                         <h3 className="font-bold text-lg transition-colors dark:text-white">{password.name}</h3>
                         <p className="text-xs text-slate-500 dark:text-slate-400">{password.domain}</p>
                       </div>
                     </div>
+                    <button
+                      onClick={() => handleDeleteClick(password)}
+                      className="opacity-0 group-hover:opacity-100 p-2 hover:bg-red-50 dark:hover:bg-red-900/10 rounded-lg text-red-500 transition-all"
+                      title={t.common.delete}
+                    >
+                      <span className="material-symbols-outlined text-[20px]">delete</span>
+                    </button>
                   </div>
                   <div className="space-y-3 mb-6">
                     <div className="flex flex-col">
@@ -403,6 +442,35 @@ export const MainPage: React.FC = () => {
           </div>
         </div>
       </main>
+
+      {/* Delete Confirmation Dialog */}
+      {deleteConfirmOpen && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={handleDeleteCancel}>
+          <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 max-w-md w-full mx-4 shadow-2xl" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center gap-4 mb-4">
+              <div className="w-12 h-12 rounded-full bg-red-100 dark:bg-red-900/20 flex items-center justify-center">
+                <span className="material-symbols-outlined text-red-500 text-2xl">warning</span>
+              </div>
+              <h3 className="text-xl font-bold text-slate-900 dark:text-white">{t.main.deleteConfirmTitle}</h3>
+            </div>
+            <p className="text-slate-600 dark:text-slate-400 mb-6">{t.main.deleteConfirmMessage}</p>
+            <div className="flex gap-3 justify-end">
+              <button
+                onClick={handleDeleteCancel}
+                className="px-5 py-2.5 rounded-xl font-semibold text-sm bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors"
+              >
+                {t.common.cancel}
+              </button>
+              <button
+                onClick={handleDeleteConfirm}
+                className="px-5 py-2.5 rounded-xl font-semibold text-sm bg-red-500 text-white hover:bg-red-600 transition-colors"
+              >
+                {t.common.delete}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
