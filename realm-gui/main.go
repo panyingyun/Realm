@@ -3,6 +3,7 @@ package main
 import (
 	"embed"
 	"os"
+	"path/filepath"
 
 	"github.com/wailsapp/wails/v2"
 	"github.com/wailsapp/wails/v2/pkg/options"
@@ -16,16 +17,27 @@ var assets embed.FS
 var sqlite3Tpl []byte
 
 func main() {
-	// create realm.db file
-	if _, err := os.Stat("realm.db"); os.IsNotExist(err) {
-		os.WriteFile("realm.db", sqlite3Tpl, 0o644)
+	// Get application data directory
+	appDataDir, err := getAppDataDir()
+	if err != nil {
+		println("Error getting app data directory:", err.Error())
+		os.Exit(1)
+	}
+
+	// Create realm.db file in app data directory
+	dbPath := filepath.Join(appDataDir, "realm.db")
+	if _, err := os.Stat(dbPath); os.IsNotExist(err) {
+		if err := os.WriteFile(dbPath, sqlite3Tpl, 0644); err != nil {
+			println("Error creating realm.db:", err.Error())
+			os.Exit(1)
+		}
 	}
 
 	// Create an instance of the app structure
 	app := NewApp()
 
 	// Create application with options
-	err := wails.Run(&options.App{
+	err = wails.Run(&options.App{
 		Title:  "realm",
 		Width:  1200,
 		Height: 800,

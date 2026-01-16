@@ -52,19 +52,33 @@ func NewApp() *App {
 	return &App{}
 }
 
+// getAppDataDir returns the application data directory
+// macOS: ~/Library/Application Support/Realm
+func getAppDataDir() (string, error) {
+	homeDir, err := os.UserHomeDir()
+	if err != nil {
+		return "", err
+	}
+	appDataDir := path.Join(homeDir, "Library", "Application Support", "Realm")
+	// Create directory if it doesn't exist
+	if err := os.MkdirAll(appDataDir, 0755); err != nil {
+		return "", err
+	}
+	return appDataDir, nil
+}
+
 // startup is called when the app starts. The context is saved
 // so we can call the runtime methods
 func (a *App) startup(ctx context.Context) {
 	a.ctx = ctx
-	dir, err := os.Getwd()
-	// fmt.Println("pwd dir = ", dir)
+	appDataDir, err := getAppDataDir()
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("Failed to get app data directory:", err)
 	}
-	// fmt.Println("start up dir = ", dir)
-	a.db, err = helper.OpenDB(path.Join(dir, DBName))
+	dbPath := path.Join(appDataDir, DBName)
+	a.db, err = helper.OpenDB(dbPath)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("Failed to open database:", err)
 	}
 }
 
