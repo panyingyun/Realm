@@ -35,3 +35,4 @@ go.work.sum
 Realm
 realm-cmder/dist/
 realm-gui/frontend/package.json.md5
+realm-cmder/realm.db
