@@ -46,6 +46,9 @@ export const en = {
     deleteConfirmMessage: 'Password will be permanently deleted',
     deleteSuccess: 'Password deleted',
     deleteError: 'Failed to delete',
+    viewMode: 'View Mode',
+    gridView: 'Grid View',
+    listView: 'List View',
   },
 
   // Add Password Page

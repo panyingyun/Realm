@@ -46,6 +46,9 @@ export const zh = {
     deleteConfirmMessage: '删除后密码永久消失',
     deleteSuccess: '密码已删除',
     deleteError: '删除失败',
+    viewMode: '视图模式',
+    gridView: '网格视图',
+    listView: '列表视图',
   },
 
   // Add Password Page

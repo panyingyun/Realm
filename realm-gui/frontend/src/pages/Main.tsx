@@ -16,6 +16,10 @@ export const MainPage: React.FC = () => {
   const [realmHealth, setRealmHealth] = useState<number>(100);
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [passwordToDelete, setPasswordToDelete] = useState<Password | null>(null);
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>(() => {
+    const saved = localStorage.getItem('viewMode');
+    return (saved === 'list' || saved === 'grid') ? saved : 'grid';
+  });
   const navigate = useNavigate();
   const location = useLocation();
   const prevLocationRef = useRef<string>('');
@@ -235,6 +239,11 @@ export const MainPage: React.FC = () => {
     setPasswordToDelete(null);
   };
 
+  const handleViewModeChange = (mode: 'grid' | 'list') => {
+    setViewMode(mode);
+    localStorage.setItem('viewMode', mode);
+  };
+
   return (
     <div className="flex h-screen overflow-hidden bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100">
       <aside className="w-64 border-r border-slate-200 bg-white dark:bg-slate-900 dark:border-slate-800 flex flex-col justify-between p-6">
@@ -294,6 +303,30 @@ export const MainPage: React.FC = () => {
             </div>
           </div>
           <div className="flex items-center gap-3">
+            <div className="flex items-center gap-1 bg-slate-100 dark:bg-slate-800 rounded-xl p-1">
+              <button
+                onClick={() => handleViewModeChange('grid')}
+                className={`p-2 rounded-lg transition-all ${
+                  viewMode === 'grid'
+                    ? 'bg-white dark:bg-slate-700 text-primary shadow-sm'
+                    : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300'
+                }`}
+                title={t.main.gridView}
+              >
+                <span className="material-symbols-outlined text-[20px]">grid_view</span>
+              </button>
+              <button
+                onClick={() => handleViewModeChange('list')}
+                className={`p-2 rounded-lg transition-all ${
+                  viewMode === 'list'
+                    ? 'bg-white dark:bg-slate-700 text-primary shadow-sm'
+                    : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300'
+                }`}
+                title={t.main.listView}
+              >
+                <span className="material-symbols-outlined text-[20px]">view_list</span>
+              </button>
+            </div>
             <button
               onClick={() => navigate('/add')}
               className="bg-primary hover:bg-indigo-600 text-white px-5 py-2 rounded-xl font-bold text-sm flex items-center gap-2 transition-all shadow-lg shadow-indigo-200"
@@ -325,121 +358,233 @@ export const MainPage: React.FC = () => {
               );
             })}
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-            {filteredPasswords.map((password) => {
-              const colorValue = getCategoryColorValue(password.category);
-              const isVisible = visiblePasswords.has(password.id);
-              return (
-                <div
-                  key={password.id}
-                  className="group bg-white dark:bg-slate-800 rounded-3xl p-6 border border-slate-100 dark:border-slate-700 hover:shadow-xl transition-all duration-300 flex flex-col justify-between min-h-[240px] shadow-sm"
-                  style={{ borderColor: 'inherit' }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.borderColor = `${colorValue}30`;
-                    const title = e.currentTarget.querySelector('h3') as HTMLElement;
-                    if (title) title.style.color = colorValue;
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.borderColor = '';
-                    const title = e.currentTarget.querySelector('h3') as HTMLElement;
-                    if (title) title.style.color = '';
-                  }}
-                >
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="flex items-center gap-4">
-                      <div
-                        className="w-12 h-12 rounded-2xl flex items-center justify-center text-white shadow-md"
-                        style={{ backgroundColor: colorValue }}
-                      >
-                        <span className="material-symbols-outlined text-[28px]">{getCategoryIcon(password.category)}</span>
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="font-bold text-lg transition-colors dark:text-white">{password.name}</h3>
-                        <p className="text-xs text-slate-500 dark:text-slate-400">{password.domain}</p>
-                      </div>
-                    </div>
-                    <button
-                      onClick={() => handleDeleteClick(password)}
-                      className="opacity-0 group-hover:opacity-100 p-2 hover:bg-red-50 dark:hover:bg-red-900/10 rounded-lg text-red-500 transition-all"
-                      title={t.common.delete}
-                    >
-                      <span className="material-symbols-outlined text-[20px]">delete</span>
-                    </button>
-                  </div>
-                  <div className="space-y-3 mb-6">
-                    <div className="flex flex-col">
-                      <span className="text-[10px] uppercase tracking-wider font-bold text-slate-400 mb-1">
-                        {password.category === 'Private' ? t.passwordFields.contentPreview : password.category === 'Social' ? t.passwordFields.email : t.passwordFields.username}
-                      </span>
-                      <div className="flex items-center justify-between group/field">
-                        <span className="text-sm font-medium dark:text-slate-300">{password.username}</span>
-                        <button
-                          onClick={() => copyToClipboard(password.username)}
-                          className="opacity-0 group-hover/field:opacity-100 p-1 hover:bg-slate-100 dark:hover:bg-slate-700 rounded text-slate-600 dark:text-slate-400 transition-all"
+          {viewMode === 'grid' ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+              {filteredPasswords.map((password) => {
+                const colorValue = getCategoryColorValue(password.category);
+                const isVisible = visiblePasswords.has(password.id);
+                return (
+                  <div
+                    key={password.id}
+                    className="group bg-white dark:bg-slate-800 rounded-3xl p-6 border border-slate-100 dark:border-slate-700 hover:shadow-xl transition-all duration-300 flex flex-col justify-between min-h-[240px] shadow-sm"
+                    style={{ borderColor: 'inherit' }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.borderColor = `${colorValue}30`;
+                      const title = e.currentTarget.querySelector('h3') as HTMLElement;
+                      if (title) title.style.color = colorValue;
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.borderColor = '';
+                      const title = e.currentTarget.querySelector('h3') as HTMLElement;
+                      if (title) title.style.color = '';
+                    }}
+                  >
+                    <div className="flex items-start justify-between mb-4">
+                      <div className="flex items-center gap-4">
+                        <div
+                          className="w-12 h-12 rounded-2xl flex items-center justify-center text-white shadow-md"
+                          style={{ backgroundColor: colorValue }}
                         >
-                          <span className="material-symbols-outlined text-sm">content_copy</span>
-                        </button>
+                          <span className="material-symbols-outlined text-[28px]">{getCategoryIcon(password.category)}</span>
+                        </div>
+                        <div className="flex-1">
+                          <h3 className="font-bold text-lg transition-colors dark:text-white">{password.name}</h3>
+                          <p className="text-xs text-slate-500 dark:text-slate-400">{password.domain}</p>
+                        </div>
                       </div>
+                      <button
+                        onClick={() => handleDeleteClick(password)}
+                        className="opacity-0 group-hover:opacity-100 p-2 hover:bg-red-50 dark:hover:bg-red-900/10 rounded-lg text-red-500 transition-all"
+                        title={t.common.delete}
+                      >
+                        <span className="material-symbols-outlined text-[20px]">delete</span>
+                      </button>
                     </div>
-                    <div className="flex flex-col">
-                      <span className="text-[10px] uppercase tracking-wider font-bold text-slate-400 mb-1">
-                        {password.category === 'Private' ? t.passwordFields.masterKey : password.category === 'Work' ? t.passwordFields.accessToken : t.passwordFields.password}
-                      </span>
-                      <div className="flex items-center justify-between group/field">
-                        <span className="text-sm font-mono tracking-widest text-slate-500 dark:text-slate-400">
-                          {isVisible ? password.password : '• • • • • • • • • •'}
+                    <div className="space-y-3 mb-6">
+                      <div className="flex flex-col">
+                        <span className="text-[10px] uppercase tracking-wider font-bold text-slate-400 mb-1">
+                          {password.category === 'Private' ? t.passwordFields.contentPreview : password.category === 'Social' ? t.passwordFields.email : t.passwordFields.username}
                         </span>
-                        <div className="flex items-center gap-1 opacity-0 group-hover/field:opacity-100 transition-all">
+                        <div className="flex items-center justify-between group/field">
+                          <span className="text-sm font-medium dark:text-slate-300">{password.username}</span>
                           <button
-                            onClick={() => togglePasswordVisibility(password.id)}
-                            className="p-1 rounded transition-all"
-                            style={{ color: colorValue }}
-                            onMouseEnter={(e) => {
-                              e.currentTarget.style.backgroundColor = `${colorValue}10`;
-                            }}
-                            onMouseLeave={(e) => {
-                              e.currentTarget.style.backgroundColor = '';
-                            }}
-                          >
-                            <span className="material-symbols-outlined text-sm">{isVisible ? 'visibility_off' : 'visibility'}</span>
-                          </button>
-                          <button
-                            onClick={() => copyToClipboard(password.password)}
-                            className="p-1 rounded transition-all"
-                            style={{ color: colorValue }}
-                            onMouseEnter={(e) => {
-                              e.currentTarget.style.backgroundColor = `${colorValue}10`;
-                            }}
-                            onMouseLeave={(e) => {
-                              e.currentTarget.style.backgroundColor = '';
-                            }}
+                            onClick={() => copyToClipboard(password.username)}
+                            className="opacity-0 group-hover/field:opacity-100 p-1 hover:bg-slate-100 dark:hover:bg-slate-700 rounded text-slate-600 dark:text-slate-400 transition-all"
                           >
                             <span className="material-symbols-outlined text-sm">content_copy</span>
                           </button>
                         </div>
                       </div>
+                      <div className="flex flex-col">
+                        <span className="text-[10px] uppercase tracking-wider font-bold text-slate-400 mb-1">
+                          {password.category === 'Private' ? t.passwordFields.masterKey : password.category === 'Work' ? t.passwordFields.accessToken : t.passwordFields.password}
+                        </span>
+                        <div className="flex items-center justify-between group/field">
+                          <span className="text-sm font-mono tracking-widest text-slate-500 dark:text-slate-400">
+                            {isVisible ? password.password : '• • • • • • • • • •'}
+                          </span>
+                          <div className="flex items-center gap-1 opacity-0 group-hover/field:opacity-100 transition-all">
+                            <button
+                              onClick={() => togglePasswordVisibility(password.id)}
+                              className="p-1 rounded transition-all"
+                              style={{ color: colorValue }}
+                              onMouseEnter={(e) => {
+                                e.currentTarget.style.backgroundColor = `${colorValue}10`;
+                              }}
+                              onMouseLeave={(e) => {
+                                e.currentTarget.style.backgroundColor = '';
+                              }}
+                            >
+                              <span className="material-symbols-outlined text-sm">{isVisible ? 'visibility_off' : 'visibility'}</span>
+                            </button>
+                            <button
+                              onClick={() => copyToClipboard(password.password)}
+                              className="p-1 rounded transition-all"
+                              style={{ color: colorValue }}
+                              onMouseEnter={(e) => {
+                                e.currentTarget.style.backgroundColor = `${colorValue}10`;
+                              }}
+                              onMouseLeave={(e) => {
+                                e.currentTarget.style.backgroundColor = '';
+                              }}
+                            >
+                              <span className="material-symbols-outlined text-sm">content_copy</span>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => handleOpenWebsite(password)}
+                        className="flex-1 bg-slate-50 dark:bg-slate-700 text-sm font-bold py-2 rounded-xl transition-colors dark:text-slate-300"
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.backgroundColor = `${colorValue}10`;
+                          e.currentTarget.style.color = colorValue;
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.backgroundColor = '';
+                          e.currentTarget.style.color = '';
+                        }}
+                      >
+                        {password.category === 'Private' ? t.main.readNote : password.category === 'Social' ? t.main.viewProfile : password.category === 'Work' ? t.main.openConsole : t.main.viewAccount}
+                      </button>
                     </div>
                   </div>
-                  <div className="flex gap-2">
-                    <button
-                      onClick={() => handleOpenWebsite(password)}
-                      className="flex-1 bg-slate-50 dark:bg-slate-700 text-sm font-bold py-2 rounded-xl transition-colors dark:text-slate-300"
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.backgroundColor = `${colorValue}10`;
-                        e.currentTarget.style.color = colorValue;
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.backgroundColor = '';
-                        e.currentTarget.style.color = '';
-                      }}
-                    >
-                      {password.category === 'Private' ? t.main.readNote : password.category === 'Social' ? t.main.viewProfile : password.category === 'Work' ? t.main.openConsole : t.main.viewAccount}
-                    </button>
+                );
+              })}
+            </div>
+          ) : (
+            <div className="space-y-2">
+              {filteredPasswords.map((password) => {
+                const colorValue = getCategoryColorValue(password.category);
+                const isVisible = visiblePasswords.has(password.id);
+                return (
+                  <div
+                    key={password.id}
+                    className="group bg-white dark:bg-slate-800 rounded-lg p-3 border border-slate-100 dark:border-slate-700 hover:shadow-md transition-all duration-300 shadow-sm"
+                    style={{ borderColor: 'inherit' }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.borderColor = `${colorValue}30`;
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.borderColor = '';
+                    }}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div
+                        className="w-8 h-8 rounded-lg flex items-center justify-center text-white shadow-sm flex-shrink-0"
+                        style={{ backgroundColor: colorValue }}
+                      >
+                        <span className="material-symbols-outlined text-[18px]">{getCategoryIcon(password.category)}</span>
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between mb-1.5">
+                          <div className="flex-1 min-w-0">
+                            <h3 className="font-semibold text-sm transition-colors dark:text-white truncate">{password.name}</h3>
+                            <p className="text-[10px] text-slate-500 dark:text-slate-400 truncate">{password.domain}</p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-4">
+                          <div className="flex items-center gap-2 group/field flex-1 min-w-0">
+                            <span className="text-[10px] uppercase tracking-wider font-bold text-slate-400 mr-2 flex-shrink-0">
+                              {password.category === 'Private' ? t.passwordFields.contentPreview : password.category === 'Social' ? t.passwordFields.email : t.passwordFields.username}:
+                            </span>
+                            <span className="text-xs font-medium dark:text-slate-300 truncate">{password.username}</span>
+                            <button
+                              onClick={() => copyToClipboard(password.username)}
+                              className="opacity-0 group-hover/field:opacity-100 p-0.5 hover:bg-slate-100 dark:hover:bg-slate-700 rounded text-slate-600 dark:text-slate-400 transition-all flex-shrink-0"
+                            >
+                              <span className="material-symbols-outlined text-xs">content_copy</span>
+                            </button>
+                          </div>
+                          <div className="flex items-center gap-2 group/field flex-1 min-w-0">
+                            <span className="text-[10px] uppercase tracking-wider font-bold text-slate-400 mr-2 flex-shrink-0">
+                              {password.category === 'Private' ? t.passwordFields.masterKey : password.category === 'Work' ? t.passwordFields.accessToken : t.passwordFields.password}:
+                            </span>
+                            <span className="text-xs font-mono tracking-wide text-slate-500 dark:text-slate-400 truncate">
+                              {isVisible ? password.password : '• • • • • • • •'}
+                            </span>
+                            <div className="flex items-center gap-0.5 opacity-0 group-hover/field:opacity-100 transition-all flex-shrink-0">
+                              <button
+                                onClick={() => togglePasswordVisibility(password.id)}
+                                className="p-0.5 rounded transition-all"
+                                style={{ color: colorValue }}
+                                onMouseEnter={(e) => {
+                                  e.currentTarget.style.backgroundColor = `${colorValue}10`;
+                                }}
+                                onMouseLeave={(e) => {
+                                  e.currentTarget.style.backgroundColor = '';
+                                }}
+                              >
+                                <span className="material-symbols-outlined text-xs">{isVisible ? 'visibility_off' : 'visibility'}</span>
+                              </button>
+                              <button
+                                onClick={() => copyToClipboard(password.password)}
+                                className="p-0.5 rounded transition-all"
+                                style={{ color: colorValue }}
+                                onMouseEnter={(e) => {
+                                  e.currentTarget.style.backgroundColor = `${colorValue}10`;
+                                }}
+                                onMouseLeave={(e) => {
+                                  e.currentTarget.style.backgroundColor = '';
+                                }}
+                              >
+                                <span className="material-symbols-outlined text-xs">content_copy</span>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-1 flex-shrink-0">
+                        <button
+                          onClick={() => handleOpenWebsite(password)}
+                          className="opacity-0 group-hover:opacity-100 p-1.5 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-all"
+                          style={{ color: colorValue }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.backgroundColor = `${colorValue}10`;
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.backgroundColor = '';
+                          }}
+                          title={password.category === 'Private' ? t.main.readNote : password.category === 'Social' ? t.main.viewProfile : password.category === 'Work' ? t.main.openConsole : t.main.viewAccount}
+                        >
+                          <span className="material-symbols-outlined text-[18px]">open_in_new</span>
+                        </button>
+                        <button
+                          onClick={() => handleDeleteClick(password)}
+                          className="opacity-0 group-hover:opacity-100 p-1.5 hover:bg-red-50 dark:hover:bg-red-900/10 rounded-lg text-red-500 transition-all"
+                          title={t.common.delete}
+                        >
+                          <span className="material-symbols-outlined text-[18px]">delete</span>
+                        </button>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              );
-            })}
-          </div>
+                );
+              })}
+            </div>
+          )}
         </div>
       </main>
 
