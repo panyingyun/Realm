@@ -14,6 +14,7 @@ export const en = {
     loading: 'Loading...',
     error: 'Error',
     success: 'Success',
+    copiedToClipboard: 'Copied to clipboard',
   },
 
   // Login Page

@@ -20,6 +20,7 @@ export const MainPage: React.FC = () => {
     const saved = localStorage.getItem('viewMode');
     return (saved === 'list' || saved === 'grid') ? saved : 'grid';
   });
+  const [toastVisible, setToastVisible] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const prevLocationRef = useRef<string>('');
@@ -128,7 +129,11 @@ export const MainPage: React.FC = () => {
   const copyToClipboard = async (text: string) => {
     try {
       await navigator.clipboard.writeText(text);
-      // Could show a toast notification here
+      // Show toast notification
+      setToastVisible(true);
+      setTimeout(() => {
+        setToastVisible(false);
+      }, 2000);
     } catch (error) {
       console.error('Failed to copy:', error);
     }
@@ -616,6 +621,18 @@ export const MainPage: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* Toast Notification */}
+      <div
+        className={`fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50 transition-all duration-300 ease-in-out ${
+          toastVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2 pointer-events-none'
+        }`}
+      >
+        <div className="bg-slate-900 dark:bg-slate-700 text-white px-4 py-3 rounded-lg shadow-xl flex items-center gap-2">
+          <span className="material-symbols-outlined text-[20px] text-green-400">check_circle</span>
+          <span className="text-sm font-medium">{t.common.copiedToClipboard}</span>
+        </div>
+      </div>
     </div>
   );
 };

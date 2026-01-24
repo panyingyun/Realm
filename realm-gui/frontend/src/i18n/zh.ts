@@ -14,6 +14,7 @@ export const zh = {
     loading: '加载中...',
     error: '错误',
     success: '成功',
+    copiedToClipboard: '已复制到粘贴板',
   },
 
   // Login Page
