@@ -6,3 +6,5 @@ build/bin/realm
 dist/
 build/bin/realm.exe
 *.zip
+# Windows 资源，由 go-winres make 在构建时生成
+rsrc_windows_*.syso

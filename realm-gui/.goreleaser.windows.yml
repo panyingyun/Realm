@@ -5,10 +5,12 @@ version: 2
 
 project_name: realm
 
-# 构建前钩子
+# 构建前钩子：安装 go-winres 并生成 Windows 资源(.syso)，使 exe 带图标与版本信息
 before:
   hooks:
     - go mod tidy
+    - go install github.com/tc-hib/go-winres@latest
+    - go-winres make
 
 # 构建配置 - 仅 Windows
 builds:
@@ -23,7 +25,9 @@ builds:
       - CGO_ENABLED=0
     flags:
       - -trimpath
+    # 构建标签 - 与 Makefile build-windows 一致
     tags:
+      - native_webview2loader
       - desktop
       - production
     ldflags:
