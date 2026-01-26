@@ -49,16 +49,18 @@ clean:
 build_ubuntu2204:
 	go mod tidy
 	gofumpt -l -w .
-	wails build -tags webkit2_40
+	wails build -clean -tags webkit2_40
 
 build_ubuntu2404:
 	go mod tidy
 	gofumpt -l -w .
-	wails build -tags webkit2_41
+	wails build -clean -tags webkit2_41
 
 build-windows:
-	wails build -tags native_webview2loader
+	wails build -clean -tags native_webview2loader
 
+build-windows-new:
+	wails build -clean -webview2=embed --tags exp_gowebview2loader
 sqlite:	
 	sqlite3 realm.db
 	sqlite3 realm.db < realm.sql

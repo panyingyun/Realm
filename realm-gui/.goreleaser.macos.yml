@@ -73,7 +73,7 @@ archives:
 
 # 校验和配置
 checksum:
-  name_template: "{{ .ProjectName }}_{{ .Version }}_checksums.txt"
+  name_template: "{{ .ProjectName }}_{{ .Version }}_macos_checksums.txt"
   algorithm: sha256
 
 # 快照配置

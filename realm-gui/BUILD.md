@@ -166,8 +166,7 @@ echo "Linux 版本: build/bin/realm"
 ```
 
 #### Windows 系统（PowerShell）
-
-```powershell
+32·```powershell
 # build-all-windows.ps1
 
 Write-Host "构建 Windows 版本..."

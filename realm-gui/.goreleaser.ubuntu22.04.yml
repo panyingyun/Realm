@@ -91,7 +91,7 @@ archives:
 
 # 校验和配置
 checksum:
-  name_template: "{{ .ProjectName }}_{{ .Version }}_checksums.txt"
+  name_template: "{{ .ProjectName }}_{{ .Version }}_ubuntu22.04_checksums.txt"
   algorithm: sha256
 
 # 快照配置（用于测试）
