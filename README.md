@@ -1,5 +1,7 @@
 # Realm 密码本
 
+<img src="realm-gui/build/appicon.png" width="20%" height="20%">
+
 Realm 是一个安全、易用的密码管理工具，提供命令行和图形界面两个版本，帮助您安全地管理各种网站和应用的密码信息。Realm 是 1password 的本地替代品
 
 ## 📋 项目概述

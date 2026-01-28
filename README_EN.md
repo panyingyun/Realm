@@ -1,5 +1,7 @@
 # Realm Password Manager
 
+<img src="realm-gui/build/appicon.png" width="20%" height="20%">
+
 Realm is a secure and easy-to-use password management tool that provides both command-line and graphical interface versions to help you securely manage passwords for various websites and applications. Realm is a local alternative to 1Password.
 
 ## 📋 Project Overview
