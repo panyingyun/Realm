@@ -1,5 +1,7 @@
 # Realm - Password Manager Application
 
+<img src="build/appicon.png" width="20%" height="20%">
+
 ## About
 
 Realm is a cross-platform password manager application built with Wails + React + TypeScript. Realm is a local alternative to 1Password.

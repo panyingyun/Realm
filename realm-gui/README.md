@@ -1,5 +1,8 @@
 # Realm - 密码管理器应用
 
+<img src="build/appicon.png" width="20%" height="20%">
+
+
 ## 关于
 
 Realm 是一个基于 Wails + React + TypeScript 开发的跨平台密码管理器应用。Realm 是1password的本地替代品
